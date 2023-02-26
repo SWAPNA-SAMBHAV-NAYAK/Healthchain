@@ -1,0 +1,73 @@
+.datalist{
+  height: 600px;
+  padding: 5%;
+  width:90%;
+
+  .dataListTitle{
+    width: 100%;
+    font-size: 24px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .link{
+      text-decoration: none;
+      color: rgb(6, 126, 6);
+      font-size: 16px;
+      font-weight: 400;
+      border: 1px solid green;
+      padding: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+  .cellWithImg{
+    display: flex;
+    align-items: center;
+
+    .cellImg{
+      width: 32px;
+      height:32px;
+      margin-right: 20px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+
+  .cellWithStatus{
+    padding: 8px 25px;
+    border-radius: 5px;
+    font-size: 15px;
+
+    &.active{
+      color: green;
+      background-color: rgba(0,128,0,0.151);
+    }
+    &.passive{
+      color: red;
+      background-color: rgba(236, 94, 84, 0.151);
+    }
+  }
+
+  .cellAction{
+    display: flex;
+    align-items:center;
+    gap:15px;
+
+    .viewBtn{
+      cursor: pointer;
+      padding:2px 5px;
+      border-radius: 5px;
+      color:green;
+      border: 1px solid rgb(3, 150, 5);
+    }
+    .deleteBtn{
+      cursor:pointer;
+      padding:2px 5px;
+      border-radius: 5px;
+      color:red;
+      border: 1px solid rgb(182, 45, 7);
+    }
+  }
+}

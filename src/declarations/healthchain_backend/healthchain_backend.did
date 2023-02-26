@@ -1,0 +1,37 @@
+type Time = int;
+type Patient = 
+ record {
+   address: text;
+   age: int;
+   blood_group: text;
+   email: text;
+   gender: text;
+   height: float64;
+   logs: vec MedicalLog;
+   name: text;
+   patient_id: nat;
+   phone_number: text;
+   registered_on: Time;
+   weight: float64;
+ };
+type Notice = 
+ record {
+   from: text;
+   notice: text;
+   time_stamp: Time;
+ };
+type MedicalLog = 
+ record {
+   blood_pressure: int;
+   pulse_rate: float64;
+   spo2: int;
+   temperature: float64;
+   time_stamp: Time;
+ };
+service : {
+  createNotice: (text, text) -> () oneway;
+  createPatient: (nat, text, text, text, int, text, text, float64, float64,
+   text, vec MedicalLog) -> () oneway;
+  readNotices: () -> (vec Notice) query;
+  readPatients: () -> (vec Patient) query;
+}

@@ -1,0 +1,29 @@
+// Version: 1.0.0
+type List<T> = ?(T, List<T>);
+type MedicalLog =
+  {
+    blood_pressure : Int;
+    pulse_rate : Float;
+    spo2 : Int;
+    temperature : Float;
+    time_stamp : Time
+  };
+type Patient =
+  {
+    address : Text;
+    age : Int;
+    blood_group : Text;
+    email : Text;
+    gender : Text;
+    height : Float;
+    logs : [MedicalLog];
+    name : Text;
+    patient_id : Nat;
+    phone_number : Text;
+    registered_on : Time;
+    weight : Float
+  };
+type Time = Int;
+actor {
+  stable var patients : ?(Patient, List<Patient>)
+};
