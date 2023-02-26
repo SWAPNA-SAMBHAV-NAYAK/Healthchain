@@ -1,55 +1,106 @@
-.patient{
+.patient {
   display: flex;
   width: 100%;
 
-  .patientContainer{
-    flex:6;
+  .navPatientContainer {
+    flex: 6;
 
-    .header{
-      height: 240px;
-      width: 100%;
-      background-color: gray;
+    .patientContainer {
+      width: 98%;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      padding: 1%;
+      justify-content: center;
 
-      button{
-        display: inline-block;
-        padding: 10px 20px;
-        font-size: 1rem;
-        font-weight: bold;
-        text-align: center;
-        color: #fff;
-        background-color: #4caf50;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-    }
-    .patientCard{
-      cursor: pointer;
-      margin: 2rem 2rem 2rem 0;
-      padding: 1.5rem;
-      width: 250px;
-      -webkit-box-shadow: 2px 4px 10px 1px rgba(0,0,0,0.47);
-  box-shadow: 2px 4px 10px 1px rgba(201,201,201,0.47);
-  border-radius: 20px;
-      
-      .cardTitle{
-        font-weight: bold;
-        font-size: 1.5rem;
-      }
-      .cardImage{
+      .header {
+        height: 100px;
+        width: 100%;
+        margin-bottom: 20px;
+        -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+        box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+        border-radius: 12px;
         display: flex;
-        justify-content:left;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
 
-        img{
-          width:50px;
-        height:50px;
-        border-radius:20%;
+        button {
+          cursor: pointer;
+          font-size: 20px;
+          padding: 10px 20px;
+          background-color: #024332;
+          color: white;
+          border: none;
+          text-align: center;
+          display: inline-block;
+          border-radius: 5px;
+          font-weight: bold;
         }
+      }
+
+      .patientCard-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+
+        .patientCard {
+          width: 410px;
+          height: 200px;
+          margin: 10px 15px;
+          -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+          box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+          border-radius: 12px;
+          display: flex;
+          flex-direction: column;
+          position: relative;
+          justify-content: space-between;
+          padding: 10px;
+
+          h2 {
+            font-size: 25px;
+            margin: 0;
+            align-self: flex-start;
+          }
+
+          .timestamp {
+            font-size: 15px;
+            color: red;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+          }
+
+          p {
+            font-size: 15px;
+            margin: 0;
+          }
+
+          .buttonContainer {
+            display: flex;
+            justify-content: space-between;
+          }
+
+          button {
+            margin-top: 20px;
+            display: inline-block;
+            padding: 10px 50px;
+            font-size: 1rem;
+            text-align: center;
+            color: #fff;
+            background-color: #4caf50;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+
+          button:nth-of-type(2) {
+            background-color: #024332;
+            margin-left: 10px;
+          }
+        }
+
       }
     }
   }
-  
 }
-
-
-

@@ -16,7 +16,7 @@ export const idlFactory = ({ IDL }) => {
     'age' : IDL.Int,
     'weight' : IDL.Float64,
     'height' : IDL.Float64,
-    'patient_id' : IDL.Nat,
+    'patient_id' : IDL.Text,
     'logs' : IDL.Vec(MedicalLog),
     'name' : IDL.Text,
     'email' : IDL.Text,
@@ -30,7 +30,7 @@ export const idlFactory = ({ IDL }) => {
     'createNotice' : IDL.Func([IDL.Text, IDL.Text], [], ['oneway']),
     'createPatient' : IDL.Func(
         [
-          IDL.Nat,
+          IDL.Text,
           IDL.Text,
           IDL.Text,
           IDL.Text,

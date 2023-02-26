@@ -20,7 +20,7 @@ actor healthchain {
   };
 
   public type Patient = {
-    patient_id : Nat;
+    patient_id : Text;
     registered_on : Time.Time;
     name : Text;
     email : Text;
@@ -35,10 +35,10 @@ actor healthchain {
   };
 
 
-  stable var patients : List.List<Patient> = List.nil<Patient>();
+  var patients : List.List<Patient> = List.nil<Patient>();
 
   public func createPatient(
-    patient_id_data : Nat,
+    patient_id_data : Text,
     name_data : Text,
     email_data : Text,
     phone_number_data : Text,

@@ -15,7 +15,7 @@ export interface Patient {
   'age' : bigint,
   'weight' : number,
   'height' : number,
-  'patient_id' : bigint,
+  'patient_id' : string,
   'logs' : Array<MedicalLog>,
   'name' : string,
   'email' : string,
@@ -29,7 +29,7 @@ export type Time = bigint;
 export interface _SERVICE {
   'createNotice' : (arg_0: string, arg_1: string) => Promise<undefined>,
   'createPatient' : (
-      arg_0: bigint,
+      arg_0: string,
       arg_1: string,
       arg_2: string,
       arg_3: string,

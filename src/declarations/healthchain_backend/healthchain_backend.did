@@ -9,7 +9,7 @@ type Patient =
    height: float64;
    logs: vec MedicalLog;
    name: text;
-   patient_id: nat;
+   patient_id: text;
    phone_number: text;
    registered_on: Time;
    weight: float64;
@@ -30,7 +30,7 @@ type MedicalLog =
  };
 service : {
   createNotice: (text, text) -> () oneway;
-  createPatient: (nat, text, text, text, int, text, text, float64, float64,
+  createPatient: (text, text, text, text, int, text, text, float64, float64,
    text, vec MedicalLog) -> () oneway;
   readNotices: () -> (vec Notice) query;
   readPatients: () -> (vec Patient) query;
