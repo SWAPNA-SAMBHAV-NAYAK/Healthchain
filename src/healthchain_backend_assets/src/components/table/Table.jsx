@@ -1,4 +1,5 @@
 import "./Table.scss";
+import React from "react";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,12 +7,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import React,{useState, useEffect} from "react";
+// import React,{useState, useEffect} from "react";
 
 const List = () => {
   const data = [
     {
-      id: 12345,
+      id: 12339,
       patient: " Sambhav Nayak",
       img:"https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=600",
       date:"1 January",
@@ -29,7 +30,7 @@ const List = () => {
       discharge_status:"Pending"
     },
     {
-      id: 12345,
+      id: 12335,
       patient: " Sambhav Nayak",
       img:"https://media.gettyimages.com/id/1056633638/photo/dani-daniels-attends-dinner-with-dani-launch-party-at-the-mezzanine-on-november-2-2018-in-new.jpg?s=612x612&w=0&k=20&c=Ix6AaL1ig2XDsThLVaH6kWY6W5FuY-2oFGb17-9CvdY=",
       date:"1 January",
@@ -38,7 +39,7 @@ const List = () => {
       discharge_status:"Approved"
     },
     {
-      id: 12345,
+      id: 12325,
       patient: " Sambhav Nayak",
       img:"https://media.gettyimages.com/id/1056633638/photo/dani-daniels-attends-dinner-with-dani-launch-party-at-the-mezzanine-on-november-2-2018-in-new.jpg?s=612x612&w=0&k=20&c=Ix6AaL1ig2XDsThLVaH6kWY6W5FuY-2oFGb17-9CvdY=",
       date:"1 January",

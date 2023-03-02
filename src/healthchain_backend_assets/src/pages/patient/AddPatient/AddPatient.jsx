@@ -1,11 +1,11 @@
 import "./AddPatient.scss";
-import Sidebar from "../../components/sidebar/Sidebar";
-import Navbar from "../../components/navbar/Navbar";
-import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+import Sidebar from "../../../components/sidebar/Sidebar";
+import Navbar from "../../../components/navbar/Navbar";
 import React, { useState, useEffect } from "react";
 import uuid from 'react-uuid';
 import { useNavigate } from "react-router-dom";
-import { healthchain_backend } from "../../../../declarations/healthchain_backend/index";
+import { healthchain_backend } from "../../../../../declarations/healthchain_backend/index";
+import Salrt from "sweetalert2";
 
 const patientInput = [
   {
@@ -47,14 +47,14 @@ const patientInput = [
   },
   {
     id: 7,
-    label: "Weight",
+    label: "Weight(in Kgs)",
     name: "weight",
     type: "number",
     step: "any",
   },
   {
     id: 8,
-    label: "height",
+    label: "Height(in cms)",
     name: "height",
     type: "number",
     step: "any",
@@ -91,7 +91,15 @@ const AddPatient = () => {
       formData.gender,
       formData.logs,
     )
-    console.log(formData)
+
+    Salrt.fire({
+      icon: "success",
+      title: "Added!",
+      text: `${formData.name}'s data has been Added.`,
+      showConfirmButton: false,
+      timer: 3000
+    });    
+
 
     navigate("/patients");
   }

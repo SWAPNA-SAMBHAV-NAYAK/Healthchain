@@ -44,7 +44,7 @@ const Sidebar = () => {
           <li><ContentPasteOutlinedIcon className="icon"/><span>Notice Board</span></li>
           <li><NotificationsNoneIcon className="icon"/><span>Notifications</span></li>
           <p className="title">EMPLOYEES</p>
-          <Link to="/users" style={{textDecoration: 'none'}}>
+          <Link to="/employees" style={{textDecoration: 'none'}}>
             <li><BadgeIcon className="icon"/><span>Employee List</span></li>
           </Link>
           

@@ -1,4 +1,14 @@
 // Version: 1.0.0
+type Employee =
+  {
+    contact : Text;
+    date_of_joining : Text;
+    email : Text;
+    employee_id : Text;
+    first_name : Text;
+    last_name : Text;
+    salary : Int
+  };
 type List<T> = ?(T, List<T>);
 type MedicalLog =
   {
@@ -18,12 +28,13 @@ type Patient =
     height : Float;
     logs : [MedicalLog];
     name : Text;
-    patient_id : Nat;
+    patient_id : Text;
     phone_number : Text;
     registered_on : Time;
     weight : Float
   };
 type Time = Int;
 actor {
+  stable var employees : ?(Employee, List<Employee>);
   stable var patients : ?(Patient, List<Patient>)
 };

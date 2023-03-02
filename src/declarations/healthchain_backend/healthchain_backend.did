@@ -28,10 +28,24 @@ type MedicalLog =
    temperature: float64;
    time_stamp: Time;
  };
+type Employee = 
+ record {
+   contact: text;
+   date_of_joining: text;
+   email: text;
+   employee_id: text;
+   first_name: text;
+   last_name: text;
+   salary: int;
+ };
 service : {
+  createEmployee: (text, text, text, text, text, int, text) -> () oneway;
   createNotice: (text, text) -> () oneway;
   createPatient: (text, text, text, text, int, text, text, float64, float64,
    text, vec MedicalLog) -> () oneway;
+  deleteEmployee: (text) -> () oneway;
+  readEmployees: () -> (vec Employee) query;
   readNotices: () -> (vec Notice) query;
   readPatients: () -> (vec Patient) query;
+  updateEmployee: (text, text, text, text, text, int, text) -> () oneway;
 }

@@ -7,9 +7,110 @@ import Time "mo:base/Time";
 
 actor healthchain {
 
+  ///////////////////////////////////////// Employee //////////////////////////////////////////////////
+
+  public type Employee = {
+    employee_id : Text;
+    first_name : Text;
+    last_name : Text;
+    contact : Text;
+    email : Text;
+    salary : Int;
+    date_of_joining : Text;
+  };
+
+  stable var employees : List.List<Employee> = List.nil<Employee>();
+
+  public func createEmployee(
+    employee_id_data : Text,
+    first_name_data : Text,
+    last_name_data : Text,
+    contact_data : Text,
+    email_data : Text,
+    salary_data : Int,
+    date_of_joining_data : Text,
+  ) {
+
+    let newEmployee : Employee = {
+      employee_id = employee_id_data;
+      first_name = first_name_data;
+      last_name = last_name_data;
+      email = email_data;
+      contact = contact_data;
+      salary = salary_data;
+      date_of_joining = date_of_joining_data;
+    };
+
+    employees := List.push(newEmployee, employees);
+
+    Debug.print(debug_show (employees));
+
+  };
+
+  public query func readEmployees() : async [Employee] {
+    return List.toArray(employees);
+  };
+
+ public func updateEmployee(
+    employee_id_data : Text,
+    first_name_data : Text,
+    last_name_data : Text,
+    contact_data : Text,
+    email_data : Text,
+    salary_data : Int,
+    date_of_joining_data : Text,
+  ) {
+
+    let updatedEmployee : Employee = {
+      employee_id = employee_id_data;
+      first_name = first_name_data;
+      last_name = last_name_data;
+      email = email_data;
+      contact = contact_data;
+      salary = salary_data;
+      date_of_joining = date_of_joining_data;
+    };
+
+    var updatedEmployees = List.map(
+      employees,
+      func(employee : Employee) : Employee {
+        if (employee.employee_id == employee_id_data) {
+          return updatedEmployee;
+        } else {
+          return employee;
+        };
+      },
+    );
+    employees := updatedEmployees;
+  };
+
+    public func deleteEmployee(employee_id_data : Text) {
+
+    var index : Nat = 0;
+    var deleteIndex : Nat = 0;
+
+    var updatedEmployees = List.map(
+      employees,
+      func(employee : Employee) : Employee {
+        index := index+1;
+        if (employee.employee_id == employee_id_data) {
+          deleteIndex := index-1;
+          return employee;
+        } else {
+          return employee;
+        };
+      },
+    );
+
+    let listFront = List.take(employees, deleteIndex);
+    let listBack = List.drop(employees, deleteIndex+1);
+
+    employees := List.append(listFront, listBack);
+  };
 
 
-  ///////////////////////////////////////// Patient ///////////////////////////////////////////////////////
+
+  ///////////////////////////////////////// Patient //////////////////////////////////////////////////
 
   public type MedicalLog = {
     time_stamp : Time.Time;
@@ -34,8 +135,7 @@ actor healthchain {
     logs : [MedicalLog];
   };
 
-
-  var patients : List.List<Patient> = List.nil<Patient>();
+  stable var patients : List.List<Patient> = List.nil<Patient>();
 
   public func createPatient(
     patient_id_data : Text,
@@ -72,13 +172,9 @@ actor healthchain {
 
   };
 
-
-  public query func readPatients(): async [Patient]{
+  public query func readPatients() : async [Patient] {
     return List.toArray(patients);
   };
-
-
-
 
   ///////////////////////////////////////// Notice ///////////////////////////////////////////////////////
 
@@ -108,3 +204,8 @@ actor healthchain {
   };
 
 };
+
+
+
+
+
