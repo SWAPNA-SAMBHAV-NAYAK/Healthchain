@@ -10,7 +10,9 @@ import { assetInputs, userInputs } from "./formSource";
 import Patient from "./pages/patient/Patient";
 import AddPatient from "./pages/patient/AddPatient/AddPatient";
 import PatientInfo from "./pages/patient/PatientInfo/PatientInfo";
-
+import Doctor from "./pages/doctor/Doctor";
+import AddDoctor from "./pages/doctor/AddDoctor/AddDoctor";
+import DoctorInfo from "./pages/doctor/DoctorInfo/DoctorInfo";
 
 function App() {
 
@@ -24,6 +26,10 @@ function App() {
         <Route exact path="/patients" element={<Patient />} />
         <Route exact path="/patients/:patient_id" element={<PatientInfo />} />
         <Route exact path={"addPatient"} element={<AddPatient />} />
+
+        <Route exact path="/doctors" element={<Doctor />} />
+        <Route exact path="/doctors/:doctor_id" element={<DoctorInfo />} />
+        <Route exact path={"addDoctor"} element={<AddDoctor />} />
 
         {/* <Route path={"users"}>
             <Route index element={<List />} />

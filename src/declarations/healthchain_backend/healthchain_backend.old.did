@@ -7,7 +7,6 @@ type Patient =
    email: text;
    gender: text;
    height: float64;
-   logs: vec MedicalLog;
    name: text;
    patient_id: text;
    phone_number: text;
@@ -20,14 +19,6 @@ type Notice =
    notice: text;
    time_stamp: Time;
  };
-type MedicalLog = 
- record {
-   blood_pressure: int;
-   pulse_rate: float64;
-   spo2: int;
-   temperature: float64;
-   time_stamp: Time;
- };
 type Employee = 
  record {
    contact: text;
@@ -38,12 +29,35 @@ type Employee =
    last_name: text;
    salary: int;
  };
+type Doctor = 
+ record {
+   address: text;
+   age: int;
+   department: text;
+   designation: text;
+   doctor_id: text;
+   email: text;
+   gender: text;
+   name: text;
+   phone_number: text;
+   qualification: text;
+   registered_on: Time;
+ };
 service : {
+  createDoctor: (text, text, text, text, int, text, text, text, text,
+   text) -> () oneway;
   createEmployee: (text, text, text, text, text, int, text) -> () oneway;
   createNotice: (text, text) -> () oneway;
   createPatient: (text, text, text, text, int, text, text, float64, float64,
-   text, vec MedicalLog) -> () oneway;
+   text) -> () oneway;
+  deleteEmployee: (text) -> () oneway;
+  readDoctors: () -> (vec Doctor) query;
   readEmployees: () -> (vec Employee) query;
   readNotices: () -> (vec Notice) query;
   readPatients: () -> (vec Patient) query;
+  updateDoctor: (text, Time, text, text, text, int, text, text, text, 
+   text, text) -> () oneway;
+  updateEmployee: (text, text, text, text, text, int, text) -> () oneway;
+  updatePatient: (text, Time, text, text, text, int, text, text, float64,
+   float64, text) -> () oneway;
 }

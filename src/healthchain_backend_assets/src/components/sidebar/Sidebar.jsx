@@ -37,8 +37,9 @@ const Sidebar = () => {
           <Link to="/assets" style={{textDecoration: 'none'}}>
             <li><WebAssetIcon className="icon"/><span>Assets</span></li>
           </Link>
-          
+          <Link to="/doctors" style={{textDecoration: 'none'}}>
           <li><PersonOutlinedIcon className="icon"/><span>Doctors</span></li>
+          </Link>
           <li><LocalShippingIcon className="icon"/><span>Shifting</span></li>
           <p className="title">MESSAGE</p>
           <li><ContentPasteOutlinedIcon className="icon"/><span>Notice Board</span></li>

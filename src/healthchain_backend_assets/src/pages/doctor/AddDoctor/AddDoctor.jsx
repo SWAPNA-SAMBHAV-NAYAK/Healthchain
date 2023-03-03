@@ -1,4 +1,4 @@
-import "./AddPatient.scss";
+import "./AddDoctor.scss";
 import Sidebar from "../../../components/sidebar/Sidebar";
 import Navbar from "../../../components/navbar/Navbar";
 import React, { useState, useEffect } from "react";
@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { healthchain_backend } from "../../../../../declarations/healthchain_backend/index";
 import Salrt from "sweetalert2";
 
-const patientInput = [
+const doctorInput = [
   {
     id: 1,
     label: "Name",
@@ -41,28 +41,26 @@ const patientInput = [
   },
   {
     id: 6,
-    label: "Blood Group",
-    name: "blood_group",
+    label: "Gender",
+    name: "gender",
     type: "text",
   },
   {
     id: 7,
-    label: "Weight(in Kgs)",
-    name: "weight",
-    type: "number",
-    step: "any",
+    label: "Designation",
+    name: "designation",
+    type: "text",
   },
   {
     id: 8,
-    label: "Height(in cms)",
-    name: "height",
-    type: "number",
-    step: "any",
+    label: "Qualification",
+    name: "qualification",
+    type: "text",
   },
   {
     id: 9,
-    label: "Gender",
-    name: "gender",
+    label: "Department",
+    name: "department",
     type: "text",
   },
 
@@ -71,24 +69,24 @@ const patientInput = [
 
 
 
-const AddPatient = () => {
+const AddDoctor = () => {
 
   const navigate = useNavigate();
 
-  async function addPatientAction(event){
+  async function addDoctorAction(event){
     event.preventDefault();
 
-    await healthchain_backend.createPatient(
+    await healthchain_backend.createDoctor(
       uuid(),
       formData.name,
       formData.email,
       formData.phone_number,
       parseInt(formData.age),
       formData.address,
-      formData.blood_group,
-      parseFloat(formData.weight),
-      parseFloat(formData.height),
       formData.gender,
+      formData.designation,
+      formData.qualification,
+      formData.department,
     )
 
     Salrt.fire({
@@ -100,7 +98,7 @@ const AddPatient = () => {
     });    
 
 
-    navigate("/patients");
+    navigate("/doctors");
   }
 
   const [formData, setFormData] = useState({
@@ -110,10 +108,10 @@ const AddPatient = () => {
     phone_number: "",
     age: 0,
     address: "",
-    blood_group: "",
-    weight: 0,
-    height: 0,
     gender: "",
+    designation: "",
+    qualification: "",
+    department: "",
   })
 
   const handleInputChange = (event) => {
@@ -127,13 +125,13 @@ const AddPatient = () => {
       <div className="newContainer">
         <Navbar />
         <div className="top">
-          <h1>Add Patient</h1>
+          <h1>Add Doctor</h1>
         </div>
         <div className="bottom">
           <div className="right">
-            <form className="patientForm" onSubmit={addPatientAction}>
-              <div className="patientInputs">
-                {patientInput.map((input) => (
+            <form className="doctorForm" onSubmit={addDoctorAction}>
+              <div className="doctorInputs">
+                {doctorInput.map((input) => (
                   <div className="formInput" key={input.id}>
                     <fieldset>
                       <legend>{input.label}</legend>
@@ -152,7 +150,7 @@ const AddPatient = () => {
                 ))}
               </div>
 
-              <button type="submit" className="submitAddPatient">Add Patient</button>
+              <button type="submit" className="submitAddDoctor">Add Doctor</button>
             </form>
 
           </div>
@@ -162,4 +160,4 @@ const AddPatient = () => {
   )
 }
 
-export default AddPatient;
+export default AddDoctor;

@@ -1,0 +1,75 @@
+.new{
+    width: 100%;
+    display: flex;
+  
+    .newContainer{
+      flex: 6;
+  
+      .top,.bottom{
+        -webkit-box-shadow: 2px 4px 10px 1px rgba(0,0,0,0.47);
+        box-shadow: 5px 5px 10px 5px rgba(201,201,201,0.47);
+        padding: 10px;
+        margin: 20px;
+        display: flex;
+        justify-content: center;
+        border-radius: 8px;
+  
+        h1{
+          font-size:35px;
+        }
+        .right{
+          display: flex;
+          flex-direction: column;
+          flex:3;
+
+
+          .doctorForm{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+  
+          .doctorInputs{
+            padding: 2%;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            justify-items: center;
+
+  
+            .formInput{
+              width: 90%;
+  
+              label{
+                display: flex;
+                align-items: center;
+                gap: 10px;
+  
+                .icon{
+                  cursor: pointer;
+                }
+              }
+              input{
+                width: 100%;
+                padding: 5px;
+              }
+            }
+          }
+          .submitAddDoctor{
+            cursor: pointer;
+            width: 150px;
+            padding: 10px;
+            border: none;
+            background-color: #02654a;
+            color: #fff;
+            margin-top: 10px;
+            font-size: 1.5rem;
+            display: flex;
+            align-self: center;
+            justify-content: center;
+            align-content: center;
+          }
+        }
+       
+      }
+    }
+  }

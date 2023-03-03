@@ -1,11 +1,11 @@
-.patient {
+.doctor {
   display: flex;
   width: 100%;
 
-  .navPatientContainer {
+  .navDoctorContainer {
     flex: 6;
 
-    .patientContainer {
+    .doctorContainer {
       width: 98%;
       display: flex;
       flex-wrap: wrap;
@@ -40,11 +40,11 @@
         }
       }
 
-      .patientCard-container {
+      .doctorCard-container {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
 
-        .patientCard {
+        .doctorCard {
           width: 410px;
           height: 200px;
           margin: 10px 15px;

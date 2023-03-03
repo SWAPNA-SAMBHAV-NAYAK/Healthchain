@@ -1,4 +1,18 @@
 // Version: 1.0.0
+type Doctor =
+  {
+    address : Text;
+    age : Int;
+    department : Text;
+    designation : Text;
+    doctor_id : Text;
+    email : Text;
+    gender : Text;
+    name : Text;
+    phone_number : Text;
+    qualification : Text;
+    registered_on : Time
+  };
 type Employee =
   {
     contact : Text;
@@ -10,14 +24,6 @@ type Employee =
     salary : Int
   };
 type List<T> = ?(T, List<T>);
-type MedicalLog =
-  {
-    blood_pressure : Int;
-    pulse_rate : Float;
-    spo2 : Int;
-    temperature : Float;
-    time_stamp : Time
-  };
 type Patient =
   {
     address : Text;
@@ -26,7 +32,6 @@ type Patient =
     email : Text;
     gender : Text;
     height : Float;
-    logs : [MedicalLog];
     name : Text;
     patient_id : Text;
     phone_number : Text;
@@ -35,6 +40,8 @@ type Patient =
   };
 type Time = Int;
 actor {
+  stable var departments : [Text];
+  stable var doctors : ?(Doctor, List<Doctor>);
   stable var employees : ?(Employee, List<Employee>);
   stable var patients : ?(Patient, List<Patient>)
 };

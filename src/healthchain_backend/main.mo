@@ -51,7 +51,7 @@ actor healthchain {
     return List.toArray(employees);
   };
 
- public func updateEmployee(
+  public func updateEmployee(
     employee_id_data : Text,
     first_name_data : Text,
     last_name_data : Text,
@@ -84,7 +84,7 @@ actor healthchain {
     employees := updatedEmployees;
   };
 
-    public func deleteEmployee(employee_id_data : Text) {
+  public func deleteEmployee(employee_id_data : Text) {
 
     var index : Nat = 0;
     var deleteIndex : Nat = 0;
@@ -92,9 +92,9 @@ actor healthchain {
     var updatedEmployees = List.map(
       employees,
       func(employee : Employee) : Employee {
-        index := index+1;
+        index := index +1;
         if (employee.employee_id == employee_id_data) {
-          deleteIndex := index-1;
+          deleteIndex := index -1;
           return employee;
         } else {
           return employee;
@@ -103,16 +103,15 @@ actor healthchain {
     );
 
     let listFront = List.take(employees, deleteIndex);
-    let listBack = List.drop(employees, deleteIndex+1);
+    let listBack = List.drop(employees, deleteIndex +1);
 
     employees := List.append(listFront, listBack);
   };
 
-
-
   ///////////////////////////////////////// Patient //////////////////////////////////////////////////
 
   public type MedicalLog = {
+    patient_id : Text;
     time_stamp : Time.Time;
     pulse_rate : Float;
     blood_pressure : Int;
@@ -132,7 +131,6 @@ actor healthchain {
     weight : Float;
     height : Float;
     gender : Text;
-    logs : [MedicalLog];
   };
 
   stable var patients : List.List<Patient> = List.nil<Patient>();
@@ -148,7 +146,6 @@ actor healthchain {
     weight_data : Float,
     height_data : Float,
     gender_data : Text,
-    logs_data : [MedicalLog],
   ) {
 
     let newPatient : Patient = {
@@ -163,7 +160,6 @@ actor healthchain {
       weight = weight_data;
       height = height_data;
       gender = gender_data;
-      logs = logs_data;
     };
 
     patients := List.push(newPatient, patients);
@@ -172,8 +168,174 @@ actor healthchain {
 
   };
 
+  public func updatePatient(
+    patient_id_data : Text,
+    registered_on_data : Time.Time,
+    name_data : Text,
+    email_data : Text,
+    phone_number_data : Text,
+    age_data : Int,
+    address_data : Text,
+    blood_group_data : Text,
+    weight_data : Float,
+    height_data : Float,
+    gender_data : Text,
+  ) {
+
+    let updatedPatient : Patient = {
+      patient_id = patient_id_data;
+      registered_on = registered_on_data;
+      name = name_data;
+      email = email_data;
+      phone_number = phone_number_data;
+      age = age_data;
+      address = address_data;
+      blood_group = blood_group_data;
+      weight = weight_data;
+      height = height_data;
+      gender = gender_data;
+    };
+
+    var updatedPatientList = List.map(
+      patients,
+      func(patient : Patient) : Patient {
+        if (patient.patient_id == patient_id_data) {
+          return updatedPatient;
+        } else {
+          return patient;
+        };
+      },
+    );
+    patients := updatedPatientList;
+  };
+
   public query func readPatients() : async [Patient] {
     return List.toArray(patients);
+  };
+
+  ///////////////////////////////////////// Department //////////////////////////////////////////////////
+
+  stable var departments : [Text] = [
+    "Cardiology",
+    "Dermitology",
+    "General Surgery",
+    "Microbiology",
+    "Radiology",
+    "Medical Gastroenterology",
+    "Electrophysiology",
+    "Orthopaedics",
+    "Diabetology",
+    "Gynaecology - Oncology",
+    "ENT(Ear, Nose, Throat)",
+    "Reproductive Medicine",
+    "Gastrointestinal Oncology",
+    "Blood Bank",
+    "Emergency Medicine",
+    "Clinical Nutrition & Dietetics",
+    "Neurology",
+    "Dental Sciences",
+    "Endocrinology",
+    "Neurosurgery",
+  ];
+
+  public query func readDepartments() : async [Text] {
+    return departments;
+  };
+
+  ///////////////////////////////////////// Doctor //////////////////////////////////////////////////
+
+  stable var doctors : List.List<Doctor> = List.nil<Doctor>();
+
+  public type Doctor = {
+    doctor_id : Text;
+    registered_on : Time.Time;
+    name : Text;
+    email : Text;
+    phone_number : Text;
+    age : Int;
+    address : Text;
+    gender : Text;
+    designation : Text;
+    qualification : Text;
+    department : Text;
+  };
+
+  public func createDoctor(
+    doctor_id_data : Text,
+    name_data : Text,
+    email_data : Text,
+    phone_number_data : Text,
+    age_data : Int,
+    address_data : Text,
+    gender_data : Text,
+    designation_data : Text,
+    qualification_data : Text,
+    department_data : Text,
+  ) {
+
+    let newDoctor : Doctor = {
+      doctor_id = doctor_id_data;
+      registered_on = Time.now();
+      name = name_data;
+      email = email_data;
+      phone_number = phone_number_data;
+      age = age_data;
+      address = address_data;
+      gender = gender_data;
+      designation = designation_data;
+      qualification = qualification_data;
+      department = department_data;
+    };
+
+    doctors := List.push(newDoctor, doctors);
+
+    Debug.print(debug_show (doctors));
+
+  };
+
+  public func updateDoctor(
+    doctor_id_data : Text,
+    registered_on_data : Time.Time,
+    name_data : Text,
+    email_data : Text,
+    phone_number_data : Text,
+    age_data : Int,
+    address_data : Text,
+    gender_data : Text,
+    designation_data : Text,
+    qualification_data : Text,
+    department_data : Text,
+  ) {
+
+    let updatedDoctor : Doctor = {
+      doctor_id = doctor_id_data;
+      registered_on = registered_on_data;
+      name = name_data;
+      email = email_data;
+      phone_number = phone_number_data;
+      age = age_data;
+      address = address_data;
+      gender = gender_data;
+      designation = designation_data;
+      qualification = qualification_data;
+      department = department_data;
+    };
+
+    var updatedDoctorList = List.map(
+      doctors,
+      func(doctor : Doctor) : Doctor {
+        if (doctor.doctor_id == doctor_id_data) {
+          return updatedDoctor;
+        } else {
+          return doctor;
+        };
+      },
+    );
+    doctors := updatedDoctorList;
+  };
+
+  public query func readDoctors() : async [Doctor] {
+    return List.toArray(doctors);
   };
 
   ///////////////////////////////////////// Notice ///////////////////////////////////////////////////////
@@ -204,8 +366,3 @@ actor healthchain {
   };
 
 };
-
-
-
-
-

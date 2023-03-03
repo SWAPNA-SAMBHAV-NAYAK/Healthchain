@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadPatientList } from "../../redux/actions/patientAction";
 import { Routes, Route } from "react-router-dom";
 import PatientInfo from "./PatientInfo/PatientInfo";
+import { loadPatientById } from "../../redux/actions/patientByIdAction";
 
 const Patient = () => {
 
@@ -28,42 +29,52 @@ const Patient = () => {
     dispatch(loadPatientList())
   }, [dispatch])
 
+
+  function handlePatientCardClick(e) {
+    const patient_id = e.target.id;
+
+    dispatch(loadPatientById(patient_id, patients));
+
+    navigate(`/patients/${patient_id}`)
+  }
+
   return (
-      <div className="patient">
-        <Sidebar />
-        <div className="navPatientContainer">
-          <Navbar />
-          <div className="patientContainer">
-            <div className="header">
-              <h3>Patients</h3>
-              <button onClick={addPatientForm}>Add Patient</button>
+    <div className="patient">
+      <Sidebar />
+      <div className="navPatientContainer">
+        <Navbar />
+        <div className="patientContainer">
+          <div className="header">
+            <h3>Patients</h3>
+            <button onClick={addPatientForm}>Add Patient</button>
 
-            </div>
+          </div>
 
-            <div className="patientCard-container">
-              {
-                patients.map((patientData) => {
-                  return (
-                    <div className="patientCard" key={patientData.patient_id}>
-                      <h2>{patientData.name}</h2>
-                      {/* <span className="timestamp">{patientData.registered_on}</span> */}
-                      <span className="timestamp">{new Date(Number(patientData.registered_on) / 1000000).toLocaleString()}</span>
+          <div className="patientCard-container">
+            {
+              patients.map((patientData) => {
+                return (
+                  <div className="patientCard" key={patientData.patient_id}>
+                    <h2>{patientData.name}</h2>
+                    {/* <span className="timestamp">{patientData.registered_on}</span> */}
+                    <span className="timestamp">{new Date(Number(patientData.registered_on) / 1000000).toLocaleString()}</span>
 
-                      <p>{patientData.email}</p>
-                      <p>{patientData.phone_number}</p>
-                      <div className="buttonContainer">
-                        <button>View Logs</button>
-                        {/* <Link to="/patients/123">Patient 123</Link> */}
+                    <p>{patientData.email}</p>
+                    <p>{patientData.phone_number}</p>
+                    <div className="buttonContainer">
+                      <button className="oneLongButton" id={patientData.patient_id} onClick={handlePatientCardClick}>View Card</button>
+                      {/* <button>View Logs</button>
+                      <Link to="/patients/123">Patient 123</Link>
 
-                        <button>Edit Details</button>
-                      </div>
-                    </div>)
-                })
-              }
-            </div>
+                      <button>Edit Details</button> */}
+                    </div>
+                  </div>)
+              })
+            }
           </div>
         </div>
       </div>
+    </div>
   )
 }
 

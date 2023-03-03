@@ -1,0 +1,168 @@
+.new {
+    width: 100%;
+    display: flex;
+
+    .newContainer {
+        flex: 6;
+
+        .doctor-app {
+            font-family: sans-serif;
+            text-align: center;
+
+            .doctorDetailsCard {
+                width: calc(94% - 42px);
+                margin: 3%;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                padding: 20px;
+                -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+                box-shadow: 5px 5px 10px 5px rgba(201, 201, 201, 0.47);
+
+                .doctorDetailsCardContent {
+                    display: grid;
+                    grid-template-columns: 1.4fr 0.6fr;
+                    align-items: center;
+
+                    .cardButtons {
+                        display: flex;
+                        flex-direction: column;
+
+                        button {
+                            background-color: #059862;
+                            color: white;
+                            border: none;
+                            border-radius: 5px;
+                            padding: 10px;
+                            width: 70%;
+                            align-self: flex-end;
+                            justify-self: bottom;
+                            margin-bottom: 10px;
+                            cursor: pointer;
+                            font-weight: bold;
+                        }
+
+                        .btnDesign:hover {
+                            background-color: rgba(139, 195, 74, 0.7);
+                        }
+                    }
+
+                    .cardTextContainer {
+                        flex: 1 1 auto;
+                        display: flex;
+                        align-items: left;
+                        flex-direction: column;
+                        margin-right: 20px;
+
+
+                        .cardHeader {
+                            display: flex;
+                            align-content: flex-start;
+                            margin-top: 0;
+
+                            margin-bottom: 15px;
+                        }
+
+                        .cardTags {
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            width: 90%;
+
+                            span {
+                                background-color: #F7F5FA;
+                                border: 1px solid #CDC7D8;
+                                border-radius: 10px;
+                                padding: 5px 10px;
+                                margin-right: 10px;
+                                margin-bottom: 10px;
+
+                            }
+
+                            span:nth-child(2n) {
+                                margin-right: 0;
+                            }
+
+                        }
+
+                        #tag7 {
+                            display: flex;
+                            align-items: left;
+                        }
+
+                    }
+
+                }
+
+            }
+
+
+            #popup {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+
+                form {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 400px;
+                    padding: 20px;
+                    background-color: white;
+                    border-radius: 10px;
+                    margin: 15px auto;
+
+                    label {
+                        font-size: 24px;
+                        display: block;
+                        margin-bottom: 5px;
+                    }
+
+                    input[type="text"] {
+                        width: 92%;
+                        padding: 4%;
+                        font-size: 22px;
+                        margin-bottom: 2%;
+                        border-radius: 3px;
+                        border: none;
+                        box-shadow: inset 0 0 0 1px lightgray;
+                    }
+                    select{
+                        width: 100%;
+                        padding: 4%;
+                        font-size: 22px;
+                        margin-bottom: 5%;
+                        border-radius: 3px;
+                        border: none;
+                        box-shadow: inset 0 0 0 1px lightgray;
+                      }
+
+                    textarea {
+                        width: 92%;
+                        padding: 4%;
+                        font-size: 22px;
+                        margin-bottom: 2%;
+                        border-radius: 3px;
+                        border: none;
+                        box-shadow: inset 0 0 0 1px lightgray;
+                    }
+
+
+                    button[type="submit"] {
+                        font-size: 24px;
+                        background-color: #059862;
+                        color: white;
+                        border: none;
+                        padding: 5px 10px;
+                        border-radius: 3px;
+                        cursor: pointer;
+                        margin: 9px 20%;
+                    }
+
+                }
+            }
+        }
+    }
+}

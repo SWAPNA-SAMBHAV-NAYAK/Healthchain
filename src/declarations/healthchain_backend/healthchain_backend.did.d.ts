@@ -1,4 +1,17 @@
 import type { Principal } from '@dfinity/principal';
+export interface Doctor {
+  'age' : bigint,
+  'name' : string,
+  'designation' : string,
+  'email' : string,
+  'address' : string,
+  'gender' : string,
+  'phone_number' : string,
+  'department' : string,
+  'registered_on' : Time,
+  'doctor_id' : string,
+  'qualification' : string,
+}
 export interface Employee {
   'contact' : string,
   'salary' : bigint,
@@ -7,13 +20,6 @@ export interface Employee {
   'first_name' : string,
   'last_name' : string,
   'employee_id' : string,
-}
-export interface MedicalLog {
-  'blood_pressure' : bigint,
-  'temperature' : number,
-  'spo2' : bigint,
-  'pulse_rate' : number,
-  'time_stamp' : Time,
 }
 export interface Notice {
   'notice' : string,
@@ -25,7 +31,6 @@ export interface Patient {
   'weight' : number,
   'height' : number,
   'patient_id' : string,
-  'logs' : Array<MedicalLog>,
   'name' : string,
   'email' : string,
   'blood_group' : string,
@@ -36,6 +41,18 @@ export interface Patient {
 }
 export type Time = bigint;
 export interface _SERVICE {
+  'createDoctor' : (
+      arg_0: string,
+      arg_1: string,
+      arg_2: string,
+      arg_3: string,
+      arg_4: bigint,
+      arg_5: string,
+      arg_6: string,
+      arg_7: string,
+      arg_8: string,
+      arg_9: string,
+    ) => Promise<undefined>,
   'createEmployee' : (
       arg_0: string,
       arg_1: string,
@@ -57,12 +74,26 @@ export interface _SERVICE {
       arg_7: number,
       arg_8: number,
       arg_9: string,
-      arg_10: Array<MedicalLog>,
     ) => Promise<undefined>,
   'deleteEmployee' : (arg_0: string) => Promise<undefined>,
+  'readDepartments' : () => Promise<Array<string>>,
+  'readDoctors' : () => Promise<Array<Doctor>>,
   'readEmployees' : () => Promise<Array<Employee>>,
   'readNotices' : () => Promise<Array<Notice>>,
   'readPatients' : () => Promise<Array<Patient>>,
+  'updateDoctor' : (
+      arg_0: string,
+      arg_1: Time,
+      arg_2: string,
+      arg_3: string,
+      arg_4: string,
+      arg_5: bigint,
+      arg_6: string,
+      arg_7: string,
+      arg_8: string,
+      arg_9: string,
+      arg_10: string,
+    ) => Promise<undefined>,
   'updateEmployee' : (
       arg_0: string,
       arg_1: string,
@@ -71,5 +102,18 @@ export interface _SERVICE {
       arg_4: string,
       arg_5: bigint,
       arg_6: string,
+    ) => Promise<undefined>,
+  'updatePatient' : (
+      arg_0: string,
+      arg_1: Time,
+      arg_2: string,
+      arg_3: string,
+      arg_4: string,
+      arg_5: bigint,
+      arg_6: string,
+      arg_7: string,
+      arg_8: number,
+      arg_9: number,
+      arg_10: string,
     ) => Promise<undefined>,
 }
