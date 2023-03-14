@@ -1,5 +1,5 @@
 const initialState = {
-  doctorById: []
+  doctorById: {}
 };
 
 const doctorByIdReducer = (state = initialState, action) => {
