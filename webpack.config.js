@@ -68,6 +68,7 @@ module.exports = {
   output: {
     filename: "index.js",
     path: path.join(__dirname, "dist", frontendDirectory),
+    publicPath:"/",
   },
 
   // Depending in the language or framework you are using for
@@ -78,7 +79,8 @@ module.exports = {
   module: {
    rules: [
      { test: /\.(ts|tsx|jsx)$/, loader: "ts-loader" },
-     { test: /\.(s(a|c)ss)$/, use: ['style-loader','css-loader', 'sass-loader'] }
+    //  { test: /\.(s(a|c)ss)$/, use: ['style-loader','css-loader', 'sass-loader'] }
+    { test: /\.(sass|scss|css)$/, use: ['style-loader','css-loader', 'sass-loader'] }
    ]
   },
   plugins: [

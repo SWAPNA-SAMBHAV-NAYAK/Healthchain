@@ -10,6 +10,7 @@ import BadgeIcon from '@mui/icons-material/Badge';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
+import BookOnlineOutlinedIcon from '@mui/icons-material/BookOnlineOutlined';
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 
@@ -41,6 +42,9 @@ const Sidebar = () => {
           <li><PersonOutlinedIcon className="icon"/><span>Doctors</span></li>
           </Link>
           <li><LocalShippingIcon className="icon"/><span>Shifting</span></li>
+          <Link to="/appointments" style={{textDecoration: 'none'}}>
+          <li><BookOnlineOutlinedIcon className="icon"/><span>Appointments</span></li>
+          </Link>
           <p className="title">MESSAGE</p>
           <li><ContentPasteOutlinedIcon className="icon"/><span>Notice Board</span></li>
           <li><NotificationsNoneIcon className="icon"/><span>Notifications</span></li>

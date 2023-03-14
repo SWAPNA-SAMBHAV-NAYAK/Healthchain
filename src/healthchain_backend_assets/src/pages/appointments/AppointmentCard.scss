@@ -1,0 +1,240 @@
+// 
+.docCard {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 5px;
+    padding: 40px;
+    -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+    box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+    margin-bottom: 20px;
+  
+    .docInfo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 20px;
+  
+      .docName {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+  
+      .docDept {
+        font-size: 1rem;
+        color: #666;
+      }
+  
+      .docCabin {
+        font-size: 1rem;
+        color: #666;
+      }
+    }
+  
+    .appointmentForm {
+      display: flex;
+      flex-direction: column;
+  
+      .formGroup {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+  
+        label {
+          font-weight: bold;
+          margin-bottom: 5px;
+        }
+  
+        select,
+        input[type='date'] {
+          padding: 10px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+          font-size: 1rem;
+        }
+      }
+  
+      button {
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 1rem;
+        background-color: #226e14ff;
+        color: white;
+        border: none;
+        cursor: pointer;
+  
+        &:disabled {
+          opacity : 0.5;
+          cursor: not-allowed;
+          }
+        }
+      }
+  
+      #popup {
+        
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      
+        form {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 400px;
+          padding: 20px;
+          background-color: white;
+          border-radius:10px;
+          margin: 15px auto;
+      
+        // //   css for open hours popup
+        // .date-selector {
+        //     display: flex;
+        //     flex-direction: column;
+        //     align-items: center;
+        //     gap: 16px;
+        //     font-family: Arial, sans-serif;
+        //     font-size: 16px;
+        //   }
+          
+        //   .date-picker {
+        //     border: 1px solid #ccc;
+        //     border-radius: 4px;
+        //     padding: 16px;
+        //     background-color: #fff;
+        //     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        //   }
+          
+        //   .date-picker .react-datepicker-wrapper {
+        //     width: 100%;
+        //   }
+          
+        //   .date-picker .react-datepicker__week {
+        //     display: flex;
+        //     justify-content: space-between;
+        //   }
+          
+        //   .date-picker .react-datepicker__day-name,
+        //   .date-picker .react-datepicker__day {
+        //     width: 40px;
+        //     height: 40px;
+        //     display: flex;
+        //     justify-content: center;
+        //     flex-direction: row;
+        //     align-items: center;
+        //     border-radius: 50%;
+        //   }
+        //   .date-picker .react-datepicker__day-names {
+        //     display: flex;
+        //     flex-direction: row;
+        //   }
+          
+        //   .date-picker .react-datepicker__day--selected {
+        //     background-color: #0077cc;
+        //     color: #fff;
+        //   }
+          
+        //   .date-picker .react-datepicker__day--keyboard-selected {
+        //     background-color: #004499;
+        //   }
+          
+        //   .weekday-buttons {
+        //     display: flex;
+        //     gap: 8px;
+        //   }
+          
+        //   .weekday-buttons button {
+        //     border: none;
+        //     border-radius: 4px;
+        //     padding: 8px;
+        //     background-color: #f0f0f0;
+        //     cursor: pointer;
+        //     transition: background-color 0.2s ease-in-out;
+        //   }
+          
+        //   .weekday-buttons button:hover {
+        //     background-color: #e0e0e0;
+        //   }
+          
+        //   .selected-dates {
+        //     width: 100%;
+        //     max-height: 200px;
+        //     overflow-y: auto;
+        //   }
+          
+        //   .selected-dates ul {
+        //     list-style: none;
+        //     margin: 0;
+        //     padding: 0;
+        //   }
+          
+        //   .selected-dates li {
+        //     display: flex;
+        //     justify-content: space-between;
+        //     align-items: center;
+        //     padding: 8px;
+        //     border-bottom: 1px solid #ccc;
+        //   }
+          
+        //   .selected-dates li:last-child {
+        //     border-bottom: none;
+        //   }
+          
+        //   .selected-dates button {
+        //     border: none;
+        //     border-radius: 4px;
+        //     padding: 4px 8px;
+        //     background-color: #f0f0f0;
+        //     cursor: pointer;
+        //     transition: background-color 0.2s ease-in-out;
+        //   }
+          
+        //   .selected-dates button:hover {
+        //     background-color: #e0e0e0;
+        //   }
+          
+        //   .clear-selection {
+        //     border: none;
+        //     border-radius: 4px;
+        //     padding: 8px 16px;
+        //     background-color: #f0f0f0;
+        //     cursor: pointer;
+        //     transition: background-color 0.2s ease-in-out;
+        //   }
+          
+        //   .clear-selection:hover {
+        //     background-color: #e0e0e0;
+        //   }
+            
+        //   css for edit details popup
+          label {
+            display: block;
+            margin-bottom: 5px;
+          }
+      
+          input[type="text"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+            border: none;
+            box-shadow: inset 0 0 0 1px lightgray;
+          }
+      
+          button[type="submit"] {
+            background-color: #059862;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin:8px 40%;
+          }
+          
+        }
+      }
+      
+  }

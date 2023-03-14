@@ -6,8 +6,9 @@ import { applyMiddleware, createStore } from "redux";
 import reducer from "./redux/reducers/combinedReducers";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
-import { BrowserRouter as Router,Routes,Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+// import { composeWithDevTools } from '@redux-devtools/extension';
 
 // const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
 //     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
@@ -16,6 +17,14 @@ import { BrowserRouter as Router,Routes,Route } from "react-router-dom";
 //     })) || compose;
 
 // const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
+
+// const store = createStore(
+//     reducer,
+//     composeWithDevTools(
+//         applyMiddleware(thunk)
+//       // other store enhancers if any
+//     )
+//   );
 
 const store = createStore(reducer,applyMiddleware(thunk));
 

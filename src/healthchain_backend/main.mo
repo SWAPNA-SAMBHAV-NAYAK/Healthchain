@@ -7,6 +7,23 @@ import Time "mo:base/Time";
 
 actor healthchain {
 
+  ///////////////////////////////////////// Appointment //////////////////////////////////////////////////
+
+
+  public type Appointment = {
+    appointment_id: Text;
+    patient_id: Text;
+    doctor_id: Text;
+    time_slot_start:Time.Time;
+    time_slot_end:Time.Time;
+    date:Time.Time;
+  };
+
+  stable var appointments : List.List<Appointment> = List.nil<Appointment>();
+
+
+
+
   ///////////////////////////////////////// Employee //////////////////////////////////////////////////
 
   public type Employee = {
@@ -292,6 +309,17 @@ actor healthchain {
     Debug.print(debug_show (doctors));
 
   };
+
+
+  public func getDoctorById(doctor_id_data : Text) : async ?Doctor {
+    return List.find(
+      doctors,
+      func(doctor : Doctor) : Bool {
+        return doctor.doctor_id == doctor_id_data;
+      },
+    );
+  };
+  
 
   public func updateDoctor(
     doctor_id_data : Text,

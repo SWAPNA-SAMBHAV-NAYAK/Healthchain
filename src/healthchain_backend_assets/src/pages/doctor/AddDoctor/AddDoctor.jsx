@@ -6,6 +6,9 @@ import uuid from 'react-uuid';
 import { useNavigate } from "react-router-dom";
 import { healthchain_backend } from "../../../../../declarations/healthchain_backend/index";
 import Salrt from "sweetalert2";
+import { loadDoctorList } from "../../../redux/actions/doctorAction";
+import { useDispatch, useSelector } from "react-redux";
+import { loadDepartmentList } from "../../../redux/actions/departmentAction";
 
 const doctorInput = [
   {
@@ -57,12 +60,12 @@ const doctorInput = [
     name: "qualification",
     type: "text",
   },
-  {
-    id: 9,
-    label: "Department",
-    name: "department",
-    type: "text",
-  },
+  // {
+  //   id: 9,
+  //   label: "Department",
+  //   name: "department",
+  //   type: "text",
+  // },
 
 ];
 
@@ -73,7 +76,18 @@ const AddDoctor = () => {
 
   const navigate = useNavigate();
 
-  async function addDoctorAction(event){
+  const dispatch = useDispatch();
+
+  const { departments } = useSelector(state => state.departmentList);
+
+
+  useEffect(() => {
+    dispatch(loadDepartmentList());
+  }, [])
+
+  
+
+  async function addDoctorAction(event) {
     event.preventDefault();
 
     await healthchain_backend.createDoctor(
@@ -89,13 +103,16 @@ const AddDoctor = () => {
       formData.department,
     )
 
+
+    dispatch(loadDoctorList());
+
     Salrt.fire({
       icon: "success",
       title: "Added!",
       text: `${formData.name}'s data has been Added.`,
       showConfirmButton: false,
       timer: 3000
-    });    
+    });
 
 
     navigate("/doctors");
@@ -148,6 +165,20 @@ const AddDoctor = () => {
                     </fieldset>
                   </div>
                 ))}
+
+                <div className="formInput" key={9}>
+                  <fieldset>
+                    <legend>Department</legend>
+                    <select name={"department"} value={formData["department"]} id={"9"} onChange={handleInputChange}>
+                      <option value="">Select a department</option>
+                      {departments.map((dept, i) => (
+                        <option key={i} value={dept}>
+                          {dept}
+                        </option>
+                      ))}
+                    </select>
+                  </fieldset>
+                </div>
               </div>
 
               <button type="submit" className="submitAddDoctor">Add Doctor</button>

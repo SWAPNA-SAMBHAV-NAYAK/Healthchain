@@ -80,6 +80,7 @@ export const idlFactory = ({ IDL }) => {
         ['oneway'],
       ),
     'deleteEmployee' : IDL.Func([IDL.Text], [], ['oneway']),
+    'getDoctorById' : IDL.Func([IDL.Text], [IDL.Opt(Doctor)], []),
     'readDepartments' : IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
     'readDoctors' : IDL.Func([], [IDL.Vec(Doctor)], ['query']),
     'readEmployees' : IDL.Func([], [IDL.Vec(Employee)], ['query']),

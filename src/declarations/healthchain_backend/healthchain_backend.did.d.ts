@@ -76,6 +76,7 @@ export interface _SERVICE {
       arg_9: string,
     ) => Promise<undefined>,
   'deleteEmployee' : (arg_0: string) => Promise<undefined>,
+  'getDoctorById' : (arg_0: string) => Promise<[] | [Doctor]>,
   'readDepartments' : () => Promise<Array<string>>,
   'readDoctors' : () => Promise<Array<Doctor>>,
   'readEmployees' : () => Promise<Array<Employee>>,

@@ -1,0 +1,37 @@
+.appointy {
+  display: flex;
+  width: 100%;
+  
+  .ekAurClass{
+    flex:6;
+  
+
+  .deptContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+  
+    .deptHeader{
+      display: flex;
+      align-items: center;
+      margin: 20px 0;
+  
+      #deptChoose {
+        margin-left: 10px;
+        padding: 5px;
+        font-size: 16px;
+      }
+    }
+    .cardWalaComp{ 
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+   }
+  }
+}
+  
+}
+

@@ -33,7 +33,7 @@ const Doctor = () => {
   function handleDoctorCardClick(e) {
     const doctor_id = e.target.id;
 
-    dispatch(loadDoctorById(doctor_id, doctors));
+    // dispatch(loadDoctorById(doctor_id));
 
     navigate(`/doctors/${doctor_id}`)
   }
@@ -57,7 +57,7 @@ const Doctor = () => {
                   <div className="doctorCard" key={doctorData.doctor_id}>
                     <h2>{doctorData.name}</h2>
                     <span className="timestamp">{new Date(Number(doctorData.registered_on) / 1000000).toLocaleString()}</span>
-
+                    <p><strong>{doctorData.department}</strong></p>
                     <p>{doctorData.email}</p>
                     <p>{doctorData.phone_number}</p>
                     <div className="buttonContainer">

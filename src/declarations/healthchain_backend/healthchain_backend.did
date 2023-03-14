@@ -51,6 +51,7 @@ service : {
   createPatient: (text, text, text, text, int, text, text, float64, float64,
    text) -> () oneway;
   deleteEmployee: (text) -> () oneway;
+  getDoctorById: (text) -> (opt Doctor);
   readDepartments: () -> (vec text) query;
   readDoctors: () -> (vec Doctor) query;
   readEmployees: () -> (vec Employee) query;

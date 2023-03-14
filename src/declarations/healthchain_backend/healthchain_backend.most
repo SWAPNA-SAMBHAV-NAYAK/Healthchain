@@ -1,4 +1,13 @@
 // Version: 1.0.0
+type Appointment =
+  {
+    appointment_id : Text;
+    date : Time;
+    doctor_id : Text;
+    patient_id : Text;
+    time_slot_end : Time;
+    time_slot_start : Time
+  };
 type Doctor =
   {
     address : Text;
@@ -40,6 +49,7 @@ type Patient =
   };
 type Time = Int;
 actor {
+  stable var appointments : ?(Appointment, List<Appointment>);
   stable var departments : [Text];
   stable var doctors : ?(Doctor, List<Doctor>);
   stable var employees : ?(Employee, List<Employee>);

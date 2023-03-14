@@ -96,6 +96,9 @@ export default function PatientInfo() {
                 <p className="tag" id="tag6">
                   <strong>Address:</strong> {address}
                 </p>
+                <p className="tag" id="tag6">
+                  <strong>Id:</strong> {patientById[0].patient_id } 
+                </p>
               </div>
               <div className="cardButtons">
                 <button
