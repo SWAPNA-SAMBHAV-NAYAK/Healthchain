@@ -21,6 +21,7 @@ const Doctor = () => {
   const { doctors } = useSelector(state => state.doctorList);
 
 
+
   async function addDoctorForm() {
     navigate("/addDoctor");
   }

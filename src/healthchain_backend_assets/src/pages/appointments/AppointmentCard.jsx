@@ -149,10 +149,20 @@ const AppointmentCard = ({ name, department, cabinNumber, availableSlots }) => {
       </div>
       <div className="appointmentForm">
         <div className="formGroup">
+          <label htmlFor="dateInput">Choose a date:</label>
+          <input
+            type="date"
+            id="dateInput"
+            value={chosenDate}
+            onChange={dateChangeKoHandle}
+          />
+        </div>
+        <div className="formGroup">
           <label htmlFor="slotChoose">Choose a time slot:</label>
           <select
             id="slotChoose"
             value={chosenSlot}
+            disabled={!chosenDate}
             onChange={slotChangeKoHandle}
           >
             <option value="">Select a time slot</option>
@@ -163,15 +173,7 @@ const AppointmentCard = ({ name, department, cabinNumber, availableSlots }) => {
             ))}
           </select>
         </div>
-        <div className="formGroup">
-          <label htmlFor="dateInput">Choose a date:</label>
-          <input
-            type="date"
-            id="dateInput"
-            value={chosenDate}
-            onChange={dateChangeKoHandle}
-          />
-        </div>
+        
         <button
           disabled={!chosenSlot || !chosenDate}
           onClick={bookAppointmentKoHandle}

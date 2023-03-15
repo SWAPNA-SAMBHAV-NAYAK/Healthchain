@@ -44,6 +44,7 @@ type Doctor =
    registered_on: Time;
  };
 service : {
+  addDoctorOpenHours: (text, vec text, vec vec text) -> ();
   createDoctor: (text, text, text, text, int, text, text, text, text,
    text) -> () oneway;
   createEmployee: (text, text, text, text, text, int, text) -> () oneway;

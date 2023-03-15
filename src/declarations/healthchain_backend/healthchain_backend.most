@@ -22,6 +22,8 @@ type Doctor =
     qualification : Text;
     registered_on : Time
   };
+type DoctorOpenHours =
+  {doctor_id : Text; openHoursDates : [Text]; openHoursTime : [[Text]]};
 type Employee =
   {
     contact : Text;
@@ -51,6 +53,8 @@ type Time = Int;
 actor {
   stable var appointments : ?(Appointment, List<Appointment>);
   stable var departments : [Text];
+  stable var doctor_open_hours_list :
+    ?(DoctorOpenHours, List<DoctorOpenHours>);
   stable var doctors : ?(Doctor, List<Doctor>);
   stable var employees : ?(Employee, List<Employee>);
   stable var patients : ?(Patient, List<Patient>)

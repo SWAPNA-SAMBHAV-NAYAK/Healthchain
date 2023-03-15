@@ -13,8 +13,6 @@ export const loadDoctorById = (id) => async (dispatch) => {
 
     const filtered_doctor = await healthchain_backend.getDoctorById(id);
 
-    console.log(filtered_doctor)
-
     if (filtered_doctor.length < 1) {
         dispatch({
             type: "get_doctor_by_id",

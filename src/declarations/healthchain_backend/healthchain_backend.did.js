@@ -27,6 +27,11 @@ export const idlFactory = ({ IDL }) => {
     'from' : IDL.Text,
     'time_stamp' : Time,
   });
+  const DoctorOpenHours = IDL.Record({
+    'openHoursTime' : IDL.Vec(IDL.Vec(IDL.Text)),
+    'openHoursDates' : IDL.Vec(IDL.Text),
+    'doctor_id' : IDL.Text,
+  });
   const Patient = IDL.Record({
     'age' : IDL.Int,
     'weight' : IDL.Float64,
@@ -41,6 +46,11 @@ export const idlFactory = ({ IDL }) => {
     'registered_on' : Time,
   });
   return IDL.Service({
+    'addDoctorOpenHours' : IDL.Func(
+        [IDL.Text, IDL.Vec(IDL.Text), IDL.Vec(IDL.Vec(IDL.Text))],
+        [],
+        [],
+      ),
     'createDoctor' : IDL.Func(
         [
           IDL.Text,
@@ -85,6 +95,7 @@ export const idlFactory = ({ IDL }) => {
     'readDoctors' : IDL.Func([], [IDL.Vec(Doctor)], ['query']),
     'readEmployees' : IDL.Func([], [IDL.Vec(Employee)], ['query']),
     'readNotices' : IDL.Func([], [IDL.Vec(Notice)], ['query']),
+    'readOpenHours' : IDL.Func([], [IDL.Vec(DoctorOpenHours)], ['query']),
     'readPatients' : IDL.Func([], [IDL.Vec(Patient)], ['query']),
     'updateDoctor' : IDL.Func(
         [

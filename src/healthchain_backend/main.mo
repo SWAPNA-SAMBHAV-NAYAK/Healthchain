@@ -4,25 +4,22 @@ import Debug "mo:base/Debug";
 import Float "mo:base/Float";
 import Int "mo:base/Int";
 import Time "mo:base/Time";
+import HashMap "mo:base/HashMap";
 
 actor healthchain {
 
   ///////////////////////////////////////// Appointment //////////////////////////////////////////////////
 
-
   public type Appointment = {
-    appointment_id: Text;
-    patient_id: Text;
-    doctor_id: Text;
-    time_slot_start:Time.Time;
-    time_slot_end:Time.Time;
-    date:Time.Time;
+    appointment_id : Text;
+    patient_id : Text;
+    doctor_id : Text;
+    time_slot_start : Time.Time;
+    time_slot_end : Time.Time;
+    date : Time.Time;
   };
 
   stable var appointments : List.List<Appointment> = List.nil<Appointment>();
-
-
-
 
   ///////////////////////////////////////// Employee //////////////////////////////////////////////////
 
@@ -242,7 +239,7 @@ actor healthchain {
     "Electrophysiology",
     "Orthopaedics",
     "Diabetology",
-    "Gynaecology - Oncology",
+    "Gynaecology",
     "ENT(Ear, Nose, Throat)",
     "Reproductive Medicine",
     "Gastrointestinal Oncology",
@@ -253,6 +250,7 @@ actor healthchain {
     "Dental Sciences",
     "Endocrinology",
     "Neurosurgery",
+    "Pediatrics",
   ];
 
   public query func readDepartments() : async [Text] {
@@ -275,6 +273,42 @@ actor healthchain {
     designation : Text;
     qualification : Text;
     department : Text;
+  };
+
+  public type DoctorOpenHours = {
+    doctor_id : Text;
+    openHoursDates : [Text];
+    openHoursTime : [[Text]];
+
+  };
+
+  stable var doctor_open_hours_list : List.List<DoctorOpenHours> = List.nil<DoctorOpenHours>();
+
+
+
+  public query func readOpenHours() : async [DoctorOpenHours] {
+    return List.toArray(doctor_open_hours_list);
+  };
+
+  public func addDoctorOpenHours(
+    doctor_id_data : Text,
+    openHoursDates_data : [Text],
+    openHoursTime_data : [[Text]],
+  ) : async () {
+
+    // Debug.print(debug_show (doctor_id_data));
+    // Debug.print(debug_show (openHoursDates_data));
+    // Debug.print(debug_show (openHoursTime_data));
+
+    let newOpenHour : DoctorOpenHours = {
+      doctor_id = doctor_id_data;
+      openHoursDates = openHoursDates_data;
+      openHoursTime = openHoursTime_data;
+    };
+
+    doctor_open_hours_list := List.push(newOpenHour, doctor_open_hours_list);
+
+    Debug.print(debug_show (doctor_open_hours_list));
   };
 
   public func createDoctor(
@@ -310,7 +344,6 @@ actor healthchain {
 
   };
 
-
   public func getDoctorById(doctor_id_data : Text) : async ?Doctor {
     return List.find(
       doctors,
@@ -319,7 +352,6 @@ actor healthchain {
       },
     );
   };
-  
 
   public func updateDoctor(
     doctor_id_data : Text,

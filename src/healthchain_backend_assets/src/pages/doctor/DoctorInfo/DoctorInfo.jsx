@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import * as Redux from 'react-redux';
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Navbar from '../../../components/navbar/Navbar';
@@ -10,6 +11,7 @@ import { loadDoctorList } from '../../../redux/actions/doctorAction';
 import { loadDoctorById } from '../../../redux/actions/doctorByIdAction';
 import { loadDepartmentList } from '../../../redux/actions/departmentAction';
 import DateSelector from './DateSelector';
+import { healthchain_backend_assets } from '../../../../../declarations/healthchain_backend_assets/index';
 
 export default function DoctorInfo() {
 
@@ -18,7 +20,9 @@ export default function DoctorInfo() {
 
   const { doctorById } = useSelector(state => state.doctorById);
 
-  const departments = useSelector(state => state.departmentList);
+  const {departments} = useSelector(state => state.departmentList);
+
+  const { doctorOpenHoursList } = Redux.useSelector(state => state);
 
   const params = useParams();
 
@@ -28,6 +32,8 @@ export default function DoctorInfo() {
 
 
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [gender, setGender] = useState("");
   const [registeredOn, setRegisteredOn] = useState("");
 
@@ -45,13 +51,11 @@ export default function DoctorInfo() {
 
 
   useEffect(() => {
-    console.log(doctorById);
-    console.log(doctorById);
     if (doctorById.name !== undefined) {
-      console.log("Hello");
       setName(doctorById.name)
+      setEmail(doctorById.email)
       setGender(doctorById.gender)
-
+      setPhoneNumber(doctorById.phone_number)
       setAge(doctorById.age)
       setAddress(doctorById.address)
       setQualification(doctorById.qualification)
@@ -75,18 +79,49 @@ export default function DoctorInfo() {
     setIsOpenHoursOpen(true);
   };
 
+
+  async function handleOpenHourFormSubmit(e) {
+    e.preventDefault()
+
+    // const result = doctorOpenHoursList.reduce((acc, item) => {
+    //   acc[item.dateSelected] = item.timeSelected;
+    //   return acc;
+    // }, {});
+
+    const dates = doctorOpenHoursList.map(obj => obj.dateSelected);
+    const times = doctorOpenHoursList.map(obj => obj.timeSelected);
+
+    console.log(dates)
+    console.log(times)
+
+    dates.forEach((date, index, arr) => {
+      arr[index] = date.toLocaleDateString();
+    })
+
+
+    await healthchain_backend.addDoctorOpenHours(params.doctor_id,
+      dates,
+      times);
+
+
+    setIsOpenHoursOpen(false);
+
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    
+
     await healthchain_backend.updateDoctor(
-      doctorById[0].doctor_id,
-      doctorById[0].registered_on,
-      doctorById[0].name,
-      doctorById[0].email,
-      doctorById[0].phone_number,
+      params.doctor_id,
+      doctorById.registered_on,
+      name,
+      email,
+      phoneNumber,
       parseInt(age),
       address,
-      doctorById[0].gender,
+      gender,
       designation,
       qualification,
       department,
@@ -99,7 +134,7 @@ export default function DoctorInfo() {
     Salrt.fire({
       icon: "success",
       title: "Data Saved!",
-      text: `${doctorById[0].name}'s data has been updated.`,
+      text: `${doctorById.name}'s data has been updated.`,
       showConfirmButton: false,
       timer: 2000
     });
@@ -159,8 +194,9 @@ export default function DoctorInfo() {
           {
             isOpenHoursOpen && (
               <div id="OpenHoursPopup">
-                <form id="OpenHoursForm">
+                <form id="OpenHoursForm" onSubmit={handleOpenHourFormSubmit}>
                   <DateSelector />
+                  <button type='submit'>Submit</button>
                 </form>
               </div>
             )

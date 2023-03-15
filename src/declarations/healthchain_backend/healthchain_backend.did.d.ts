@@ -12,6 +12,11 @@ export interface Doctor {
   'doctor_id' : string,
   'qualification' : string,
 }
+export interface DoctorOpenHours {
+  'openHoursTime' : Array<Array<string>>,
+  'openHoursDates' : Array<string>,
+  'doctor_id' : string,
+}
 export interface Employee {
   'contact' : string,
   'salary' : bigint,
@@ -41,6 +46,11 @@ export interface Patient {
 }
 export type Time = bigint;
 export interface _SERVICE {
+  'addDoctorOpenHours' : (
+      arg_0: string,
+      arg_1: Array<string>,
+      arg_2: Array<Array<string>>,
+    ) => Promise<undefined>,
   'createDoctor' : (
       arg_0: string,
       arg_1: string,
@@ -81,6 +91,7 @@ export interface _SERVICE {
   'readDoctors' : () => Promise<Array<Doctor>>,
   'readEmployees' : () => Promise<Array<Employee>>,
   'readNotices' : () => Promise<Array<Notice>>,
+  'readOpenHours' : () => Promise<Array<DoctorOpenHours>>,
   'readPatients' : () => Promise<Array<Patient>>,
   'updateDoctor' : (
       arg_0: string,

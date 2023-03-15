@@ -5,6 +5,8 @@ import doctorReducer from "./doctorReducer";
 import employeeReducer from "./employeeReducer";
 import patientByIdReducer from "./patientByIdReducer";
 import patientReducer from "./patientReducer"
+import doctorOpenHoursReducer from "./doctorOpenHoursReducer";
+import doctorAppointmentOpenHourReducer from "./doctorAppointmentOpenHourReducer";
 
 const reducer = combineReducers({
     patientList: patientReducer,
@@ -12,7 +14,11 @@ const reducer = combineReducers({
     employeeList: employeeReducer,
     patientById: patientByIdReducer,
     doctorById: doctorByIdReducer,
+    doctorOpenHoursList: doctorOpenHoursReducer,
     departmentList: departmentReducer,
+
+    openHours: doctorAppointmentOpenHourReducer,
+
 });
 
 export default reducer;

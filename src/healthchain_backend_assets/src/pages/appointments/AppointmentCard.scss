@@ -52,6 +52,12 @@
           border: 1px solid #ccc;
           font-size: 1rem;
         }
+        #slotChoose{
+          &:disabled {
+            
+            cursor: not-allowed;
+            }
+        }
       }
   
       button {
@@ -64,7 +70,7 @@
         cursor: pointer;
   
         &:disabled {
-          opacity : 0.5;
+          background-color: rgb(135, 181, 127);
           cursor: not-allowed;
           }
         }

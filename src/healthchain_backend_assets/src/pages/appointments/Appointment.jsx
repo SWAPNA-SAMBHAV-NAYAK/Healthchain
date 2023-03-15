@@ -3,6 +3,11 @@ import "./Appointment.scss";
 import AppointmentCard from "./AppointmentCard";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
+
+import * as Redux from "react-redux";
+import { loadDepartmentList } from "../../redux/actions/departmentAction";
+import { loadDoctorAppointmentOpenHours } from "../../redux/actions/doctorAppointmentOpenHourAction";
+import { loadDoctorList } from "../../redux/actions/doctorAction";
 const doctors = [
     {
         id: 1,
@@ -55,18 +60,58 @@ const doctors = [
     }
 ];
 
-const departments = [
-    "All Departments",
-    "Cardiology",
-    "Radiology",
-    "Orthopedics",
-    "Gynecology",
-    "Dermatology",
-    "Pediatrics"
-];
-
 const Appointment = () => {
     const [chosenDepartment, setChosenDepartment] = useState("All Departments");
+
+
+    const dispatch = Redux.useDispatch();
+
+
+    // const { doctors } = Redux.useSelector(state => state.doctorList);
+
+    const { departments } = Redux.useSelector(state => state.departmentList);
+
+
+
+    const { openHours } = Redux.useSelector(state => state.openHours);
+
+
+    React.useEffect(() => {
+        dispatch(loadDepartmentList());
+    }, [])
+
+
+
+    React.useEffect(() => {
+        dispatch(loadDoctorAppointmentOpenHours());
+    }, [dispatch])
+
+    React.useEffect(() => {
+        dispatch(loadDoctorList())
+    }, [dispatch])
+
+
+
+    // TODO
+    // React.useEffect(() => {
+    //     // for (let i = 0; i < openHours.length; i++) {
+    //     //     const doc_details = {};
+    //     //     doc_details.doc_id = openHours[i].doctor_id;
+
+    //     //     doctors.find((doc, index, arr) => {
+    //     //         if (doc.doctor_id === openHours[i].doctor_id) {
+    //     //             doc_details.name = doc.name;
+    //     //             doc_details.department = doc.department;
+    //     //         }
+    //     //     })
+    //         // openHours[i] doctorid
+    //         //doctoid doctlist find kiya name cabin department
+    //         //[] d
+    //     }
+    // }, [openHours])
+
+
+
 
     const deptChangeKoHandle = (event) => {
         setChosenDepartment(event.target.value);
@@ -91,6 +136,10 @@ const Appointment = () => {
                             value={chosenDepartment}
                             onChange={deptChangeKoHandle}
                         >
+
+                            <option key={"All Departments"} value={"All Departments"}>
+                                All Departments
+                            </option>
                             {departments.map((department) => (
                                 <option key={department} value={department}>
                                     {department}

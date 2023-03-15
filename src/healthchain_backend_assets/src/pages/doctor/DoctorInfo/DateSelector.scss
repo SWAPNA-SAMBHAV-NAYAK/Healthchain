@@ -139,161 +139,189 @@
 
 
 $color_1: #fff;
-$font-family_1: Arial, sans-serif;
+$font-family_1: "Montserrat", sans-serif;
 $background-color_1: #fff;
 $background-color_2: #0077cc;
 $background-color_3: #004499;
 $background-color_4: #f0f0f0;
 $background-color_5: #e0e0e0;
+$background-color_6: #DC143C;
 
 .date-selector {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
   font-family: $font-family_1;
   font-size: 16px;
-  width: 100%;
-}
+  width: 90%;
+  z-index: 2;
+  max-height: 75vh;
+  // box-sizing: border-box;
 
-.date-picker {
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 16px;
-  background-color: $background-color_1;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 0;
+  display: grid;
+  grid-template-columns: 0.5fr 1.5fr;
+  align-items: start;
+  justify-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  // column-gap: 5%;
 
-  div{
-    margin:0;
+
+  .date-picker {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 16px;
+    background-color: $background-color_1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    width: calc( 100% - 34px);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+
+
+    div {
+      margin: 0;
+    }
+
+    .react-datepicker__month-container {
+      display: flex;
+      flex-direction: column;
+
+      .react-datepicker__header {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    .react-datepicker-wrapper {
+      width: 100%;
+    }
+
+    .react-datepicker__week {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .react-datepicker__month {
+      display: grid;
+      grid-template-columns: repeat(1fr, 7);
+    }
+
+    .react-datepicker__day-name {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      flex-direction: row;
+      align-items: center;
+      border-radius: 50%;
+    }
+
+    .react-datepicker__day {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      flex-direction: row;
+      align-items: center;
+      border-radius: 50%;
+    }
+
+    .react-datepicker__day-names {
+      display: flex;
+      // flex-direction: row;
+    }
+
+    .react-datepicker__day--selected {
+      background-color: $background-color_2;
+      color: $color_1;
+    }
+
+    .react-datepicker__day--keyboard-selected {
+      background-color: $background-color_3;
+    }
   }
 
-  .react-datepicker__month-container {
+  .weekday-buttons {
+    display: flex;
+    gap: 8px;
+
+    button {
+      border: none;
+      border-radius: 4px;
+      padding: 8px;
+      background-color: $background-color_4;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+
+      &:hover {
+        background-color: $background-color_5;
+      }
+    }
+  }
+
+  .selected-dates {
+    width: 100%;
+    min-width: 100%;
+    // max-height: 50vh;
     display: flex;
     flex-direction: column;
 
-    .react-datepicker__header {
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+
+    li {
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px;
+      width: calc(100% - 16px);
+      border-bottom: 1px solid #ccc;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .date-text{
+        padding:5px 25px;
+        background-color: #eae2b7;
+        font-weight:bolder;
+      }
+    }
+
+    button {
+      border: none;
+      border-radius: 4px;
+      padding: 4px 8px;
+      background-color: $background-color_4;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+
+      &:hover {
+        background-color: $background-color_5;
+      }
+    }
+    .clear-selection {
+      color: white;
+      border: none;
+      padding: 5px 60px;
+      border-radius: 3px;
+      cursor: pointer;
+      background-color:$background-color_6;
+    }
+    .remove-button{
+      color: white;
+      border: none;
+      padding: 5px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      background-color:rgb(177, 76, 97);
     }
   }
 
-  .react-datepicker-wrapper {
-    width: 100%;
-  }
+     
+  
 
-  .react-datepicker__week {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .react-datepicker__month {
-    display: grid;
-    grid-template-columns: repeat(1fr, 7);
-  }
-
-  .react-datepicker__day-name {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    align-items: center;
-    border-radius: 50%;
-  }
-
-  .react-datepicker__day {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    align-items: center;
-    border-radius: 50%;
-  }
-
-  .react-datepicker__day-names {
-    display: flex;
-    // flex-direction: row;
-  }
-
-  .react-datepicker__day--selected {
-    background-color: $background-color_2;
-    color: $color_1;
-  }
-
-  .react-datepicker__day--keyboard-selected {
-    background-color: $background-color_3;
-  }
-}
-
-.weekday-buttons {
-  display: flex;
-  gap: 8px;
-
-  button {
-    border: none;
-    border-radius: 4px;
-    padding: 8px;
-    background-color: $background-color_4;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-
-    &:hover {
-      background-color: $background-color_5;
-    }
-  }
-}
-
-.selected-dates {
-  width: 100%;
-  max-height: 200px;
-  overflow-y: auto;
-
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px;
-    border-bottom: 1px solid #ccc;
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-
-  button {
-    border: none;
-    border-radius: 4px;
-    padding: 4px 8px;
-    background-color: $background-color_4;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-
-    &:hover {
-      background-color: $background-color_5;
-    }
-  }
-}
-
-.clear-selection {
-  border: none;
-  border-radius: 4px;
-  padding: 8px 16px;
-  background-color: $background-color_4;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-
-  &:hover {
-    background-color: $background-color_5;
-  }
 }
