@@ -11,6 +11,7 @@ import Doctor from "./pages/doctor/Doctor";
 import AddDoctor from "./pages/doctor/AddDoctor/AddDoctor";
 import DoctorInfo from "./pages/doctor/DoctorInfo/DoctorInfo";
 import Appointment from "./pages/appointments/Appointment";
+import AppointmentList from "./pages/appointmentlist/AppointmentList";
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
         <Route exact path={"addDoctor"} element={<AddDoctor />} />
 
         <Route exact path="/appointments" element={<Appointment/>}/>
+        <Route exact path="/appointmentList" element={<AppointmentList/>}/>
 
         <Route exact path="/employees" element={<Employees />} />
       </Routes>

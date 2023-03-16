@@ -6,9 +6,27 @@ import Widget from "../../components/widget/Widget"
 import "./Home.scss"
 import Table from "../../components/table/Table"
 import Chart2 from "../../components/chart2/Chart2"
-import React,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import * as Redux from "react-redux";
+import { loadDoctorList } from "../../redux/actions/doctorAction"
+import { loadPatientList } from "../../redux/actions/patientAction"
+import { loadAppointmentList } from "../../redux/actions/appointmentAction"
+import { loadEmployeeList } from "../../redux/actions/employeeAction"
 
 const Home = () => {
+
+  const dispatch = Redux.useDispatch();
+
+  
+
+  useEffect(() => {
+    dispatch(loadDoctorList())
+    dispatch(loadPatientList())
+    dispatch(loadAppointmentList())
+    dispatch(loadEmployeeList())
+  }, [dispatch])
+  
+  
   return (
     <div className="home">
       <Sidebar />

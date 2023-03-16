@@ -1,4 +1,11 @@
 import type { Principal } from '@dfinity/principal';
+export interface Appointment {
+  'patient_id' : string,
+  'appointment_id' : string,
+  'time_slot' : string,
+  'date' : string,
+  'doctor_id' : string,
+}
 export interface Doctor {
   'age' : bigint,
   'name' : string,
@@ -51,6 +58,13 @@ export interface _SERVICE {
       arg_1: Array<string>,
       arg_2: Array<Array<string>>,
     ) => Promise<undefined>,
+  'createAppointment' : (
+      arg_0: string,
+      arg_1: string,
+      arg_2: string,
+      arg_3: string,
+      arg_4: string,
+    ) => Promise<undefined>,
   'createDoctor' : (
       arg_0: string,
       arg_1: string,
@@ -87,6 +101,7 @@ export interface _SERVICE {
     ) => Promise<undefined>,
   'deleteEmployee' : (arg_0: string) => Promise<undefined>,
   'getDoctorById' : (arg_0: string) => Promise<[] | [Doctor]>,
+  'readAppointments' : () => Promise<Array<Appointment>>,
   'readDepartments' : () => Promise<Array<string>>,
   'readDoctors' : () => Promise<Array<Doctor>>,
   'readEmployees' : () => Promise<Array<Employee>>,

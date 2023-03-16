@@ -13,6 +13,13 @@ export const idlFactory = ({ IDL }) => {
     'doctor_id' : IDL.Text,
     'qualification' : IDL.Text,
   });
+  const Appointment = IDL.Record({
+    'patient_id' : IDL.Text,
+    'appointment_id' : IDL.Text,
+    'time_slot' : IDL.Text,
+    'date' : IDL.Text,
+    'doctor_id' : IDL.Text,
+  });
   const Employee = IDL.Record({
     'contact' : IDL.Text,
     'salary' : IDL.Int,
@@ -50,6 +57,11 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Text, IDL.Vec(IDL.Text), IDL.Vec(IDL.Vec(IDL.Text))],
         [],
         [],
+      ),
+    'createAppointment' : IDL.Func(
+        [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+        [],
+        ['oneway'],
       ),
     'createDoctor' : IDL.Func(
         [
@@ -91,6 +103,7 @@ export const idlFactory = ({ IDL }) => {
       ),
     'deleteEmployee' : IDL.Func([IDL.Text], [], ['oneway']),
     'getDoctorById' : IDL.Func([IDL.Text], [IDL.Opt(Doctor)], []),
+    'readAppointments' : IDL.Func([], [IDL.Vec(Appointment)], ['query']),
     'readDepartments' : IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
     'readDoctors' : IDL.Func([], [IDL.Vec(Doctor)], ['query']),
     'readEmployees' : IDL.Func([], [IDL.Vec(Employee)], ['query']),

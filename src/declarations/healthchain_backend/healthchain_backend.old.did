@@ -29,6 +29,12 @@ type Employee =
    last_name: text;
    salary: int;
  };
+type DoctorOpenHours = 
+ record {
+   doctor_id: text;
+   openHoursDates: vec text;
+   openHoursTime: vec vec text;
+ };
 type Doctor = 
  record {
    address: text;
@@ -43,8 +49,17 @@ type Doctor =
    qualification: text;
    registered_on: Time;
  };
+type Appointment = 
+ record {
+   appointment_id: text;
+   date: text;
+   doctor_id: text;
+   patient_id: text;
+   time_slot: text;
+ };
 service : {
   addDoctorOpenHours: (text, vec text, vec vec text) -> ();
+  createAppointment: (text, text, text, text, text) -> () oneway;
   createDoctor: (text, text, text, text, int, text, text, text, text,
    text) -> () oneway;
   createEmployee: (text, text, text, text, text, int, text) -> () oneway;
@@ -53,10 +68,12 @@ service : {
    text) -> () oneway;
   deleteEmployee: (text) -> () oneway;
   getDoctorById: (text) -> (opt Doctor);
+  readAppointments: () -> (vec Appointment) query;
   readDepartments: () -> (vec text) query;
   readDoctors: () -> (vec Doctor) query;
   readEmployees: () -> (vec Employee) query;
   readNotices: () -> (vec Notice) query;
+  readOpenHours: () -> (vec DoctorOpenHours) query;
   readPatients: () -> (vec Patient) query;
   updateDoctor: (text, Time, text, text, text, int, text, text, text, 
    text, text) -> () oneway;

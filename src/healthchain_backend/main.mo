@@ -14,12 +14,34 @@ actor healthchain {
     appointment_id : Text;
     patient_id : Text;
     doctor_id : Text;
-    time_slot_start : Time.Time;
-    time_slot_end : Time.Time;
-    date : Time.Time;
+    time_slot : Text;
+    date : Text;
   };
 
   stable var appointments : List.List<Appointment> = List.nil<Appointment>();
+
+  public func createAppointment(
+    appointment_id_data : Text,
+    patient_id_data : Text,
+    doctor_id_data : Text,
+    time_slot_data : Text,
+    date_data : Text,
+  ) {
+
+    let newAppointment : Appointment = {
+      appointment_id = appointment_id_data;
+      patient_id = patient_id_data;
+      doctor_id = doctor_id_data;
+      time_slot = time_slot_data;
+      date = date_data;
+    };
+    appointments := List.push(newAppointment, appointments);
+    Debug.print(debug_show (appointments));
+  };
+
+  public query func readAppointments() : async [Appointment] {
+    return List.toArray(appointments);
+  };
 
   ///////////////////////////////////////// Employee //////////////////////////////////////////////////
 
@@ -275,42 +297,6 @@ actor healthchain {
     department : Text;
   };
 
-  public type DoctorOpenHours = {
-    doctor_id : Text;
-    openHoursDates : [Text];
-    openHoursTime : [[Text]];
-
-  };
-
-  stable var doctor_open_hours_list : List.List<DoctorOpenHours> = List.nil<DoctorOpenHours>();
-
-
-
-  public query func readOpenHours() : async [DoctorOpenHours] {
-    return List.toArray(doctor_open_hours_list);
-  };
-
-  public func addDoctorOpenHours(
-    doctor_id_data : Text,
-    openHoursDates_data : [Text],
-    openHoursTime_data : [[Text]],
-  ) : async () {
-
-    // Debug.print(debug_show (doctor_id_data));
-    // Debug.print(debug_show (openHoursDates_data));
-    // Debug.print(debug_show (openHoursTime_data));
-
-    let newOpenHour : DoctorOpenHours = {
-      doctor_id = doctor_id_data;
-      openHoursDates = openHoursDates_data;
-      openHoursTime = openHoursTime_data;
-    };
-
-    doctor_open_hours_list := List.push(newOpenHour, doctor_open_hours_list);
-
-    Debug.print(debug_show (doctor_open_hours_list));
-  };
-
   public func createDoctor(
     doctor_id_data : Text,
     name_data : Text,
@@ -396,6 +382,38 @@ actor healthchain {
 
   public query func readDoctors() : async [Doctor] {
     return List.toArray(doctors);
+  };
+
+  ///////////////////////////////////////// Doctor Open Hours ///////////////////////////////////////////////////////
+
+  public type DoctorOpenHours = {
+    doctor_id : Text;
+    openHoursDates : [Text];
+    openHoursTime : [[Text]];
+
+  };
+
+  stable var doctor_open_hours_list : List.List<DoctorOpenHours> = List.nil<DoctorOpenHours>();
+
+  public query func readOpenHours() : async [DoctorOpenHours] {
+    return List.toArray(doctor_open_hours_list);
+  };
+
+  public func addDoctorOpenHours(
+    doctor_id_data : Text,
+    openHoursDates_data : [Text],
+    openHoursTime_data : [[Text]],
+  ) : async () {
+
+    let newOpenHour : DoctorOpenHours = {
+      doctor_id = doctor_id_data;
+      openHoursDates = openHoursDates_data;
+      openHoursTime = openHoursTime_data;
+    };
+
+    doctor_open_hours_list := List.push(newOpenHour, doctor_open_hours_list);
+
+    Debug.print(debug_show (doctor_open_hours_list));
   };
 
   ///////////////////////////////////////// Notice ///////////////////////////////////////////////////////

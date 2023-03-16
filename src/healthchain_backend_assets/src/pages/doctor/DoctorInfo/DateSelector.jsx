@@ -15,9 +15,6 @@ const DateSelector = () => {
 
   const { doctorOpenHoursList } = Redux.useSelector(state => state);
 
-
-
-
   const handleDateSelect = (date) => {
     setSelectedDates([...selectedDates, date]);
 
@@ -49,19 +46,19 @@ const DateSelector = () => {
 
   };
 
-  function handleWeekdaySelect(e, weekday) {
-    e.preventDefault();
+  // function handleWeekdaySelect(e, weekday) {
+  //   e.preventDefault();
 
-    const newDates = [];
-    let currentDate = new Date();
-    const daysToAdd = 7 - currentDate.getDay() + weekday;
-    currentDate.setDate(currentDate.getDate() + daysToAdd);
-    for (let j = 0; j < 4; j++) {
-      newDates.push(new Date(currentDate));
-      currentDate.setDate(currentDate.getDate() + 7);
-    }
-    setSelectedDates([...selectedDates, ...newDates]);
-  };
+  //   const newDates = [];
+  //   let currentDate = new Date();
+  //   const daysToAdd = 7 - currentDate.getDay() + weekday;
+  //   currentDate.setDate(currentDate.getDate() + daysToAdd);
+  //   for (let j = 0; j < 4; j++) {
+  //     newDates.push(new Date(currentDate));
+  //     currentDate.setDate(currentDate.getDate() + 7);
+  //   }
+  //   setSelectedDates([...selectedDates, ...newDates]);
+  // };
 
   const handleClearSelection = () => {
     setSelectedDates([]);
@@ -78,7 +75,7 @@ const DateSelector = () => {
           excludeDates={selectedDates}
           placeholderText="Click to select dates"
         />
-        <div className="weekday-buttons">
+        {/* <div className="weekday-buttons">
           <button
             className="weekday-button"
             onClick={(e) => handleWeekdaySelect(e, 1)}
@@ -121,7 +118,7 @@ const DateSelector = () => {
           >
             Sun
           </button>
-        </div>
+        </div> */}
       </div>
 
       <div className="selected-dates">

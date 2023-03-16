@@ -7,6 +7,7 @@ import patientByIdReducer from "./patientByIdReducer";
 import patientReducer from "./patientReducer"
 import doctorOpenHoursReducer from "./doctorOpenHoursReducer";
 import doctorAppointmentOpenHourReducer from "./doctorAppointmentOpenHourReducer";
+import appointmentReducer from "./appointmentReducer";
 
 const reducer = combineReducers({
     patientList: patientReducer,
@@ -16,6 +17,8 @@ const reducer = combineReducers({
     doctorById: doctorByIdReducer,
     doctorOpenHoursList: doctorOpenHoursReducer,
     departmentList: departmentReducer,
+    
+    appointmentList: appointmentReducer,
 
     openHours: doctorAppointmentOpenHourReducer,
 

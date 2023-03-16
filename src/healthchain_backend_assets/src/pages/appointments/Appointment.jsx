@@ -8,70 +8,72 @@ import * as Redux from "react-redux";
 import { loadDepartmentList } from "../../redux/actions/departmentAction";
 import { loadDoctorAppointmentOpenHours } from "../../redux/actions/doctorAppointmentOpenHourAction";
 import { loadDoctorList } from "../../redux/actions/doctorAction";
-const doctors = [
-    {
-        id: 1,
-        name: "Sambhav",
-        department: "Cardiology",
-        cabinNumber: "101",
-        availableSlots: [
-            "9:00 AM",
-            "10:00 AM",
-            "11:00 AM",
-            "2:00 PM",
-            "3:00 PM",
-            "4:00 PM"
-        ]
-    },
-    {
-        id: 2,
-        name: "Samyak",
-        department: "Dermatology",
-        cabinNumber: "102",
-        availableSlots: [
-            "10:00 AM",
-            "11:00 AM",
-            "12:00 PM",
-            "3:00 PM",
-            "4:00 PM",
-            "5:00 PM"
-        ]
-    },
-    {
-        id: 3,
-        name: "Manan",
-        department: "Pediatrics",
-        cabinNumber: "103",
-        availableSlots: ["8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM"]
-    },
-    {
-        id: 4,
-        name: "Dhanunjay",
-        department: "Gynecology",
-        cabinNumber: "104",
-        availableSlots: ["9:00 AM", "11:00 AM", "1:00 PM", "3:00 PM"]
-    },
-    {
-        id: 5,
-        name: "Akshay",
-        department: "Orthopaedics",
-        cabinNumber: "105",
-        availableSlots: ["2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM"]
-    }
-];
+
+
+// const doctors = [
+//     {
+//         id: 1,
+//         name: "Sambhav",
+//         department: "Cardiology",
+//         cabinNumber: "101",
+//         availableSlots: [
+//             "9:00 AM",
+//             "10:00 AM",
+//             "11:00 AM",
+//             "2:00 PM",
+//             "3:00 PM",
+//             "4:00 PM"
+//         ]
+//     },
+//     {
+//         id: 2,
+//         name: "Samyak",
+//         department: "Dermatology",
+//         cabinNumber: "102",
+//         availableSlots: [
+//             "10:00 AM",
+//             "11:00 AM",
+//             "12:00 PM",
+//             "3:00 PM",
+//             "4:00 PM",
+//             "5:00 PM"
+//         ]
+//     },
+//     {
+//         id: 3,
+//         name: "Manan",
+//         department: "Pediatrics",
+//         cabinNumber: "103",
+//         availableSlots: ["8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM"]
+//     },
+//     {
+//         id: 4,
+//         name: "Dhanunjay",
+//         department: "Gynecology",
+//         cabinNumber: "104",
+//         availableSlots: ["9:00 AM", "11:00 AM", "1:00 PM", "3:00 PM"]
+//     },
+//     {
+//         id: 5,
+//         name: "Akshay",
+//         department: "Orthopaedics",
+//         cabinNumber: "105",
+//         availableSlots: ["2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM"]
+//     }
+// ];
 
 const Appointment = () => {
     const [chosenDepartment, setChosenDepartment] = useState("All Departments");
+
+    const [doctorApptOpenHoursList, setDoctorApptOpenHoursList] = useState([]);
 
 
     const dispatch = Redux.useDispatch();
 
 
-    // const { doctors } = Redux.useSelector(state => state.doctorList);
+    const { doctors } = Redux.useSelector(state => state.doctorList);
 
     const { departments } = Redux.useSelector(state => state.departmentList);
-
-
 
     const { openHours } = Redux.useSelector(state => state.openHours);
 
@@ -79,8 +81,6 @@ const Appointment = () => {
     React.useEffect(() => {
         dispatch(loadDepartmentList());
     }, [])
-
-
 
     React.useEffect(() => {
         dispatch(loadDoctorAppointmentOpenHours());
@@ -90,26 +90,34 @@ const Appointment = () => {
         dispatch(loadDoctorList())
     }, [dispatch])
 
+    React.useEffect(() => {
+        for (let i = 0; i < openHours.length; i++) {
+            const doc_details = {};
+            doc_details.doctor_id = openHours[i].doctor_id;
+            doc_details.openHoursDates = openHours[i].openHoursDates;
+            doc_details.openHoursTime = openHours[i].openHoursTime;
 
+            doctors.find((doc, index, arr) => {
+                if (doc.doctor_id === openHours[i].doctor_id) {
+                    doc_details.name = doc.name;
+                    doc_details.department = doc.department;
+                }
+            })
 
-    // TODO
-    // React.useEffect(() => {
-    //     // for (let i = 0; i < openHours.length; i++) {
-    //     //     const doc_details = {};
-    //     //     doc_details.doc_id = openHours[i].doctor_id;
-
-    //     //     doctors.find((doc, index, arr) => {
-    //     //         if (doc.doctor_id === openHours[i].doctor_id) {
-    //     //             doc_details.name = doc.name;
-    //     //             doc_details.department = doc.department;
-    //     //         }
-    //     //     })
-    //         // openHours[i] doctorid
-    //         //doctoid doctlist find kiya name cabin department
-    //         //[] d
-    //     }
-    // }, [openHours])
-
+            if (doc_details.name !== undefined) {
+                setDoctorApptOpenHoursList((oldList) => {
+                    oldList.push(doc_details);
+                    const uniqueArr = [];
+                    oldList.forEach(obj => {
+                        if (!uniqueArr.some(item => JSON.stringify(item) === JSON.stringify(obj))) {
+                            uniqueArr.push(obj);
+                        }
+                    });
+                    return uniqueArr;
+                })
+            }
+        }
+    }, [openHours, doctors])
 
 
 
@@ -119,8 +127,8 @@ const Appointment = () => {
 
     const filteredDoctors =
         chosenDepartment === "All Departments"
-            ? doctors
-            : doctors.filter((doctor) => doctor.department === chosenDepartment);
+            ? doctorApptOpenHoursList
+            : doctorApptOpenHoursList.filter((doctor) => doctor.department === chosenDepartment);
 
     return (
         <div className="appointy">
@@ -148,13 +156,14 @@ const Appointment = () => {
                         </select>
                     </div>
                     <div className="cardWalaComp">
-                        {filteredDoctors.map((doctor) => (
+                        {filteredDoctors.map((d) => (
                             <AppointmentCard
-                                key={doctor.id}
-                                name={doctor.name}
-                                department={doctor.department}
-                                cabinNumber={doctor.cabinNumber}
-                                availableSlots={doctor.availableSlots}
+                                key={d.doctor_id}
+                                doctor_id={d.doctor_id}
+                                name={d.name}
+                                department={d.department}
+                                openHoursDates={d.openHoursDates}
+                                openHoursTime={d.openHoursTime}
                             />
                         ))}
                     </div>

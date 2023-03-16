@@ -1,0 +1,33 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 1%;
+  background-color: #fff;
+  -webkit-box-shadow: 2px 4px 10px 1px rgba(0,0,0,0.47);
+  box-shadow: 5px 5px 10px 5px rgba(201,201,201,0.47);
+  border-radius: 4px;
+  height:125px;
+  width: 88%;
+  margin:2% 5%;
+  
+  h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .round-button {
+    background-color: #024332;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    &:hover {
+      background-color: #444;
+    }
+  }
+}

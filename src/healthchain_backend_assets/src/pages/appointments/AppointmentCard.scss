@@ -45,8 +45,15 @@
           margin-bottom: 5px;
         }
   
-        select,
-        input[type='date'] {
+        select
+        // input[type='date'] 
+        {
+          padding: 10px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+          font-size: 1rem;
+        }
+        #dateInput{
           padding: 10px;
           border-radius: 5px;
           border: 1px solid #ccc;
@@ -84,6 +91,7 @@
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5);
+        z-index:3;
       
         form {
           position: absolute;

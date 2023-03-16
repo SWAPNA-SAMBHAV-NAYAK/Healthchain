@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import * as Redux from 'react-redux';
+import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Navbar from '../../../components/navbar/Navbar';
@@ -11,7 +12,6 @@ import { loadDoctorList } from '../../../redux/actions/doctorAction';
 import { loadDoctorById } from '../../../redux/actions/doctorByIdAction';
 import { loadDepartmentList } from '../../../redux/actions/departmentAction';
 import DateSelector from './DateSelector';
-import { healthchain_backend_assets } from '../../../../../declarations/healthchain_backend_assets/index';
 
 export default function DoctorInfo() {
 
@@ -20,7 +20,7 @@ export default function DoctorInfo() {
 
   const { doctorById } = useSelector(state => state.doctorById);
 
-  const {departments} = useSelector(state => state.departmentList);
+  const { departments } = useSelector(state => state.departmentList);
 
   const { doctorOpenHoursList } = Redux.useSelector(state => state);
 
@@ -83,35 +83,36 @@ export default function DoctorInfo() {
   async function handleOpenHourFormSubmit(e) {
     e.preventDefault()
 
-    // const result = doctorOpenHoursList.reduce((acc, item) => {
-    //   acc[item.dateSelected] = item.timeSelected;
-    //   return acc;
-    // }, {});
-
     const dates = doctorOpenHoursList.map(obj => obj.dateSelected);
     const times = doctorOpenHoursList.map(obj => obj.timeSelected);
 
-    console.log(dates)
-    console.log(times)
 
     dates.forEach((date, index, arr) => {
       arr[index] = date.toLocaleDateString();
     })
 
 
-    await healthchain_backend.addDoctorOpenHours(params.doctor_id,
+    await healthchain_backend.addDoctorOpenHours(
+      params.doctor_id,
       dates,
       times);
 
 
     setIsOpenHoursOpen(false);
 
+    Swal.fire({
+      icon: 'success',
+      title: 'Open Hours have been added',
+      showConfirmButton: false,
+      timer: 1500
+    })
+
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    
+
 
     await healthchain_backend.updateDoctor(
       params.doctor_id,
@@ -181,10 +182,7 @@ export default function DoctorInfo() {
                   className="btnDesign"
                   id="edit-button"
                   onClick={handleEditButton}
-                >
-                  Edit Details
-                </button>
-                <button className="btnDesign">View Logs</button>
+                >Edit Details</button>
                 <button className="btnDesign" onClick={handleOpenHoursButton}>Add Open Hours</button>
 
               </div>
@@ -211,7 +209,7 @@ export default function DoctorInfo() {
                     type="text"
                     id="tag-1-input"
                     name="tag1"
-                    value={age}
+                    value={age.toString()}
                     onChange={(e) => setAge(e.target.value)}
                   />
                   <br />
