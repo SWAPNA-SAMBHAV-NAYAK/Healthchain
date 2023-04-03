@@ -79,7 +79,6 @@ const Sidebar = () => {
 
           <p className="title">LISTS</p>
 
-
           {accountType === "admin" &&
             <>
               <Link to="/patients" style={{ textDecoration: 'none' }}>
@@ -89,9 +88,6 @@ const Sidebar = () => {
             </>
           }
 
-
-
-
           {accountType === "admin" &&
             <>
               <Link to="/doctors" style={{ textDecoration: 'none' }}>
@@ -99,10 +95,6 @@ const Sidebar = () => {
               </Link>
             </>
           }
-
-
-
-
 
           <Link to="/appointments" style={{ textDecoration: 'none' }}>
             <li><BookOnlineOutlinedIcon className="icon" /><span>Appointments</span></li>
@@ -128,8 +120,6 @@ const Sidebar = () => {
           }
 
 
-
-
           <p className="title">MESSAGE</p>
           {accountType === "admin" &&
             <>
@@ -147,7 +137,7 @@ const Sidebar = () => {
               </Link>
             </>
           }
-          
+
         </ul>
       </div>
 

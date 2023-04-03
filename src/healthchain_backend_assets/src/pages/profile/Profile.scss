@@ -1,0 +1,117 @@
+.profile {
+    display: flex;
+    width: 100%;
+
+    .navProfileContainer {
+        flex: 6;
+
+        .profileContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+
+            .profileImg {
+                width: 200px;
+                height: 200px;
+                border-radius: 50%;
+                overflow: hidden;
+                margin-bottom: 20px;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+                .editIcon {
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                    width: 30px;
+                    height: 30px;
+                    background-color: #ffffff;
+                    border-radius: 50%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+                    i {
+                        color: #3D8361;
+                        font-size: 20px;
+                    }
+                }
+            }
+
+            form {
+                display: grid;
+                flex-direction: column;
+                grid-template-columns: 1fr 1fr;
+                width: 100%;
+                max-width: 800px;
+
+                label {
+                    margin-bottom: 10px;
+                    font-weight: bold;
+                    color: #718096;
+                }
+
+
+                .col {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+
+                }
+
+                .uploadKaCSS {
+                    grid-column: span 2;
+                    justify-self: center;
+                }
+
+                input,
+                textarea,
+                select {
+                    border: none;
+                    border-radius: 4px;
+                    padding: 10px;
+                    margin-bottom: 20px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    background-color: #ffffff;
+                    color: #4a5568;
+                    font-size: 16px;
+                    width: calc(90% - 24px);
+
+
+
+                    &:disabled {
+                        background-color: #f7fafc;
+                        color: #cbd5e0;
+                    }
+                }
+
+                button {
+                    background-color: #3D8361;
+                    color: #ffffff;
+                    border: none;
+                    border-radius: 4px;
+                    padding: 10px;
+                    cursor: pointer;
+                    margin-top: 20px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    transition: background-color 0.2s ease;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                    grid-column: span 2;
+                    justify-self: center;
+
+                    &:hover {
+                        background-color: #024332;
+                    }
+                }
+            }
+        }
+    }
+}

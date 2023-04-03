@@ -12,6 +12,7 @@ import AddDoctor from "./pages/doctor/AddDoctor/AddDoctor";
 import DoctorInfo from "./pages/doctor/DoctorInfo/DoctorInfo";
 import Appointment from "./pages/appointments/Appointment";
 import AppointmentList from "./pages/appointmentlist/AppointmentList";
+import Profile from "./pages/profile/Profile";
 
 function App() {
 
@@ -22,6 +23,9 @@ function App() {
 
         <Route exact path={"/login"} element={<Login />} />
 
+
+        <Route exact path="/profile" element={<Profile />} />
+
         <Route exact path="/patients" element={<Patient />} />
         <Route exact path="/patients/:patient_id" element={<PatientInfo />} />
         <Route exact path={"addPatient"} element={<AddPatient />} />
@@ -30,8 +34,8 @@ function App() {
         <Route exact path="/doctors/:doctor_id" element={<DoctorInfo />} />
         <Route exact path={"addDoctor"} element={<AddDoctor />} />
 
-        <Route exact path="/appointments" element={<Appointment/>}/>
-        <Route exact path="/appointmentList" element={<AppointmentList/>}/>
+        <Route exact path="/appointments" element={<Appointment />} />
+        <Route exact path="/appointmentList" element={<AppointmentList />} />
 
         <Route exact path="/employees" element={<Employees />} />
       </Routes>

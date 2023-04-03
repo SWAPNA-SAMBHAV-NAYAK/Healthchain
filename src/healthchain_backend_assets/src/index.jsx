@@ -29,20 +29,20 @@ import { Principal } from "@dfinity/principal";
 //   );
 
 
-const init = async () => {
-    const authClient = await AuthClient.create();
+// const init = async () => {
+//     const authClient = await AuthClient.create();
 
-    if (await authClient.isAuthenticated()) {
-        handleAuthenticated(authClient);
-    } else {
-        await authClient.login({
-            identityProvider: "https://identity.ic0.app/#authorize",
-            onSuccess: () => {
-                handleAuthenticated(authClient);
-            },
-        });
-    }
-};
+//     // if (await authClient.isAuthenticated()) {
+//     //     handleAuthenticated(authClient);
+//     // } else {
+//     //     await authClient.login({
+//     //         identityProvider: "https://identity.ic0.app/#authorize",
+//     //         onSuccess: () => {
+//     //             handleAuthenticated(authClient);
+//     //         },
+//     //     });
+//     // }
+// };
 
 
 
@@ -50,25 +50,25 @@ const store = createStore(reducer, applyMiddleware(thunk));
 
 const root = createRoot(document.getElementById('root'));
 
-// root.render(
-//     <Router>
-//         <Provider store={store}>
-//             <App />
-//         </Provider>
-//     </Router>
-// );
+root.render(
+    <Router>
+        <Provider store={store}>
+            <App />
+        </Provider>
+    </Router>
+);
 
-async function handleAuthenticated(authClient) {
-    const identity = await authClient.getIdentity();
-    const userPrincipal = identity._principal.toString();
-    console.log(userPrincipal);
-    root.render(
-        <Router>
-            <Provider store={store}>
-                <App loggedInPrincipal={userPrincipal} />,
-            </Provider>
-        </Router>
-    );
-}
+// async function handleAuthenticated(authClient) {
+//     // const identity = await authClient.getIdentity();
+//     // const userPrincipal = identity._principal.toString();
+//     // console.log(userPrincipal);
+//     root.render(
+//         <Router>
+//             <Provider store={store}>
+//                 <App loggedInPrincipal={userPrincipal} />,
+//             </Provider>
+//         </Router>
+//     );
+// }
 
-init();
+// init();

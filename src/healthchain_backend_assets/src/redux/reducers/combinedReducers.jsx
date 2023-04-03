@@ -10,6 +10,7 @@ import doctorAppointmentOpenHourReducer from "./doctorAppointmentOpenHourReducer
 import appointmentReducer from "./appointmentReducer";
 import openBurgerNavReducer from "./openBurgerNavReducer";
 import accountTypeReducer from "./accountTypeReducer";
+import profileDataReducer from "./profileDataReducer";
 
 const reducer = combineReducers({
     patientList: patientReducer,
@@ -26,6 +27,7 @@ const reducer = combineReducers({
     isBurgerNavOpen: openBurgerNavReducer,
 
     accountType: accountTypeReducer,
+    profileData: profileDataReducer,
 });
 
 export default reducer;
