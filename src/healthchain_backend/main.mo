@@ -5,8 +5,36 @@ import Float "mo:base/Float";
 import Int "mo:base/Int";
 import Time "mo:base/Time";
 import HashMap "mo:base/HashMap";
+import Principal "mo:base/Principal";
 
 actor healthchain {
+
+  ///////////////////////////////////////// UserLoginData //////////////////////////////////////////////////
+
+  public type UserLoginData = {
+    user_id : Principal;
+    name : Text;
+    user_type : Text;
+  };
+
+  stable var userLoginDataList : List.List<UserLoginData> = List.nil<UserLoginData>();
+
+  public func createUserLogin(
+    user_id_data : Principal,
+    name_data : Text,
+    user_type_data : Text,
+  ) {
+
+    let newUserLogin : UserLoginData = {
+      user_id = user_id_data;
+      name = name_data;
+      user_type = user_type_data;
+    };
+
+    userLoginDataList := List.push(newUserLogin, userLoginDataList);
+
+    Debug.print(debug_show (userLoginDataList));
+  };
 
   ///////////////////////////////////////// Appointment //////////////////////////////////////////////////
 
@@ -20,13 +48,15 @@ actor healthchain {
 
   stable var appointments : List.List<Appointment> = List.nil<Appointment>();
 
-  public func createAppointment(
+  public shared (msg) func createAppointment(
     appointment_id_data : Text,
     patient_id_data : Text,
     doctor_id_data : Text,
     time_slot_data : Text,
     date_data : Text,
   ) {
+
+    Debug.print(debug_show (msg));
 
     let newAppointment : Appointment = {
       appointment_id = appointment_id_data;

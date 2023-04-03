@@ -1,58 +1,68 @@
-.sidebar{
+.sidebar {
   background-color: #024332;
-  flex:1;
-  border-right: 0.5px solid rgb(230,227,227);
-  height:100vh;
-  position:sticky;
-  top:0;
-  left:0;
+  // flex: 1.2;
+
+  border-right: 0.5px solid rgb(230, 227, 227);
+  height: 100vh;
+  top: 0;
+  left: 0;
   z-index: 1;
-  width:15%;
-  min-width: 230px;
+  width: 15%;
+  // min-width: 300px;
 
-  .top{
-    height:70px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+  transition: 0.3s ease-in-out;
+  -webkit-transition: 0.3s ease-in-out;
 
-    .logo{
-      font-size:32px;
-      font-weight:bolder;
-      color:#E9E8E8;
 
-      
+  transform: translateX(-100%);
+  opacity: 0;
+  position: absolute;
+
+  .top {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .logo {
+      font-size: 32px;
+      font-weight: bolder;
+      color: #E9E8E8;
+
+
     }
 
-    hr{
+    hr {
       height: 0;
-      border: 0.5px solid rgb(230,227,227);
+      border: 0.5px solid rgb(230, 227, 227);
     }
   }
 
-  .center{
-    padding-left:10px;
+  .center {
+    padding-left: 10px;
 
-    ul{
+    ul {
       list-style: none;
       margin: 10px;
       padding: 0;
 
-      .title{
-        font-size:16px;
+      .title {
+        font-size: 16px;
         font-weight: bold;
-        color:#E9E8E8;
-        margin-top:15px;
+        color: #E9E8E8;
+        margin-top: 15px;
         margin-bottom: 10px;
       }
 
-      .icon{
-        color:#E9E8E8;
-        padding-left:10px;
+      .icon, img {
+        color: #E9E8E8;
+        padding-left: 10px;
         padding-right: 15px;
       }
 
-      li{
+
+
+      li {
         display: flex;
         align-items: center;
         padding-top: 7px;
@@ -64,7 +74,7 @@
         margin: 3px;
         cursor: pointer;
 
-        &:hover{
+        &:hover {
           background-color: #3D8361;
           border-radius: 12px;
         }
@@ -72,4 +82,11 @@
       }
     }
   }
+}
+
+
+.nav-bar-active {
+  transform: translateX(0%);
+  opacity: 1;
+  position: sticky;
 }

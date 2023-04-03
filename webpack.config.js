@@ -68,7 +68,7 @@ module.exports = {
   output: {
     filename: "index.js",
     path: path.join(__dirname, "dist", frontendDirectory),
-    publicPath:"/",
+    publicPath: "/",
   },
 
   // Depending in the language or framework you are using for
@@ -77,11 +77,13 @@ module.exports = {
   // modules and CSS as described in the "Adding a stylesheet"
   // tutorial, uncomment the following lines:
   module: {
-   rules: [
-     { test: /\.(ts|tsx|jsx)$/, loader: "ts-loader" },
-    //  { test: /\.(s(a|c)ss)$/, use: ['style-loader','css-loader', 'sass-loader'] }
-    { test: /\.(sass|scss|css)$/, use: ['style-loader','css-loader', 'sass-loader'] }
-   ]
+    rules: [
+      { test: /\.(ts|tsx|jsx)$/, loader: "ts-loader" },
+      //  { test: /\.(s(a|c)ss)$/, use: ['style-loader','css-loader', 'sass-loader'] }
+      { test: /\.(sass|scss|css)$/, use: ['style-loader', 'css-loader', 'sass-loader'] },
+      { test: /\.(png|jpe?g|gif)$/i, use: ['file-loader',"url-loader"]},
+
+    ]
   },
   plugins: [
     new HtmlWebpackPlugin({

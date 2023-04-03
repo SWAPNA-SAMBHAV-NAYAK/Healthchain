@@ -101,6 +101,11 @@ export const idlFactory = ({ IDL }) => {
         [],
         ['oneway'],
       ),
+    'createUserLogin' : IDL.Func(
+        [IDL.Principal, IDL.Text, IDL.Text],
+        [],
+        ['oneway'],
+      ),
     'deleteEmployee' : IDL.Func([IDL.Text], [], ['oneway']),
     'getDoctorById' : IDL.Func([IDL.Text], [IDL.Opt(Doctor)], []),
     'readAppointments' : IDL.Func([], [IDL.Vec(Appointment)], ['query']),

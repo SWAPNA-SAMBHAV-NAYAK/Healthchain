@@ -99,6 +99,11 @@ export interface _SERVICE {
       arg_8: number,
       arg_9: string,
     ) => Promise<undefined>,
+  'createUserLogin' : (
+      arg_0: Principal,
+      arg_1: string,
+      arg_2: string,
+    ) => Promise<undefined>,
   'deleteEmployee' : (arg_0: string) => Promise<undefined>,
   'getDoctorById' : (arg_0: string) => Promise<[] | [Doctor]>,
   'readAppointments' : () => Promise<Array<Appointment>>,

@@ -66,6 +66,7 @@ service : {
   createNotice: (text, text) -> () oneway;
   createPatient: (text, text, text, text, int, text, text, float64, float64,
    text) -> () oneway;
+  createUserLogin: (principal, text, text) -> () oneway;
   deleteEmployee: (text) -> () oneway;
   getDoctorById: (text) -> (opt Doctor);
   readAppointments: () -> (vec Appointment) query;

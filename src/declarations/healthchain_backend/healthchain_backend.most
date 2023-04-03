@@ -49,6 +49,7 @@ type Patient =
     weight : Float
   };
 type Time = Int;
+type UserLoginData = {name : Text; user_id : Principal; user_type : Text};
 actor {
   stable var appointments : ?(Appointment, List<Appointment>);
   stable var departments : [Text];
@@ -56,5 +57,6 @@ actor {
     ?(DoctorOpenHours, List<DoctorOpenHours>);
   stable var doctors : ?(Doctor, List<Doctor>);
   stable var employees : ?(Employee, List<Employee>);
-  stable var patients : ?(Patient, List<Patient>)
+  stable var patients : ?(Patient, List<Patient>);
+  stable var userLoginDataList : ?(UserLoginData, List<UserLoginData>)
 };

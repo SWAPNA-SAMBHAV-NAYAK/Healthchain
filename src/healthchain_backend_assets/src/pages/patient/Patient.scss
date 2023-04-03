@@ -15,7 +15,7 @@
 
       .header {
         height: 100px;
-        width: 100%;
+        width: calc(100% - 30px);
         margin-bottom: 20px;
         -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
         box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
@@ -25,6 +25,7 @@
         justify-content: space-between;
         align-items: center;
         padding: 15px;
+
 
         button {
           cursor: pointer;
@@ -79,21 +80,23 @@
           .buttonContainer {
             display: flex;
             justify-content: center;
-            align-items:center;
+            align-items: center;
           }
 
-          .oneLongButton { width:100%;
+          .oneLongButton {
+            width: 100%;
             padding: 7px 20px;
-            font-size:16px;
-            font-weight:bold;
+            font-size: 16px;
+            font-weight: bold;
             background-color: #024332;
-            color:white;
-            border:none;
-            border-radius:5px;
+            color: white;
+            border: none;
+            border-radius: 5px;
 
-            &:hover{
+            &:hover {
               background-color: #4caf50;
             }
+
             // margin-top: 20px;
             // display: inline-block;
             // padding: 10px 50px;
@@ -116,3 +119,10 @@
     }
   }
 }
+
+
+// @media screen and (max-width: 500px) {
+//   .patientCard-container {
+//     grid-template-columns: 1fr;
+//   }
+// }

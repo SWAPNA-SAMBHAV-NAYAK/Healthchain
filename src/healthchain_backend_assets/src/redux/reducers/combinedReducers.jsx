@@ -8,6 +8,8 @@ import patientReducer from "./patientReducer"
 import doctorOpenHoursReducer from "./doctorOpenHoursReducer";
 import doctorAppointmentOpenHourReducer from "./doctorAppointmentOpenHourReducer";
 import appointmentReducer from "./appointmentReducer";
+import openBurgerNavReducer from "./openBurgerNavReducer";
+import accountTypeReducer from "./accountTypeReducer";
 
 const reducer = combineReducers({
     patientList: patientReducer,
@@ -17,11 +19,13 @@ const reducer = combineReducers({
     doctorById: doctorByIdReducer,
     doctorOpenHoursList: doctorOpenHoursReducer,
     departmentList: departmentReducer,
-    
+
     appointmentList: appointmentReducer,
 
     openHours: doctorAppointmentOpenHourReducer,
+    isBurgerNavOpen: openBurgerNavReducer,
 
+    accountType: accountTypeReducer,
 });
 
 export default reducer;

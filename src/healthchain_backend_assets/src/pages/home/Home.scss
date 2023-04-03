@@ -1,38 +1,83 @@
-*{
+* {
   font-family: "Montserrat", sans-serif;
 }
 
-.home{
-  display:flex;
-  flex-direction:row ;
+.home {
+  display: flex;
+  flex-direction: row;
   height: 100%;
-  
-  .homeContainer{
-    background-color:white;
-    flex:6;
-    
 
-    .widgets, .charts{
+  .homeContainer {
+    background-color: white;
+    flex: 6;
+    // display: grid;
+
+    // grid-template-areas:
+      // 'nav1 nav1 nav1 nav1'
+      // 'wid1 wid2 wid3 wid4'
+      // 'chart1 chart1 chart2 chart2'
+      // 'chart1 chart1 chart2 chart2'
+      // 'table1 table1 table1 table1';
+
+
+    // &:first-child {
+    //   grid-area: nav1;
+    // }
+
+    .widgets,
+    .charts {
       display: flex;
+      flex-wrap: wrap;
       padding: 20px;
-      gap:20px;
+      gap: 20px;
     }
 
-    .charts{
+    .charts {
       padding: 5px 20px;
     }
 
-    .tableContainer{
-      margin:20px;
-      padding:20px;
-      -webkit-box-shadow: 2px 4px 10px 1px rgba(0,0,0,0.47);
-      box-shadow: 2px 4px 10px 1px rgba(201,201,201,0.47);
-      
-      .tableTitle{
+
+    // .widgets:nth-child(1) {
+    //   grid-area: wid1;
+    // }
+
+    // .widgets:nth-child(2) {
+    //   grid-area: wid2;
+    // }
+
+    // .widgets:nth-child(3) {
+    //   grid-area: wid3;
+    // }
+
+    // .widgets:nth-child(4) {
+    //   grid-area: wid4;
+    // }
+
+
+    // .charts:nth-child(1) {
+    //   grid-area: chart1;
+    // }
+
+    // .charts:nth-child(2) {
+    //   grid-area: chart2;
+    // }
+
+    .tableContainer {
+      margin: 20px;
+      padding: 20px;
+      -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+      box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+
+      .tableTitle {
         font-weight: bold;
         color: gray;
         margin-bottom: 15px;
       }
+
+      // &:last-child {
+      //   grid-area: table1;
+      // }
+
     }
 
   }
