@@ -1,4 +1,4 @@
-const accountType = "patient";
+const accountType = "admin";
 
 const accountTypeReducer = (state = accountType, action) => {
     switch (action.type) {

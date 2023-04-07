@@ -52,6 +52,17 @@ export const idlFactory = ({ IDL }) => {
     'phone_number' : IDL.Text,
     'registered_on' : Time,
   });
+  const ProfileData = IDL.Record({
+    'age' : IDL.Text,
+    'user_principal' : IDL.Principal,
+    'user_type' : IDL.Text,
+    'contact' : IDL.Text,
+    'name' : IDL.Text,
+    'email' : IDL.Text,
+    'address' : IDL.Text,
+    'gender' : IDL.Text,
+    'image' : IDL.Vec(IDL.Nat8),
+  });
   return IDL.Service({
     'addDoctorOpenHours' : IDL.Func(
         [IDL.Text, IDL.Vec(IDL.Text), IDL.Vec(IDL.Vec(IDL.Text))],
@@ -101,8 +112,16 @@ export const idlFactory = ({ IDL }) => {
         [],
         ['oneway'],
       ),
-    'createUserLogin' : IDL.Func(
-        [IDL.Principal, IDL.Text, IDL.Text],
+    'createProfile' : IDL.Func(
+        [
+          IDL.Text,
+          IDL.Text,
+          IDL.Text,
+          IDL.Text,
+          IDL.Text,
+          IDL.Text,
+          IDL.Vec(IDL.Nat8),
+        ],
         [],
         ['oneway'],
       ),
@@ -115,6 +134,7 @@ export const idlFactory = ({ IDL }) => {
     'readNotices' : IDL.Func([], [IDL.Vec(Notice)], ['query']),
     'readOpenHours' : IDL.Func([], [IDL.Vec(DoctorOpenHours)], ['query']),
     'readPatients' : IDL.Func([], [IDL.Vec(Patient)], ['query']),
+    'readProfileData' : IDL.Func([], [IDL.Opt(ProfileData)], []),
     'updateDoctor' : IDL.Func(
         [
           IDL.Text,
@@ -154,6 +174,7 @@ export const idlFactory = ({ IDL }) => {
         [],
         ['oneway'],
       ),
+    'updateUserType' : IDL.Func([IDL.Principal, IDL.Text], [], ['oneway']),
   });
 };
 export const init = ({ IDL }) => { return []; };

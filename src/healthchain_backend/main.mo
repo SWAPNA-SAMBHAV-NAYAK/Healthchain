@@ -11,29 +11,96 @@ actor healthchain {
 
   ///////////////////////////////////////// UserLoginData //////////////////////////////////////////////////
 
-  public type UserLoginData = {
-    user_id : Principal;
+  let admin : Principal = Principal.fromText("uka3j-hvpxr-gk6vg-7c7jj-2ysk7-raykr-dqzu6-piqf4-vfsea-hmxo2-6qe");
+
+  public type ProfileData = {
+    user_principal : Principal;
     name : Text;
+    email : Text;
+    address : Text;
+    contact : Text;
+    age : Text;
+    gender : Text;
+    image : [Nat8];
     user_type : Text;
   };
 
-  stable var userLoginDataList : List.List<UserLoginData> = List.nil<UserLoginData>();
+  stable var userProfileDataList : List.List<ProfileData> = List.nil<ProfileData>();
 
-  public func createUserLogin(
-    user_id_data : Principal,
+  public shared (msg) func createProfile(
     name_data : Text,
-    user_type_data : Text,
+    email_data : Text,
+    address_data : Text,
+    contact_data : Text,
+    age_data : Text,
+    gender_data : Text,
+    image_data : [Nat8],
   ) {
 
-    let newUserLogin : UserLoginData = {
-      user_id = user_id_data;
+
+    Debug.print(debug_show (msg.caller));
+
+    let newProfileData : ProfileData = {
+      user_principal = msg.caller;
       name = name_data;
-      user_type = user_type_data;
+      email = email_data;
+      address = address_data;
+      contact = contact_data;
+      age = age_data;
+      gender = gender_data;
+      image = image_data;
+      user_type = "patient";
     };
 
-    userLoginDataList := List.push(newUserLogin, userLoginDataList);
+    userProfileDataList := List.push(newProfileData, userProfileDataList);
 
-    Debug.print(debug_show (userLoginDataList));
+  };
+
+  public shared (msg) func readProfileData() : async ?ProfileData {
+
+    Debug.print(debug_show (msg.caller));
+
+    return List.find(
+      userProfileDataList,
+      func(profileData : ProfileData) : Bool {
+        return profileData.user_principal == msg.caller;
+      },
+    );
+  };
+
+  public shared (msg) func updateUserType(userPrincipal : Principal, account_type : Text){
+
+    if (msg.caller == Principal.toText(admin)) {
+
+      var updatedProfileData = List.map(
+        userProfileDataList,
+        func(profile : ProfileData) : ProfileData {
+          if (profile.user_principal == userPrincipal) {
+
+            let updatedData : ProfileData = {
+              user_principal = profile.user_principal;
+              name = profile.name;
+              email = profile.email;
+              address = profile.address;
+              contact = profile.contact;
+              age = profile.age;
+              gender = profile.gender;
+              image = profile.image;
+              user_type = account_type;
+            };
+            return updatedData;
+
+          } else {
+            return profile;
+          };
+        },
+      );
+
+      Debug.print(debug_show (updatedProfileData));
+
+      userProfileDataList := updatedProfileData;
+    };
+
   };
 
   ///////////////////////////////////////// Appointment //////////////////////////////////////////////////

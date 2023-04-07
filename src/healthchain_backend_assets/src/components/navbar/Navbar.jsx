@@ -28,37 +28,47 @@ const Navbar = () => {
     console.log(profileData);
 
     if (profileData.image) {
+
+
+      console.log(profileData.image.length)
+
       const imgURL = URL.createObjectURL(profileData.image[0]);
+
       setImgIcon(
-        <img src={imgURL} width="50px" style={{height:"100%",objectFit:"cover"}} />
+        // style={{height:"100%",objectFit:"cover"}}
+        <div className="profileContainer" style={{ height: "35px", width: "35px", borderRadius: "50%", overflow: "hidden" }}>
+          <img src={imgURL} width="50px" style={{ height: "100%", width: "100%", objectFit: "cover", borderRadius: "50%" }} />
+        </div>
+
       )
+
     }
     else {
       setImgIcon(
-        <AccountCircleIcon className="icon" />
+        <AccountCircleIcon className="icon" width="35px" />
       )
     }
   }, [profileData])
 
   return (
     <div className="navbar">
-      <div className="wrapper">
-        <MenuIcon onClick={handleAdminBurgerClick} className={"burger-logo"} ref={burgerRef}
-          id={"burger-logo"} />
-        <div className="items">
-          <div className="item">
-            <Link to="/profile" style={{ textDecoration: 'none' }}>
-              {/* <AccountCircleIcon className="icon" /> */}
-              {imgIcon}
-            </Link>
+      {/* <div className="wrapper"> */}
+      <MenuIcon onClick={handleAdminBurgerClick} className={"burger-logo"} ref={burgerRef}
+        id={"burger-logo"} />
+      <div className="items">
+        <div className="item">
+          <Link to="/" style={{ textDecoration: 'none' }}>
+            {/* <AccountCircleIcon className="icon" /> */}
+            {imgIcon}
+          </Link>
 
-          </div>
-          <div className="item">
-            <LogoutIcon className="icon" />
-          </div>
         </div>
-
+        <div className="item">
+          <LogoutIcon className="icon" />
+        </div>
       </div>
+
+      {/* </div> */}
     </div>
   )
 }

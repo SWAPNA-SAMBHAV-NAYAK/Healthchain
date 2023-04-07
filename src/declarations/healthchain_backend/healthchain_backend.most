@@ -48,8 +48,19 @@ type Patient =
     registered_on : Time;
     weight : Float
   };
+type ProfileData =
+  {
+    address : Text;
+    age : Text;
+    contact : Text;
+    email : Text;
+    gender : Text;
+    image : [Nat8];
+    name : Text;
+    user_principal : Principal;
+    user_type : Text
+  };
 type Time = Int;
-type UserLoginData = {name : Text; user_id : Principal; user_type : Text};
 actor {
   stable var appointments : ?(Appointment, List<Appointment>);
   stable var departments : [Text];
@@ -58,5 +69,5 @@ actor {
   stable var doctors : ?(Doctor, List<Doctor>);
   stable var employees : ?(Employee, List<Employee>);
   stable var patients : ?(Patient, List<Patient>);
-  stable var userLoginDataList : ?(UserLoginData, List<UserLoginData>)
+  stable var userProfileDataList : ?(ProfileData, List<ProfileData>)
 };

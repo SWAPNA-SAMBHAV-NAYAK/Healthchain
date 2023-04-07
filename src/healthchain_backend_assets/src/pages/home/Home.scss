@@ -5,7 +5,7 @@
 .home {
   display: flex;
   flex-direction: row;
-  height: 100%;
+  height: 100vh;
 
   .homeContainer {
     background-color: white;
@@ -37,30 +37,6 @@
     }
 
 
-    // .widgets:nth-child(1) {
-    //   grid-area: wid1;
-    // }
-
-    // .widgets:nth-child(2) {
-    //   grid-area: wid2;
-    // }
-
-    // .widgets:nth-child(3) {
-    //   grid-area: wid3;
-    // }
-
-    // .widgets:nth-child(4) {
-    //   grid-area: wid4;
-    // }
-
-
-    // .charts:nth-child(1) {
-    //   grid-area: chart1;
-    // }
-
-    // .charts:nth-child(2) {
-    //   grid-area: chart2;
-    // }
 
     .tableContainer {
       margin: 20px;
@@ -74,9 +50,6 @@
         margin-bottom: 15px;
       }
 
-      // &:last-child {
-      //   grid-area: table1;
-      // }
 
     }
 

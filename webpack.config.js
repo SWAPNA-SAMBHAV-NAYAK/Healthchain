@@ -4,6 +4,10 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 
+const network =
+  process.env.DFX_NETWORK ||
+  (process.env.NODE_ENV === "production" ? "ic" : "local");
+
 function initCanisterEnv() {
   let localCanisters, prodCanisters;
   try {
@@ -21,9 +25,6 @@ function initCanisterEnv() {
     console.log("No production canister_ids.json found. Continuing with local");
   }
 
-  const network =
-    process.env.DFX_NETWORK ||
-    (process.env.NODE_ENV === "production" ? "ic" : "local");
 
   const canisterConfig = network === "local" ? localCanisters : prodCanisters;
 
@@ -41,6 +42,8 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 const frontendDirectory = "healthchain_backend_assets";
 
 const asset_entry = path.join("src", frontendDirectory, "src", "index.html");
+
+const internetIdentityUrl = network === "local" ? `http://localhost:8000/?canisterId=${canisterEnvVariables["INTERNET_IDENTITY_CANISTER_ID"]}` : `https://identity.ic0.app`;
 
 module.exports = {
   target: "web",
@@ -69,6 +72,8 @@ module.exports = {
     filename: "index.js",
     path: path.join(__dirname, "dist", frontendDirectory),
     publicPath: "/",
+    assetModuleFilename: 'src/healthchain_backend_assets/src/pages/diseaseIndex/images/[name].[ext]'
+
   },
 
   // Depending in the language or framework you are using for
@@ -81,7 +86,12 @@ module.exports = {
       { test: /\.(ts|tsx|jsx)$/, loader: "ts-loader" },
       //  { test: /\.(s(a|c)ss)$/, use: ['style-loader','css-loader', 'sass-loader'] }
       { test: /\.(sass|scss|css)$/, use: ['style-loader', 'css-loader', 'sass-loader'] },
-      { test: /\.(png|jpe?g|gif)$/i, use: ['file-loader',"url-loader"]},
+      // { test: /\.(png|jpe?g|gif)$/i, use: ['file-loader', "url-loader"] },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+      },
+
 
     ]
   },
@@ -100,6 +110,7 @@ module.exports = {
     }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: "development",
+      II_URL: internetIdentityUrl,
       ...canisterEnvVariables,
     }),
     new webpack.ProvidePlugin({

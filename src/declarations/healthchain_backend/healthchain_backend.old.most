@@ -21,6 +21,8 @@ type Doctor =
     qualification : Text;
     registered_on : Time
   };
+type DoctorOpenHours =
+  {doctor_id : Text; openHoursDates : [Text]; openHoursTime : [[Text]]};
 type Employee =
   {
     contact : Text;
@@ -46,11 +48,26 @@ type Patient =
     registered_on : Time;
     weight : Float
   };
+type ProfileData =
+  {
+    address : Text;
+    age : Text;
+    contact : Text;
+    email : Text;
+    gender : Text;
+    image : [Nat8];
+    name : Text;
+    user_principal : Principal;
+    user_type : Text
+  };
 type Time = Int;
 actor {
   stable var appointments : ?(Appointment, List<Appointment>);
   stable var departments : [Text];
+  stable var doctor_open_hours_list :
+    ?(DoctorOpenHours, List<DoctorOpenHours>);
   stable var doctors : ?(Doctor, List<Doctor>);
   stable var employees : ?(Employee, List<Employee>);
-  stable var patients : ?(Patient, List<Patient>)
+  stable var patients : ?(Patient, List<Patient>);
+  stable var userProfileDataList : ?(ProfileData, List<ProfileData>)
 };

@@ -51,6 +51,17 @@ export interface Patient {
   'phone_number' : string,
   'registered_on' : Time,
 }
+export interface ProfileData {
+  'age' : string,
+  'user_principal' : Principal,
+  'user_type' : string,
+  'contact' : string,
+  'name' : string,
+  'email' : string,
+  'address' : string,
+  'gender' : string,
+  'image' : Array<number>,
+}
 export type Time = bigint;
 export interface _SERVICE {
   'addDoctorOpenHours' : (
@@ -99,10 +110,14 @@ export interface _SERVICE {
       arg_8: number,
       arg_9: string,
     ) => Promise<undefined>,
-  'createUserLogin' : (
-      arg_0: Principal,
+  'createProfile' : (
+      arg_0: string,
       arg_1: string,
       arg_2: string,
+      arg_3: string,
+      arg_4: string,
+      arg_5: string,
+      arg_6: Array<number>,
     ) => Promise<undefined>,
   'deleteEmployee' : (arg_0: string) => Promise<undefined>,
   'getDoctorById' : (arg_0: string) => Promise<[] | [Doctor]>,
@@ -113,6 +128,7 @@ export interface _SERVICE {
   'readNotices' : () => Promise<Array<Notice>>,
   'readOpenHours' : () => Promise<Array<DoctorOpenHours>>,
   'readPatients' : () => Promise<Array<Patient>>,
+  'readProfileData' : () => Promise<[] | [ProfileData]>,
   'updateDoctor' : (
       arg_0: string,
       arg_1: Time,
@@ -148,4 +164,5 @@ export interface _SERVICE {
       arg_9: number,
       arg_10: string,
     ) => Promise<undefined>,
+  'updateUserType' : (arg_0: Principal, arg_1: string) => Promise<undefined>,
 }
