@@ -34,8 +34,6 @@ const Doctor = () => {
   function handleDoctorCardClick(e) {
     const doctor_id = e.target.id;
 
-    // dispatch(loadDoctorById(doctor_id));
-
     navigate(`/doctors/${doctor_id}`)
   }
 
@@ -55,14 +53,14 @@ const Doctor = () => {
             {
               doctors.map((doctorData) => {
                 return (
-                  <div className="doctorCard" key={doctorData.doctor_id}>
+                  <div className="doctorCard" key={doctorData.user_principal.toText()}>
                     <h2>{doctorData.name}</h2>
                     <span className="timestamp">{new Date(Number(doctorData.registered_on) / 1000000).toLocaleString()}</span>
                     <p><strong>{doctorData.department}</strong></p>
                     <p>{doctorData.email}</p>
-                    <p>{doctorData.phone_number}</p>
+                    <p>{doctorData.contact}</p>
                     <div className="buttonContainer">
-                      <button className="oneLongButton" id={doctorData.doctor_id} onClick={handleDoctorCardClick}>View Card</button>
+                      <button className="oneLongButton" id={doctorData.user_principal.toText()} onClick={handleDoctorCardClick}>View Card</button>
                     </div>
                   </div>)
               })

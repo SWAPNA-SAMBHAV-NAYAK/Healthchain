@@ -5,13 +5,14 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { updateProfileData } from "../../redux/actions/profileDataAction";
-import { healthchain_backend } from "../../../../declarations/healthchain_backend/index";
 import { useForm } from "react-hook-form";
 
 import { canisterId, createActor } from "../../../../declarations/healthchain_backend";
 import { AuthClient } from "@dfinity/auth-client";
 
+
 function Profile() {
+
 
 
 
@@ -22,6 +23,7 @@ function Profile() {
 
 
     const dispatch = useDispatch();
+
 
 
     const { register, handleSubmit, reset } = useForm(
@@ -85,15 +87,8 @@ function Profile() {
 
 
     useEffect(() => {
-
-
         if (profileData.image) {
-
             const imageurl = URL.createObjectURL(profileData.image[0]);
-
-            console.log(imageurl);
-
-
             setImageTag(
                 <img id="imgId" src={imageurl} alt="Profile Pic" />
             )
@@ -137,7 +132,7 @@ function Profile() {
             },
         });
 
-        await authenticatedCanister.createProfile(data.name,
+        const result = await authenticatedCanister.createProfile(data.name,
             data.email,
             data.address,
             data.contact,
@@ -148,8 +143,6 @@ function Profile() {
 
         dispatch(updateProfileData())
 
-
-        // Save edited info in motoko
 
         Swal.fire({
             position: "top-end",

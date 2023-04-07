@@ -20,6 +20,7 @@ const Sidebar = () => {
 
 
   const { accountType } = useSelector(state => state);
+  const { profileData } = useSelector(state => state.profileData);
 
 
 
@@ -96,9 +97,27 @@ const Sidebar = () => {
             </>
           }
 
-          <Link to="/appointments" style={{ textDecoration: 'none' }}>
-            <li><BookOnlineOutlinedIcon className="icon" /><span>Appointments</span></li>
-          </Link>
+          {accountType === "doctor" &&
+            <>
+              <Link to={`/doctors/${profileData.user_principal.toText()}`} style={{ textDecoration: 'none' }}>
+                <li><PersonOutlinedIcon className="icon" /><span> Workspace </span></li>
+              </Link>
+            </>
+          }
+
+
+          {accountType !== "doctor" &&
+            <Link to="/appointments" style={{ textDecoration: 'none' }}>
+              <li><BookOnlineOutlinedIcon className="icon" /><span>Appointments</span></li>
+            </Link>
+          }
+
+
+
+            <Link to="/appointmentList" style={{ textDecoration: 'none' }}>
+              <li><BookOnlineOutlinedIcon className="icon" /><span>Appointments List</span></li>
+            </Link>
+          
 
           <Link to="/diagnosis" style={{ textDecoration: 'none' }}>
             <li> <img src={"https://upload.wikimedia.org/wikipedia/commons/c/c2/Coronavirus_icon.svg"} width="50px" /> <span>Diagnosis.ai </span></li>

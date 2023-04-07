@@ -9,64 +9,10 @@ import { loadDepartmentList } from "../../redux/actions/departmentAction";
 import { loadDoctorAppointmentOpenHours } from "../../redux/actions/doctorAppointmentOpenHourAction";
 import { loadDoctorList } from "../../redux/actions/doctorAction";
 
-
-// const doctors = [
-//     {
-//         id: 1,
-//         name: "Sambhav",
-//         department: "Cardiology",
-//         cabinNumber: "101",
-//         availableSlots: [
-//             "9:00 AM",
-//             "10:00 AM",
-//             "11:00 AM",
-//             "2:00 PM",
-//             "3:00 PM",
-//             "4:00 PM"
-//         ]
-//     },
-//     {
-//         id: 2,
-//         name: "Samyak",
-//         department: "Dermatology",
-//         cabinNumber: "102",
-//         availableSlots: [
-//             "10:00 AM",
-//             "11:00 AM",
-//             "12:00 PM",
-//             "3:00 PM",
-//             "4:00 PM",
-//             "5:00 PM"
-//         ]
-//     },
-//     {
-//         id: 3,
-//         name: "Manan",
-//         department: "Pediatrics",
-//         cabinNumber: "103",
-//         availableSlots: ["8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM"]
-//     },
-//     {
-//         id: 4,
-//         name: "Dhanunjay",
-//         department: "Gynecology",
-//         cabinNumber: "104",
-//         availableSlots: ["9:00 AM", "11:00 AM", "1:00 PM", "3:00 PM"]
-//     },
-//     {
-//         id: 5,
-//         name: "Akshay",
-//         department: "Orthopaedics",
-//         cabinNumber: "105",
-//         availableSlots: ["2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM"]
-//     }
-// ];
-
 const Appointment = () => {
     const [chosenDepartment, setChosenDepartment] = useState("All Departments");
 
     const [doctorApptOpenHoursList, setDoctorApptOpenHoursList] = useState([]);
-
 
     const dispatch = Redux.useDispatch();
 
@@ -93,16 +39,18 @@ const Appointment = () => {
     React.useEffect(() => {
         for (let i = 0; i < openHours.length; i++) {
             const doc_details = {};
-            doc_details.doctor_id = openHours[i].doctor_id;
+            doc_details.doctor_id = openHours[i].doctor_id.toText();
             doc_details.openHoursDates = openHours[i].openHoursDates;
             doc_details.openHoursTime = openHours[i].openHoursTime;
 
             doctors.find((doc, index, arr) => {
-                if (doc.doctor_id === openHours[i].doctor_id) {
+                if (doc.user_principal.toText() === openHours[i].doctor_id.toText()) {
                     doc_details.name = doc.name;
                     doc_details.department = doc.department;
                 }
             })
+
+            console.log(doc_details)
 
             if (doc_details.name !== undefined) {
                 setDoctorApptOpenHoursList((oldList) => {

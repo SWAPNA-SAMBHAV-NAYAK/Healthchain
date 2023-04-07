@@ -12,13 +12,22 @@ import { loadDoctorList } from '../../../redux/actions/doctorAction';
 import { loadDoctorById } from '../../../redux/actions/doctorByIdAction';
 import { loadDepartmentList } from '../../../redux/actions/departmentAction';
 import DateSelector from './DateSelector';
+import { loadDoctorMetaDataById } from '../../../redux/actions/doctorMetaDataAction';
+import { Principal } from "@dfinity/principal";
+import useAuthenticatedCannister from '../../../useAuthenticatedCannister';
 
 export default function DoctorInfo() {
 
   const dispatch = useDispatch();
 
+  const authCannister = useAuthenticatedCannister();
+
 
   const { doctorById } = useSelector(state => state.doctorById);
+
+  const { accountType } = useSelector(state => state);
+
+  const { doctorMetaDataById } = useSelector(state => state.doctorMetaDataById);
 
   const { departments } = useSelector(state => state.departmentList);
 
@@ -31,14 +40,15 @@ export default function DoctorInfo() {
   const [isOpenHoursOpen, setIsOpenHoursOpen] = useState(false);
 
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [gender, setGender] = useState("");
-  const [registeredOn, setRegisteredOn] = useState("");
+  // const [name, setName] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [phoneNumber, setPhoneNumber] = useState("");
+  // const [gender, setGender] = useState("");
+  // const [registeredOn, setRegisteredOn] = useState("");
 
-  const [age, setAge] = useState(0);
-  const [address, setAddress] = useState("");
+  // const [age, setAge] = useState(0);
+  // const [address, setAddress] = useState("");
+
   const [designation, setDesignation] = useState("");
   const [qualification, setQualification] = useState("");
   const [department, setDepartment] = useState("");
@@ -47,24 +57,25 @@ export default function DoctorInfo() {
 
   useEffect(() => {
     dispatch(loadDoctorById(params.doctor_id));
+    dispatch(loadDoctorMetaDataById(params.doctor_id));
   }, [params])
 
 
-  useEffect(() => {
-    if (doctorById.name !== undefined) {
-      setName(doctorById.name)
-      setEmail(doctorById.email)
-      setGender(doctorById.gender)
-      setPhoneNumber(doctorById.phone_number)
-      setAge(doctorById.age)
-      setAddress(doctorById.address)
-      setQualification(doctorById.qualification)
-      setDepartment(doctorById.department)
-      setDesignation(doctorById.designation)
-      setRegisteredOn(new Date(Number(doctorById.registered_on) / 1000000).toLocaleString())
-    }
+  // useEffect(() => {
+  //   if (doctorById.name !== undefined) {
+  //     setName(doctorById.name)
+  //     setEmail(doctorById.email)
+  //     setGender(doctorById.gender)
+  //     setPhoneNumber(doctorById.phone_number)
+  //     setAge(doctorById.age)
+  //     setAddress(doctorById.address)
+  //     setQualification(doctorById.qualification)
+  //     setDepartment(doctorById.department)
+  //     setDesignation(doctorById.designation)
+  //     setRegisteredOn(new Date(Number(doctorById.registered_on) / 1000000).toLocaleString())
+  //   }
 
-  }, [doctorById])
+  // }, [doctorById])
 
 
   useEffect(() => {
@@ -92,10 +103,7 @@ export default function DoctorInfo() {
     })
 
 
-    await healthchain_backend.addDoctorOpenHours(
-      params.doctor_id,
-      dates,
-      times);
+    await authCannister.addDoctorOpenHours(dates, times);
 
 
     setIsOpenHoursOpen(false);
@@ -113,16 +121,17 @@ export default function DoctorInfo() {
     e.preventDefault();
 
 
+    const authClient = await AuthClient.create();
+    const identity = await authClient.getIdentity();
 
-    await healthchain_backend.updateDoctor(
-      params.doctor_id,
-      doctorById.registered_on,
-      name,
-      email,
-      phoneNumber,
-      parseInt(age),
-      address,
-      gender,
+    const authenticatedCanister = createActor(canisterId, {
+      agentOptions: {
+        identity,
+      },
+    });
+
+    await authenticatedCanister.createOrUpdateDoctorMetaData(
+      Principal.fromText(params.doctor_id),
       designation,
       qualification,
       department,
@@ -150,31 +159,31 @@ export default function DoctorInfo() {
           <div className="doctorDetailsCard">
             <div className="doctorDetailsCardContent">
               <div className="cardTextContainer">
-                <h2 className="cardHeader">{name}</h2>
+                <h2 className="cardHeader">{doctorById.name}</h2>
                 <div className="cardTags">
                   <span className="tag" id="tag1">
-                    <strong>Age:</strong> {parseInt(age)}
+                    <strong>Age:</strong> {parseInt(doctorById.age)}
                   </span>
                   <span className="tag" id="tag2">
-                    <strong>Gender:</strong> {gender}
+                    <strong>Gender:</strong> {doctorById.gender}
                   </span>
 
                   <span className="tag" id="tag3">
                     <strong>Registered On:</strong>
-                    {registeredOn}
+                    {new Date(Number(doctorById.registered_on) / 1000000).toLocaleString()}
                   </span>
                   <span className="tag" id="tag4">
-                    <strong>Designation:</strong> {designation}
+                    <strong>Designation:</strong> {doctorMetaDataById.designation}
                   </span>
                   <span className="tag" id="tag5">
-                    <strong>Qualification:</strong> {qualification}
+                    <strong>Qualification:</strong> {doctorMetaDataById.qualification}
                   </span>
                   <span className="tag" id="tag6">
-                    <strong>Department:</strong> {department}
+                    <strong>Department:</strong> {doctorMetaDataById.department}
                   </span>
                 </div>
                 <p className="tag" id="tag7">
-                  <strong>Address: </strong>  {address}
+                  <strong>Address: </strong>  {doctorById.address}
                 </p>
               </div>
               <div className="cardButtons">
@@ -183,7 +192,7 @@ export default function DoctorInfo() {
                   id="edit-button"
                   onClick={handleEditButton}
                 >Edit Details</button>
-                <button className="btnDesign" onClick={handleOpenHoursButton}>Add Open Hours</button>
+                {accountType === "doctor" && <button className="btnDesign" onClick={handleOpenHoursButton}>Add Open Hours</button>}
 
               </div>
             </div>
@@ -204,15 +213,6 @@ export default function DoctorInfo() {
             isPopupOpen && (
               <div id="popup">
                 <form id="form" onSubmit={handleSubmit}>
-                  <label htmlFor="tag1">Age:</label>
-                  <input
-                    type="text"
-                    id="tag-1-input"
-                    name="tag1"
-                    value={age.toString()}
-                    onChange={(e) => setAge(e.target.value)}
-                  />
-                  <br />
                   <label htmlFor="tag3">Designation:</label>
                   <input
                     type="text"
@@ -231,15 +231,6 @@ export default function DoctorInfo() {
                     onChange={(e) => setQualification(e.target.value)}
                   />
                   <br />
-                  {/* <label htmlFor="tag5">Department:</label>
-                  <input
-                    type="text"
-                    id="tag-5-input"
-                    name="tag5"
-                    value={department}
-                    onChange={(e) => setDepartment(e.target.value)}
-                  />
-                  <br /> */}
 
                   <label htmlFor="tag5">Department:</label>
                   <select value={department} id="tag-5-input"
@@ -251,16 +242,6 @@ export default function DoctorInfo() {
                       </option>
                     ))}
                   </select>
-
-
-                  <label htmlFor="tag2">Address:</label>
-                  <textarea
-                    type="text"
-                    id="tag-2-input"
-                    name="tag2"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                  />
                   <br />
                   <button type="submit">Save Changes</button>
                 </form>

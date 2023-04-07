@@ -8,28 +8,30 @@ type ProfileData =
    gender: text;
    image: vec nat8;
    name: text;
+   registered_on: Time;
    user_principal: principal;
    user_type: text;
- };
-type Patient = 
- record {
-   address: text;
-   age: int;
-   blood_group: text;
-   email: text;
-   gender: text;
-   height: float64;
-   name: text;
-   patient_id: text;
-   phone_number: text;
-   registered_on: Time;
-   weight: float64;
  };
 type Notice = 
  record {
    from: text;
    notice: text;
    time_stamp: Time;
+ };
+type MedicalLog = 
+ record {
+   additional_notes: text;
+   blood_group: text;
+   blood_pressure: int;
+   doctor_id: principal;
+   height: float64;
+   medications: text;
+   patient_id: principal;
+   pulse_rate: float64;
+   spo2: int;
+   temperature: float64;
+   time_stamp: Time;
+   weight: float64;
  };
 type Employee = 
  record {
@@ -43,56 +45,50 @@ type Employee =
  };
 type DoctorOpenHours = 
  record {
-   doctor_id: text;
+   doctor_id: principal;
    openHoursDates: vec text;
    openHoursTime: vec vec text;
  };
-type Doctor = 
+type DoctorMetaData = 
  record {
-   address: text;
-   age: int;
    department: text;
    designation: text;
-   doctor_id: text;
-   email: text;
-   gender: text;
-   name: text;
-   phone_number: text;
+   doctor_id: principal;
    qualification: text;
-   registered_on: Time;
  };
 type Appointment = 
  record {
    appointment_id: text;
    date: text;
-   doctor_id: text;
-   patient_id: text;
+   doctor_id: principal;
+   patient_id: principal;
    time_slot: text;
  };
 service : {
-  addDoctorOpenHours: (text, vec text, vec vec text) -> ();
+  addDoctorOpenHours: (vec text, vec vec text) -> ();
   createAppointment: (text, text, text, text, text) -> () oneway;
-  createDoctor: (text, text, text, text, int, text, text, text, text,
-   text) -> () oneway;
   createEmployee: (text, text, text, text, text, int, text) -> () oneway;
+  createMedicalLog: (text, float64, int, int, float64, text, text, text,
+   float64, float64) -> () oneway;
   createNotice: (text, text) -> () oneway;
-  createPatient: (text, text, text, text, int, text, text, float64, float64,
-   text) -> () oneway;
-  createProfile: (text, text, text, text, text, text, vec nat8) -> () oneway;
+  createOrUpdateDoctor: (principal, text, text, text) -> () oneway;
+  createProfile: (text, text, text, text, text, text, vec nat8) ->
+   (ProfileData);
   deleteEmployee: (text) -> () oneway;
-  getDoctorById: (text) -> (opt Doctor);
-  readAppointments: () -> (vec Appointment) query;
+  getDoctorById: (text) -> (opt ProfileData);
+  getDoctorMetaDataById: (text) -> (opt DoctorMetaData);
+  getPatientById: (text) -> (opt ProfileData);
+  readAllAppointments: () -> (vec Appointment) query;
   readDepartments: () -> (vec text) query;
-  readDoctors: () -> (vec Doctor) query;
+  readDoctorAppointments: () -> (vec Appointment);
+  readDoctors: () -> (vec ProfileData);
   readEmployees: () -> (vec Employee) query;
+  readMedicalLogs: (text) -> (vec MedicalLog) query;
   readNotices: () -> (vec Notice) query;
   readOpenHours: () -> (vec DoctorOpenHours) query;
-  readPatients: () -> (vec Patient) query;
+  readPatientAppointments: () -> (vec Appointment);
+  readPatients: () -> (vec ProfileData);
   readProfileData: () -> (opt ProfileData);
-  updateDoctor: (text, Time, text, text, text, int, text, text, text, 
-   text, text) -> () oneway;
   updateEmployee: (text, text, text, text, text, int, text) -> () oneway;
-  updatePatient: (text, Time, text, text, text, int, text, text, float64,
-   float64, text) -> () oneway;
-  updateUserType: (principal, text) -> ();
+  updateUserType: (principal, text) -> () oneway;
 }

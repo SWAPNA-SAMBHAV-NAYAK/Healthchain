@@ -7,8 +7,12 @@ import uuid from 'react-uuid';
 
 import { canisterId, createActor } from "../../../../declarations/healthchain_backend";
 import { AuthClient } from "@dfinity/auth-client";
+import useAuthenticatedCannister from "../../useAuthenticatedCannister";
 
 const AppointmentCard = ({ doctor_id, name, department, openHoursDates, openHoursTime }) => {
+
+
+  const authCannister = useAuthenticatedCannister();
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [chosenSlot, setChosenSlot] = useState("");
@@ -30,23 +34,14 @@ const AppointmentCard = ({ doctor_id, name, department, openHoursDates, openHour
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const authClient = await AuthClient.create();
-    const identity = await authClient.getIdentity();
-
-    const authenticatedCanister = createActor(canisterId, {
-      agentOptions: {
-        identity,
-      },
-    });
-
-    await authenticatedCanister.createAppointment(
+    await authCannister.createAppointment(
       uuid(),
       patientId,
       doctor_id,
       chosenSlot,
       chosenDate.toLocaleDateString(),
     )
-    
+
     setIsPopupOpen(false);
 
     Swal.fire({

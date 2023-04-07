@@ -9,6 +9,7 @@ import { loadPatientList } from "../../redux/actions/patientAction";
 import { Routes, Route } from "react-router-dom";
 import PatientInfo from "./PatientInfo/PatientInfo";
 import { loadPatientById } from "../../redux/actions/patientByIdAction";
+import { Principal } from '@dfinity/principal';
 
 const Patient = () => {
 
@@ -32,9 +33,6 @@ const Patient = () => {
 
   function handlePatientCardClick(e) {
     const patient_id = e.target.id;
-
-    dispatch(loadPatientById(patient_id, patients));
-
     navigate(`/patients/${patient_id}`)
   }
 
@@ -54,19 +52,18 @@ const Patient = () => {
             {
               patients.map((patientData) => {
                 return (
-                  <div className="patientCard" key={patientData.patient_id}>
+                  <div className="patientCard"
+                    key={patientData.user_principal.toText()}
+                  >
                     <h2>{patientData.name}</h2>
-                    {/* <span className="timestamp">{patientData.registered_on}</span> */}
                     <span className="timestamp">{new Date(Number(patientData.registered_on) / 1000000).toLocaleString()}</span>
 
                     <p>{patientData.email}</p>
-                    <p>{patientData.phone_number}</p>
+                    <p>{patientData.contact}</p>
                     <div className="buttonContainer">
-                      <button className="oneLongButton" id={patientData.patient_id} onClick={handlePatientCardClick}>View Card</button>
-                      {/* <button>View Logs</button>
-                      <Link to="/patients/123">Patient 123</Link>
-
-                      <button>Edit Details</button> */}
+                      <button className="oneLongButton"
+                        id={patientData.user_principal.toText()}
+                        onClick={handlePatientCardClick}>View Card</button>
                     </div>
                   </div>)
               })

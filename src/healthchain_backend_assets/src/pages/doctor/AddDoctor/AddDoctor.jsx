@@ -11,43 +11,43 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadDepartmentList } from "../../../redux/actions/departmentAction";
 
 const doctorInput = [
-  {
-    id: 1,
-    label: "Name",
-    name: "name",
-    type: "text",
-    // placeholder: "",
-  },
-  {
-    id: 2,
-    label: "Email",
-    name: "email",
-    type: "email",
-  },
-  {
-    id: 3,
-    label: "Contact",
-    name: "phone_number",
-    type: "text",
-  },
-  {
-    id: 4,
-    label: "Age",
-    name: "age",
-    type: "number",
-  },
-  {
-    id: 5,
-    label: "Address",
-    name: "address",
-    type: "text",
-  },
-  {
-    id: 6,
-    label: "Gender",
-    name: "gender",
-    type: "text",
-  },
+  // {
+  //   id: 1,
+  //   label: "Name",
+  //   name: "name",
+  //   type: "text",
+  //   // placeholder: "",
+  // },
+  // {
+  //   id: 2,
+  //   label: "Email",
+  //   name: "email",
+  //   type: "email",
+  // },
+  // {
+  //   id: 3,
+  //   label: "Contact",
+  //   name: "phone_number",
+  //   type: "text",
+  // },
+  // {
+  //   id: 4,
+  //   label: "Age",
+  //   name: "age",
+  //   type: "number",
+  // },
+  // {
+  //   id: 5,
+  //   label: "Address",
+  //   name: "address",
+  //   type: "text",
+  // },
+  // {
+  //   id: 6,
+  //   label: "Gender",
+  //   name: "gender",
+  //   type: "text",
+  // },
   {
     id: 7,
     label: "Designation",

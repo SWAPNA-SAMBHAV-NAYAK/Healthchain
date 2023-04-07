@@ -1,12 +1,24 @@
 import { healthchain_backend } from "../../../../declarations/healthchain_backend";
+import useAuthenticatedCannister from "../../useAuthenticatedCannister";
 
-export const loadAppointmentList = () => async (dispatch) => {
+export const loadAppointmentList = (user_type, authCannister) => async (dispatch) => {
 
-  const appointmentList = await healthchain_backend.readAppointments();
+  let appointmentList;
 
-  // patientList[0].registered_on = new Date(Number(1677430591566570000n) / 1000000).toDateString();
+  console.log("up")
+
+  switch (user_type) {
+    case "admin":
+      appointmentList = await authCannister.readAppointments();
+    case "patient":
+      appointmentList = await authCannister.readPatientAppointments();
+    case "doctor":
+      appointmentList = await authCannister.readDoctorAppointments();
+  }
+
+  console.log("down")
   dispatch({
-    type:'get_appointment',
+    type: 'get_appointment',
     payload: { appointments: appointmentList },
-  }) 
+  })
 } 

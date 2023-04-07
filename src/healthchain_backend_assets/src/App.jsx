@@ -15,21 +15,43 @@ import AppointmentList from "./pages/appointmentlist/AppointmentList";
 import Profile from "./pages/profile/Profile";
 import DIMainPage from "./pages/diseaseIndex/DIMainPage";
 
+import { useDispatch, useSelector } from "react-redux";
+import { setAccountTypeState } from "./redux/actions/accountTypeAction";
+import { updateProfileData } from "./redux/actions/profileDataAction";
+
 function App() {
+
+  const dispatch = useDispatch();
+
+  const { profileData } = useSelector((state) => state.profileData);
+
+
+  useEffect(() => {
+    if (profileData.user_type) {
+      dispatch(setAccountTypeState(profileData.user_type))
+    } else {
+      dispatch(setAccountTypeState("patient"))
+    }
+  }, [dispatch, profileData]);
+  
+
+  useEffect(() => {
+    dispatch(updateProfileData());
+  },[])
 
   return (
     <div className="App">
       <Routes>
 
         <Route exact path="/" element={<Profile />} />
-        
+
 
         <Route exact path={"/dashboard"} element={<Home />} />
 
         <Route exact path={"/login"} element={<Login />} />
 
 
-        
+
 
         <Route exact path="/patients" element={<Patient />} />
         <Route exact path="/patients/:patient_id" element={<PatientInfo />} />
@@ -40,7 +62,7 @@ function App() {
         <Route exact path={"/addDoctor"} element={<AddDoctor />} />
 
 
-        <Route exact path={"/diseaseindex"} element={<DIMainPage/>} />
+        <Route exact path={"/diseaseindex"} element={<DIMainPage />} />
 
         <Route exact path="/appointments" element={<Appointment />} />
         <Route exact path="/appointmentList" element={<AppointmentList />} />

@@ -24,24 +24,13 @@ const Navbar = () => {
   }
 
   useEffect(() => {
-
-    console.log(profileData);
-
     if (profileData.image) {
-
-
-      console.log(profileData.image.length)
-
       const imgURL = URL.createObjectURL(profileData.image[0]);
-
       setImgIcon(
-        // style={{height:"100%",objectFit:"cover"}}
         <div className="profileContainer" style={{ height: "35px", width: "35px", borderRadius: "50%", overflow: "hidden" }}>
           <img src={imgURL} width="50px" style={{ height: "100%", width: "100%", objectFit: "cover", borderRadius: "50%" }} />
         </div>
-
       )
-
     }
     else {
       setImgIcon(

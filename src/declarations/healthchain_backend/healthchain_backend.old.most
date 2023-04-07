@@ -3,26 +3,19 @@ type Appointment =
   {
     appointment_id : Text;
     date : Text;
-    doctor_id : Text;
-    patient_id : Text;
+    doctor_id : Principal;
+    patient_id : Principal;
     time_slot : Text
   };
-type Doctor =
+type DoctorMetaData =
   {
-    address : Text;
-    age : Int;
     department : Text;
     designation : Text;
-    doctor_id : Text;
-    email : Text;
-    gender : Text;
-    name : Text;
-    phone_number : Text;
-    qualification : Text;
-    registered_on : Time
+    doctor_id : Principal;
+    qualification : Text
   };
 type DoctorOpenHours =
-  {doctor_id : Text; openHoursDates : [Text]; openHoursTime : [[Text]]};
+  {doctor_id : Principal; openHoursDates : [Text]; openHoursTime : [[Text]]};
 type Employee =
   {
     contact : Text;
@@ -34,18 +27,19 @@ type Employee =
     salary : Int
   };
 type List<T> = ?(T, List<T>);
-type Patient =
+type MedicalLog =
   {
-    address : Text;
-    age : Int;
+    additional_notes : Text;
     blood_group : Text;
-    email : Text;
-    gender : Text;
+    blood_pressure : Int;
+    doctor_id : Principal;
     height : Float;
-    name : Text;
-    patient_id : Text;
-    phone_number : Text;
-    registered_on : Time;
+    medications : Text;
+    patient_id : Principal;
+    pulse_rate : Float;
+    spo2 : Int;
+    temperature : Float;
+    time_stamp : Time;
     weight : Float
   };
 type ProfileData =
@@ -57,6 +51,7 @@ type ProfileData =
     gender : Text;
     image : [Nat8];
     name : Text;
+    registered_on : Time;
     user_principal : Principal;
     user_type : Text
   };
@@ -66,8 +61,8 @@ actor {
   stable var departments : [Text];
   stable var doctor_open_hours_list :
     ?(DoctorOpenHours, List<DoctorOpenHours>);
-  stable var doctors : ?(Doctor, List<Doctor>);
+  stable var doctors : ?(DoctorMetaData, List<DoctorMetaData>);
   stable var employees : ?(Employee, List<Employee>);
-  stable var patients : ?(Patient, List<Patient>);
+  stable var medicalLogs : ?(MedicalLog, List<MedicalLog>);
   stable var userProfileDataList : ?(ProfileData, List<ProfileData>)
 };
