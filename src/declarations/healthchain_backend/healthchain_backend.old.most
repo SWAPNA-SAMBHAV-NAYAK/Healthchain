@@ -59,9 +59,9 @@ type Time = Int;
 actor {
   stable var appointments : ?(Appointment, List<Appointment>);
   stable var departments : [Text];
+  stable var doctorMetaDataList : ?(DoctorMetaData, List<DoctorMetaData>);
   stable var doctor_open_hours_list :
     ?(DoctorOpenHours, List<DoctorOpenHours>);
-  stable var doctors : ?(DoctorMetaData, List<DoctorMetaData>);
   stable var employees : ?(Employee, List<Employee>);
   stable var medicalLogs : ?(MedicalLog, List<MedicalLog>);
   stable var userProfileDataList : ?(ProfileData, List<ProfileData>)

@@ -3,13 +3,9 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { healthchain_backend } from "../../../../declarations/healthchain_backend/index";
 import { useDispatch, useSelector } from "react-redux";
-import { loadPatientList } from "../../redux/actions/patientAction";
-import { Routes, Route } from "react-router-dom";
-import PatientInfo from "./PatientInfo/PatientInfo";
-import { loadPatientById } from "../../redux/actions/patientByIdAction";
-import { Principal } from '@dfinity/principal';
+import { loadPatientList } from "../../redux/actions/patientAction";;
+import useAuthenticatedCannister from "../../useAuthenticatedCannister";
 
 const Patient = () => {
 
@@ -21,14 +17,16 @@ const Patient = () => {
 
   const { patients } = useSelector(state => state.patientList);
 
+  const authCannister = useAuthenticatedCannister();
+
 
   async function addPatientForm() {
     navigate("/addPatient");
   }
 
   useEffect(() => {
-    dispatch(loadPatientList())
-  }, [dispatch])
+    dispatch(loadPatientList(authCannister))
+  }, [dispatch,authCannister])
 
 
   function handlePatientCardClick(e) {

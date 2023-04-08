@@ -3,22 +3,26 @@ import useAuthenticatedCannister from "../../useAuthenticatedCannister";
 
 export const loadAppointmentList = (user_type, authCannister) => async (dispatch) => {
 
-  let appointmentList;
+  if (authCannister) {
+    console.log(authCannister);
 
-  console.log("up")
+    let appointmentList;
 
-  switch (user_type) {
-    case "admin":
-      appointmentList = await authCannister.readAppointments();
-    case "patient":
-      appointmentList = await authCannister.readPatientAppointments();
-    case "doctor":
-      appointmentList = await authCannister.readDoctorAppointments();
+    switch (user_type) {
+      case "admin":
+        appointmentList = await authCannister.readAllAppointments();
+        break;
+      case "patient":
+        appointmentList = await authCannister.readPatientAppointments();
+        break;
+      case "doctor":
+        appointmentList = await authCannister.readDoctorAppointments();
+        break;
+    }
+
+    dispatch({
+      type: 'get_appointment',
+      payload: { appointments: appointmentList },
+    })
   }
-
-  console.log("down")
-  dispatch({
-    type: 'get_appointment',
-    payload: { appointments: appointmentList },
-  })
 } 

@@ -8,6 +8,8 @@ import * as Redux from "react-redux";
 import { loadDepartmentList } from "../../redux/actions/departmentAction";
 import { loadDoctorAppointmentOpenHours } from "../../redux/actions/doctorAppointmentOpenHourAction";
 import { loadDoctorList } from "../../redux/actions/doctorAction";
+import useAuthenticatedCannister from "../../useAuthenticatedCannister";
+import { loadDoctorMetaDataList } from "../../redux/actions/doctorMetaDataAction";
 
 const Appointment = () => {
     const [chosenDepartment, setChosenDepartment] = useState("All Departments");
@@ -16,8 +18,13 @@ const Appointment = () => {
 
     const dispatch = Redux.useDispatch();
 
+    const authCannister = useAuthenticatedCannister();
+
 
     const { doctors } = Redux.useSelector(state => state.doctorList);
+
+
+    const { doctorMetaDataList } = Redux.useSelector(state => state.doctorMetaDataList);
 
     const { departments } = Redux.useSelector(state => state.departmentList);
 
@@ -25,47 +32,63 @@ const Appointment = () => {
 
 
     React.useEffect(() => {
-        dispatch(loadDepartmentList());
-    }, [])
+        dispatch(loadDepartmentList(authCannister));
+    }, [authCannister])
 
     React.useEffect(() => {
-        dispatch(loadDoctorAppointmentOpenHours());
-    }, [dispatch])
+        dispatch(loadDoctorAppointmentOpenHours(authCannister));
+    }, [dispatch, authCannister])
 
     React.useEffect(() => {
-        dispatch(loadDoctorList())
-    }, [dispatch])
+        dispatch(loadDoctorList(authCannister))
+    }, [dispatch, authCannister])
+
 
     React.useEffect(() => {
+        dispatch(loadDoctorMetaDataList(authCannister))
+    }, [dispatch, authCannister])
+
+    React.useEffect(() => {
+        const oHList = [];
+
         for (let i = 0; i < openHours.length; i++) {
             const doc_details = {};
             doc_details.doctor_id = openHours[i].doctor_id.toText();
             doc_details.openHoursDates = openHours[i].openHoursDates;
             doc_details.openHoursTime = openHours[i].openHoursTime;
 
-            doctors.find((doc, index, arr) => {
+            doctors.find((doc) => {
                 if (doc.user_principal.toText() === openHours[i].doctor_id.toText()) {
                     doc_details.name = doc.name;
-                    doc_details.department = doc.department;
                 }
             })
 
-            console.log(doc_details)
+            doctorMetaDataList.find((docMetaData) => {
+                if (docMetaData.doctor_id.toText() === openHours[i].doctor_id.toText()) {
+                    doc_details.department = docMetaData.department;
+                }
+            })
 
             if (doc_details.name !== undefined) {
-                setDoctorApptOpenHoursList((oldList) => {
-                    oldList.push(doc_details);
-                    const uniqueArr = [];
-                    oldList.forEach(obj => {
-                        if (!uniqueArr.some(item => JSON.stringify(item) === JSON.stringify(obj))) {
-                            uniqueArr.push(obj);
-                        }
-                    });
-                    return uniqueArr;
-                })
+                oHList.push(doc_details);
             }
+            
+
+            // if (doc_details.name !== undefined) {
+            //     setDoctorApptOpenHoursList((oldList) => {
+            //         oldList.push(doc_details);
+            //         const uniqueArr = [];
+            //         oldList.forEach(obj => {
+            //             if (!uniqueArr.some(item => JSON.stringify(item) === JSON.stringify(obj))) {
+            //                 uniqueArr.push(obj);
+            //             }
+            //         });
+            //         return uniqueArr;
+            //     })
+            // }
         }
-    }, [openHours, doctors])
+        setDoctorApptOpenHoursList(oHList);
+    }, [openHours, doctors, doctorMetaDataList])
 
 
 
@@ -96,16 +119,16 @@ const Appointment = () => {
                             <option key={"All Departments"} value={"All Departments"}>
                                 All Departments
                             </option>
-                            {departments.map((department) => (
-                                <option key={department} value={department}>
+                            {departments.map((department) => {
+                                return <option key={department} value={department}>
                                     {department}
                                 </option>
-                            ))}
+                            })}
                         </select>
                     </div>
                     <div className="cardWalaComp">
-                        {filteredDoctors.map((d) => (
-                            <AppointmentCard
+                        {filteredDoctors.map((d) => {
+                            return <AppointmentCard
                                 key={d.doctor_id}
                                 doctor_id={d.doctor_id}
                                 name={d.name}
@@ -113,7 +136,7 @@ const Appointment = () => {
                                 openHoursDates={d.openHoursDates}
                                 openHoursTime={d.openHoursTime}
                             />
-                        ))}
+                        })}
                     </div>
                 </div>
             </div>

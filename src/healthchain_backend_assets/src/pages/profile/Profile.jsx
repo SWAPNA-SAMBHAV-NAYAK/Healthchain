@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 
 import { canisterId, createActor } from "../../../../declarations/healthchain_backend";
 import { AuthClient } from "@dfinity/auth-client";
+import useAuthenticatedCannister from "../../useAuthenticatedCannister";
 
 
 function Profile() {
@@ -20,6 +21,8 @@ function Profile() {
 
     const [sjBtn, setSJBtn] = useState();
     const [imageTag, setImageTag] = useState();
+
+    const authCannister = useAuthenticatedCannister();
 
 
     const dispatch = useDispatch();
@@ -81,8 +84,8 @@ function Profile() {
 
 
     useEffect(() => {
-        dispatch(updateProfileData())
-    }, [dispatch]);
+        dispatch(updateProfileData(authCannister))
+    }, [dispatch,authCannister]);
 
 
 
@@ -141,7 +144,7 @@ function Profile() {
             imageByteData);
 
 
-        dispatch(updateProfileData())
+        dispatch(updateProfileData(authCannister))
 
 
         Swal.fire({

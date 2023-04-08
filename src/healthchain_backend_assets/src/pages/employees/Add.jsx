@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "./Add.scss";
 import Salrt from "sweetalert2";
-import { healthchain_backend } from "../../../../declarations/healthchain_backend/index";
 import uuid from "react-uuid";
 import { useDispatch } from "react-redux";
 import { loadEmployeeList } from "../../redux/actions/employeeAction";
+import useAuthenticatedCannister from "../../useAuthenticatedCannister";
 
 
 export default function Add({setAddEmployee }) {
@@ -18,6 +18,8 @@ export default function Add({setAddEmployee }) {
 
   const dispatch = useDispatch();
 
+  const authCannister = useAuthenticatedCannister();
+
   const handleAdd = async (e) => {
     e.preventDefault();
     if (!firstName || !lastName || !contact || !email || !salary || !date) {
@@ -29,7 +31,7 @@ export default function Add({setAddEmployee }) {
       });
     }
 
-    await healthchain_backend.createEmployee(
+    await authCannister.createEmployee(
       uuid(),
       firstName,
       lastName,
@@ -38,7 +40,7 @@ export default function Add({setAddEmployee }) {
       parseInt(salary),
       date);
 
-    dispatch(loadEmployeeList())
+    dispatch(loadEmployeeList(authCannister))
 
 
 

@@ -2,14 +2,17 @@ import React, { useEffect, useState } from "react";
 import "./AppointmentCard.scss";
 import Swal from "sweetalert2";
 import DatePicker from "react-datepicker";
-import { healthchain_backend } from "../../../../declarations/healthchain_backend/index";
 import uuid from 'react-uuid';
+import { useSelector } from "react-redux";
 
-import { canisterId, createActor } from "../../../../declarations/healthchain_backend";
-import { AuthClient } from "@dfinity/auth-client";
 import useAuthenticatedCannister from "../../useAuthenticatedCannister";
+import { AuthClient } from "@dfinity/auth-client";
 
 const AppointmentCard = ({ doctor_id, name, department, openHoursDates, openHoursTime }) => {
+
+
+
+  const { accountType } = useSelector(state => state);
 
 
   const authCannister = useAuthenticatedCannister();
@@ -66,6 +69,35 @@ const AppointmentCard = ({ doctor_id, name, department, openHoursDates, openHour
     // });
     setIsPopupOpen(true);
   };
+
+
+  function bookAppointmentKoHandlePatientSide() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You are booking a appointment",
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Book it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await authCannister.createAppointmentPatientSide(
+          uuid(),
+          doctor_id,
+          chosenSlot,
+          chosenDate.toLocaleDateString(),
+        )
+
+  
+        Swal.fire(
+          'Booked!',
+          'Your Appointment has been booked.',
+          'success'
+        )
+      }
+    })
+  }
 
 
   useEffect(() => {
@@ -127,14 +159,20 @@ const AppointmentCard = ({ doctor_id, name, department, openHoursDates, openHour
           </select>
         </div>
 
-        <button
-          disabled={!chosenSlot || !chosenDate}
-          onClick={bookAppointmentKoHandle}
-        >
-          Book Appointment
-        </button>
+        {accountType === "patient" ?
+          <button
+            disabled={!chosenSlot || !chosenDate}
+            onClick={bookAppointmentKoHandlePatientSide}
+          >Book Appointment</button> :
+
+          <button
+            disabled={!chosenSlot || !chosenDate}
+            onClick={bookAppointmentKoHandle}
+          >Book Appointment</button>
+        }
+
       </div>
-      {isPopupOpen && (
+      {accountType === "admin" && isPopupOpen && (
         <div id="popup">
           <form id="form" onSubmit={handleSubmit}>
             <label htmlFor="tag2">Patient Id:</label>

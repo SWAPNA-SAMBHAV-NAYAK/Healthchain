@@ -38,7 +38,7 @@ actor healthchain {
     image_data : [Nat8],
   ) : async ProfileData {
 
-    Debug.print(debug_show (msg));
+    Debug.print(Text.concat("createProfile ", debug_show (msg.caller)));
 
     let profileData : ?ProfileData = List.find(
       userProfileDataList,
@@ -104,9 +104,9 @@ actor healthchain {
 
   };
 
-  public shared (msg) func readProfileData() : async ?ProfileData {
+  public shared query (msg) func readProfileData() : async ?ProfileData {
 
-    Debug.print(debug_show (msg));
+    Debug.print(Text.concat("readProfileData ", debug_show (msg.caller)));
 
     return List.find(
       userProfileDataList,
@@ -116,9 +116,11 @@ actor healthchain {
     );
   };
 
-  public shared (msg) func readPatients() : async [ProfileData] {
+  public shared query (msg) func readPatients() : async [ProfileData] {
 
-    if (msg.caller == Principal.toText(admin)) {
+    Debug.print(Text.concat("readPatients ", debug_show (msg.caller)));
+
+    if (msg.caller == admin) {
       var profData = List.filter(
         userProfileDataList,
         func(log : ProfileData) : Bool {
@@ -131,7 +133,10 @@ actor healthchain {
     };
   };
 
-  public func getPatientById(principal_id_data : Text) : async ?ProfileData {
+  public shared query (msg) func getPatientById(principal_id_data : Text) : async ?ProfileData {
+
+    Debug.print(Text.concat("getPatientById ", debug_show (msg.caller)));
+
     return List.find(
       userProfileDataList,
       func(patient : ProfileData) : Bool {
@@ -140,22 +145,26 @@ actor healthchain {
     );
   };
 
-  public shared (msg) func readDoctors() : async [ProfileData] {
+  public shared query (msg) func readDoctors() : async [ProfileData] {
 
-    if (msg.caller == Principal.toText(admin)) {
-      var profData = List.filter(
-        userProfileDataList,
-        func(log : ProfileData) : Bool {
-          return log.user_type == "doctor";
-        },
-      );
-      return List.toArray(profData);
-    } else {
-      return [];
-    };
+    Debug.print(Text.concat("readDoctors ", debug_show (msg.caller)));
+
+    var profData = List.filter(
+      userProfileDataList,
+      func(log : ProfileData) : Bool {
+        return log.user_type == "doctor";
+      },
+    );
+    return List.toArray(profData);
+    // } else {
+    //   return [];
+    // };
   };
 
-  public func getDoctorById(principal_id_data : Text) : async ?ProfileData {
+  public shared query (msg) func getDoctorById(principal_id_data : Text) : async ?ProfileData {
+
+    Debug.print(Text.concat("getDoctorById ", debug_show (msg.caller)));
+
     return List.find(
       userProfileDataList,
       func(doctor : ProfileData) : Bool {
@@ -166,9 +175,9 @@ actor healthchain {
 
   public shared (msg) func updateUserType(userPrincipal : Principal, account_type : Text) {
 
-    Debug.print(debug_show (msg));
+    Debug.print(Text.concat("updateUserType ", debug_show (msg.caller)));
 
-    if (msg.caller == Principal.toText(admin)) {
+    if (msg.caller == admin) {
 
       var updatedProfileData = List.map(
         userProfileDataList,
@@ -222,7 +231,7 @@ actor healthchain {
     date_data : Text,
   ) {
 
-    Debug.print(debug_show (msg));
+    Debug.print(Text.concat("createAppointment ", debug_show (msg.caller)));
 
     let newAppointment : Appointment = {
       appointment_id = appointment_id_data;
@@ -235,17 +244,44 @@ actor healthchain {
     Debug.print(debug_show (appointments));
   };
 
+  public shared (msg) func createAppointmentPatientSide(
+    appointment_id_data : Text,
+    doctor_id_data : Text,
+    time_slot_data : Text,
+    date_data : Text,
+  ) {
+
+    Debug.print(Text.concat("createAppointmentPatientSide ", debug_show (msg.caller)));
+
+    let newAppointment : Appointment = {
+      appointment_id = appointment_id_data;
+      patient_id = msg.caller;
+      doctor_id = Principal.fromText(doctor_id_data);
+      time_slot = time_slot_data;
+      date = date_data;
+    };
+    appointments := List.push(newAppointment, appointments);
+    Debug.print(debug_show (appointments));
+  };
+
   // For Admin
-  public query func readAllAppointments() : async [Appointment] {
-    return List.toArray(appointments);
+  public shared query (msg) func readAllAppointments() : async [Appointment] {
+    if (msg.caller == admin) {
+      return List.toArray(appointments);
+    } else {
+      return [];
+    };
   };
 
   // For Doctors
-  public shared (msg) func readDoctorAppointments() : async [Appointment] {
+  public shared query (msg) func readDoctorAppointments() : async [Appointment] {
+
+    Debug.print(Text.concat("readDoctorAppointments ", debug_show (msg.caller)));
+
     var docAppointments = List.filter(
       appointments,
       func(appointment : Appointment) : Bool {
-        return Principal.toText(appointment.doctor_id) == msg.caller;
+        return appointment.doctor_id == msg.caller;
       },
     );
 
@@ -253,12 +289,14 @@ actor healthchain {
   };
 
   // For Patients
-  public shared (msg) func readPatientAppointments() : async [Appointment] {
+  public shared query (msg) func readPatientAppointments() : async [Appointment] {
+
+    Debug.print(Text.concat("readPatientAppointments ", debug_show (msg.caller)));
 
     var patAppointments = List.filter(
       appointments,
       func(appointment : Appointment) : Bool {
-        return Principal.toText(appointment.patient_id) == msg.caller;
+        return appointment.patient_id == msg.caller;
       },
     );
 
@@ -289,7 +327,9 @@ actor healthchain {
     date_of_joining_data : Text,
   ) {
 
-    if (msg.caller == Principal.toText(admin)) {
+    Debug.print(Text.concat("createEmployee ", debug_show (msg.caller)));
+
+    if (msg.caller == admin) {
 
       let newEmployee : Employee = {
         employee_id = employee_id_data;
@@ -308,11 +348,18 @@ actor healthchain {
 
   };
 
-  public query func readEmployees() : async [Employee] {
-    return List.toArray(employees);
+  public shared query (msg) func readEmployees() : async [Employee] {
+
+    Debug.print(Text.concat("readEmployees ", debug_show (msg.caller)));
+
+    if (msg.caller == admin) {
+      return List.toArray(employees);
+    } else {
+      return [];
+    };
   };
 
-  public func updateEmployee(
+  public shared (msg) func updateEmployee(
     employee_id_data : Text,
     first_name_data : Text,
     last_name_data : Text,
@@ -322,51 +369,59 @@ actor healthchain {
     date_of_joining_data : Text,
   ) {
 
-    let updatedEmployee : Employee = {
-      employee_id = employee_id_data;
-      first_name = first_name_data;
-      last_name = last_name_data;
-      email = email_data;
-      contact = contact_data;
-      salary = salary_data;
-      date_of_joining = date_of_joining_data;
-    };
+    Debug.print(Text.concat("updateEmployee ", debug_show (msg.caller)));
 
-    var updatedEmployees = List.map(
-      employees,
-      func(employee : Employee) : Employee {
-        if (employee.employee_id == employee_id_data) {
-          return updatedEmployee;
-        } else {
-          return employee;
-        };
-      },
-    );
-    employees := updatedEmployees;
+    if (msg.caller == admin) {
+      let updatedEmployee : Employee = {
+        employee_id = employee_id_data;
+        first_name = first_name_data;
+        last_name = last_name_data;
+        email = email_data;
+        contact = contact_data;
+        salary = salary_data;
+        date_of_joining = date_of_joining_data;
+      };
+
+      var updatedEmployees = List.map(
+        employees,
+        func(employee : Employee) : Employee {
+          if (employee.employee_id == employee_id_data) {
+            return updatedEmployee;
+          } else {
+            return employee;
+          };
+        },
+      );
+      employees := updatedEmployees;
+    };
   };
 
-  public func deleteEmployee(employee_id_data : Text) {
+  public shared (msg) func deleteEmployee(employee_id_data : Text) {
 
-    var index : Nat = 0;
-    var deleteIndex : Nat = 0;
+    Debug.print(Text.concat("deleteEmployee ", debug_show (msg.caller)));
 
-    var updatedEmployees = List.map(
-      employees,
-      func(employee : Employee) : Employee {
-        index := index +1;
-        if (employee.employee_id == employee_id_data) {
-          deleteIndex := index -1;
-          return employee;
-        } else {
-          return employee;
-        };
-      },
-    );
+    if (msg.caller == admin) {
+      var index : Nat = 0;
+      var deleteIndex : Nat = 0;
 
-    let listFront = List.take(employees, deleteIndex);
-    let listBack = List.drop(employees, deleteIndex +1);
+      var updatedEmployees = List.map(
+        employees,
+        func(employee : Employee) : Employee {
+          index := index +1;
+          if (employee.employee_id == employee_id_data) {
+            deleteIndex := index -1;
+            return employee;
+          } else {
+            return employee;
+          };
+        },
+      );
 
-    employees := List.append(listFront, listBack);
+      let listFront = List.take(employees, deleteIndex);
+      let listBack = List.drop(employees, deleteIndex +1);
+
+      employees := List.append(listFront, listBack);
+    };
   };
 
   ///////////////////////////////////////// Patient //////////////////////////////////////////////////
@@ -400,6 +455,10 @@ actor healthchain {
     weight_data : Float,
     height_data : Float,
   ) {
+
+    //TODO add Authorisation here
+
+    Debug.print(Text.concat("createMedicalLog ", debug_show (msg.caller)));
 
     let newMedicalLog : MedicalLog = {
       patient_id = Principal.fromText(patient_id_data);
@@ -463,7 +522,11 @@ actor healthchain {
   //   patients := updatedPatientList;
   // };
 
-  public query func readMedicalLogs(patient_id : Text) : async [MedicalLog] {
+  // TODO add Authorisation Here
+  public shared query (msg) func readMedicalLogs(patient_id : Text) : async [MedicalLog] {
+
+    Debug.print(Text.concat("readMedicalLogs ", debug_show (msg.caller)));
+
     var patMedicalLogList = List.filter(
       medicalLogs,
       func(log : MedicalLog) : Bool {
@@ -512,36 +575,22 @@ actor healthchain {
     department : Text;
   };
 
-  stable var doctors : List.List<DoctorMetaData> = List.nil<DoctorMetaData>();
+  stable var doctorMetaDataList : List.List<DoctorMetaData> = List.nil<DoctorMetaData>();
 
-  // public shared (msg) func createDoctor(
-  //   designation_data : Text,
-  //   qualification_data : Text,
-  //   department_data : Text,
-  // ) {
+  //TODO add Authorisation here
+  public shared query (msg) func getDoctorMetaDataById(doctor_id_data : Text) : async ?DoctorMetaData {
 
-  //   let newDoctor : DoctorMetaData = {
-  //     doctor_id = msg.caller;
-  //     designation = designation_data;
-  //     qualification = qualification_data;
-  //     department = department_data;
-  //   };
+    Debug.print(Text.concat("getDoctorMetaDataById ", debug_show (msg.caller)));
 
-  //   doctors := List.push(newDoctor, doctors);
-
-  //   Debug.print(debug_show (doctors));
-
-  // };
-
-  public func getDoctorMetaDataById(doctor_id_data : Text) : async ?DoctorMetaData {
     return List.find(
-      doctors,
+      doctorMetaDataList,
       func(doctor : DoctorMetaData) : Bool {
         return Principal.toText(doctor.doctor_id) == doctor_id_data;
       },
     );
   };
 
+  //TODO add Authorisation here
   public shared (msg) func createOrUpdateDoctorMetaData(
     doctor_id_data : Principal,
     designation_data : Text,
@@ -549,8 +598,10 @@ actor healthchain {
     department_data : Text,
   ) {
 
+    Debug.print(Text.concat("createOrUpdateDoctorMetaData ", debug_show (msg.caller)));
+
     let doctorMetaData : ?DoctorMetaData = List.find(
-      doctors,
+      doctorMetaDataList,
       func(docMetaData : DoctorMetaData) : Bool {
         return docMetaData.doctor_id == doctor_id_data;
       },
@@ -565,12 +616,12 @@ actor healthchain {
 
     switch (doctorMetaData) {
       case null {
-        doctors := List.push(newDoctorMetaData, doctors);
+        doctorMetaDataList := List.push(newDoctorMetaData, doctorMetaDataList);
       };
       case (?result) {
 
         var updatedDoctorMetaData = List.map(
-          doctors,
+          doctorMetaDataList,
           func(docMetaData : DoctorMetaData) : DoctorMetaData {
             if (docMetaData.doctor_id == doctor_id_data) {
               return newDoctorMetaData;
@@ -579,15 +630,17 @@ actor healthchain {
             };
           },
         );
-        doctors := updatedDoctorMetaData;
+        doctorMetaDataList := updatedDoctorMetaData;
       };
     };
 
   };
 
-  // public query func readDoctors() : async [Doctor] {
-  //   return List.toArray(doctors);
-  // };
+  public shared query (msg) func readDoctorMetaData() : async [DoctorMetaData] {
+
+    Debug.print(Text.concat("readDoctorMetaData ", debug_show (msg.caller)));
+    return List.toArray(doctorMetaDataList);
+  };
 
   ///////////////////////////////////////// Doctor Open Hours ///////////////////////////////////////////////////////
 
@@ -600,14 +653,21 @@ actor healthchain {
 
   stable var doctor_open_hours_list : List.List<DoctorOpenHours> = List.nil<DoctorOpenHours>();
 
-  public query func readOpenHours() : async [DoctorOpenHours] {
+  // TODO add Authorisation Here
+  public shared query (msg) func readOpenHours() : async [DoctorOpenHours] {
+
+    Debug.print(Text.concat("readOpenHours ", debug_show (msg.caller)));
+
     return List.toArray(doctor_open_hours_list);
   };
 
+  // TODO add Authorisation Here
   public shared (msg) func addDoctorOpenHours(
     openHoursDates_data : [Text],
     openHoursTime_data : [[Text]],
   ) : async () {
+
+    Debug.print(Text.concat("addDoctorOpenHours ", debug_show (msg.caller)));
 
     let newOpenHour : DoctorOpenHours = {
       doctor_id = msg.caller;
@@ -630,12 +690,15 @@ actor healthchain {
 
   var notices : List.List<Notice> = List.nil<Notice>();
 
-  public func createNotice(fromText : Text, noticeText : Text) {
+  // TODO add Authorisation Here
+  public shared (msg) func createNotice(fromText : Text, noticeText : Text) {
     let newNotice : Notice = {
       time_stamp = Time.now();
       from = fromText;
       notice = noticeText;
     };
+
+    Debug.print(Text.concat("createNotice ", debug_show (msg.caller)));
 
     notices := List.push(newNotice, notices);
 
@@ -643,7 +706,9 @@ actor healthchain {
 
   };
 
-  public query func readNotices() : async [Notice] {
+  // TODO add Authorisation Here
+  public shared query (msg) func readNotices() : async [Notice] {
+    Debug.print(Text.concat("readNotices ", debug_show (msg.caller)));
     return List.toArray(notices);
   };
 

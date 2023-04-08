@@ -1,7 +1,7 @@
 import { healthchain_backend } from "../../../../declarations/healthchain_backend";
 
 
-export const loadPatientById = (id) => async (dispatch) => {
+export const loadPatientById = (id,authCannister) => async (dispatch) => {
     // const filtered_patient = patientList.filter((patient) => {
     //     if (patient.patient_id == id) {
     //         return patient;
@@ -9,14 +9,17 @@ export const loadPatientById = (id) => async (dispatch) => {
      
     // })
 
-    let filtered_patient = await healthchain_backend.getPatientById(id);
+    if (authCannister) {
 
-    filtered_patient = filtered_patient[0];
+        let filtered_patient = await authCannister.getPatientById(id);
 
-    console.log(filtered_patient)
+        filtered_patient = filtered_patient[0];
+
+        console.log(filtered_patient)
     
-    dispatch({
-        type: "get_patient_by_id",
-        payload: filtered_patient,
-    });
+        dispatch({
+            type: "get_patient_by_id",
+            payload: filtered_patient,
+        });
+    }
 }

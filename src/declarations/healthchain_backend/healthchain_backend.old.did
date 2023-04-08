@@ -67,28 +67,30 @@ type Appointment =
 service : {
   addDoctorOpenHours: (vec text, vec vec text) -> ();
   createAppointment: (text, text, text, text, text) -> () oneway;
+  createAppointmentPatientSide: (text, text, text, text) -> () oneway;
   createEmployee: (text, text, text, text, text, int, text) -> () oneway;
   createMedicalLog: (text, float64, int, int, float64, text, text, text,
    float64, float64) -> () oneway;
   createNotice: (text, text) -> () oneway;
-  createOrUpdateDoctor: (principal, text, text, text) -> () oneway;
+  createOrUpdateDoctorMetaData: (principal, text, text, text) -> () oneway;
   createProfile: (text, text, text, text, text, text, vec nat8) ->
    (ProfileData);
   deleteEmployee: (text) -> () oneway;
-  getDoctorById: (text) -> (opt ProfileData);
-  getDoctorMetaDataById: (text) -> (opt DoctorMetaData);
-  getPatientById: (text) -> (opt ProfileData);
+  getDoctorById: (text) -> (opt ProfileData) query;
+  getDoctorMetaDataById: (text) -> (opt DoctorMetaData) query;
+  getPatientById: (text) -> (opt ProfileData) query;
   readAllAppointments: () -> (vec Appointment) query;
   readDepartments: () -> (vec text) query;
-  readDoctorAppointments: () -> (vec Appointment);
-  readDoctors: () -> (vec ProfileData);
+  readDoctorAppointments: () -> (vec Appointment) query;
+  readDoctorMetaData: () -> (vec DoctorMetaData) query;
+  readDoctors: () -> (vec ProfileData) query;
   readEmployees: () -> (vec Employee) query;
   readMedicalLogs: (text) -> (vec MedicalLog) query;
   readNotices: () -> (vec Notice) query;
   readOpenHours: () -> (vec DoctorOpenHours) query;
-  readPatientAppointments: () -> (vec Appointment);
-  readPatients: () -> (vec ProfileData);
-  readProfileData: () -> (opt ProfileData);
+  readPatientAppointments: () -> (vec Appointment) query;
+  readPatients: () -> (vec ProfileData) query;
+  readProfileData: () -> (opt ProfileData) query;
   updateEmployee: (text, text, text, text, text, int, text) -> () oneway;
   updateUserType: (principal, text) -> () oneway;
 }

@@ -4,11 +4,11 @@ import Navbar from "../../../components/navbar/Navbar";
 import React, { useState, useEffect } from "react";
 import uuid from 'react-uuid';
 import { useNavigate } from "react-router-dom";
-import { healthchain_backend } from "../../../../../declarations/healthchain_backend/index";
 import Salrt from "sweetalert2";
 import { loadDoctorList } from "../../../redux/actions/doctorAction";
 import { useDispatch, useSelector } from "react-redux";
 import { loadDepartmentList } from "../../../redux/actions/departmentAction";
+import useAuthenticatedCannister from "../../../useAuthenticatedCannister";
 
 const doctorInput = [
   // {
@@ -80,17 +80,19 @@ const AddDoctor = () => {
 
   const { departments } = useSelector(state => state.departmentList);
 
+  const authCannister = useAuthenticatedCannister();
+
 
   useEffect(() => {
-    dispatch(loadDepartmentList());
-  }, [])
+    dispatch(loadDepartmentList(authCannister));
+  }, [authCannister])
 
   
 
   async function addDoctorAction(event) {
     event.preventDefault();
 
-    await healthchain_backend.createDoctor(
+    await authCannister.createDoctor(
       uuid(),
       formData.name,
       formData.email,
@@ -104,7 +106,7 @@ const AddDoctor = () => {
     )
 
 
-    dispatch(loadDoctorList());
+    dispatch(loadDoctorList(authCannister));
 
     Salrt.fire({
       icon: "success",

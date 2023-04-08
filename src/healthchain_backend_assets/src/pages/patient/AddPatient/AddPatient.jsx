@@ -4,7 +4,6 @@ import Navbar from "../../../components/navbar/Navbar";
 import React, { useState, useEffect } from "react";
 import uuid from 'react-uuid';
 import { useNavigate } from "react-router-dom";
-import { healthchain_backend } from "../../../../../declarations/healthchain_backend/index";
 import Salrt from "sweetalert2";
 
 const patientInput = [
@@ -78,7 +77,7 @@ const AddPatient = () => {
   async function addPatientAction(event){
     event.preventDefault();
 
-    await healthchain_backend.createPatient(
+    await authCannister.createPatient(
       uuid(),
       formData.name,
       formData.email,

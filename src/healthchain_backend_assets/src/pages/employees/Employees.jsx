@@ -9,7 +9,7 @@ import { loadEmployeeList } from "../../redux/actions/employeeAction";
 import { useDispatch, useSelector } from "react-redux";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
-import { healthchain_backend } from "../../../../declarations/healthchain_backend/index";
+import useAuthenticatedCannister from "../../useAuthenticatedCannister";
 
 function Employees() {
   // const [employee, setEmployee] = useState(employeeData);
@@ -22,10 +22,12 @@ function Employees() {
 
   const { employees } = useSelector(state => state.employeeList);
 
+  const authCannister = useAuthenticatedCannister();
+
 
   useEffect(() => {
-    dispatch(loadEmployeeList())
-  }, [dispatch])
+    dispatch(loadEmployeeList(authCannister))
+  }, [dispatch,authCannister])
 
 
 
@@ -50,8 +52,8 @@ function Employees() {
 
       if (result.value) {
 
-        await healthchain_backend.deleteEmployee(employee.employee_id)
-        dispatch(loadEmployeeList());
+        await authCannister.deleteEmployee(employee.employee_id)
+        dispatch(loadEmployeeList(authCannister));
 
         Salrt.fire({
           icon: "success",

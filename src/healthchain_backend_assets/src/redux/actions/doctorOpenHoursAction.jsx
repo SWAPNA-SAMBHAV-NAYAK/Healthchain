@@ -1,5 +1,3 @@
-import { healthchain_backend } from "../../../../declarations/healthchain_backend";
-
 
 export const saveDoctorOpenHours = (updatedList) => async (dispatch) => {
 

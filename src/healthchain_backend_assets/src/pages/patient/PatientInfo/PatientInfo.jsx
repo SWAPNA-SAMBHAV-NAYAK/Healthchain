@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useRef} from 'react';
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Navbar from '../../../components/navbar/Navbar';
@@ -6,13 +6,15 @@ import Sidebar from '../../../components/sidebar/Sidebar';
 import "./PatientInfo.scss";
 import Salrt from "sweetalert2";
 import { loadPatientById } from '../../../redux/actions/patientByIdAction';
-
-import { canisterId, createActor } from "../../../../../declarations/healthchain_backend";
-import { AuthClient } from "@dfinity/auth-client";
+import useAuthenticatedCannister from '../../../useAuthenticatedCannister';
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 export default function PatientInfo() {
 
   const dispatch = useDispatch();
+
+
+  const authCannister = useAuthenticatedCannister();
 
   const { patientById } = useSelector(state => state.patientById);
 
@@ -22,8 +24,8 @@ export default function PatientInfo() {
 
 
   useEffect(() => {
-    dispatch(loadPatientById(params.patient_id));
-  }, [dispatch])
+    dispatch(loadPatientById(params.patient_id,authCannister));
+  }, [dispatch,authCannister])
 
 
 
@@ -73,18 +75,10 @@ export default function PatientInfo() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const authClient = await AuthClient.create();
-    const identity = await authClient.getIdentity();
 
-    const authenticatedCanister = createActor(canisterId, {
-      agentOptions: {
-        identity,
-      },
-    });
+    await authCannister.updateUserType(patientById.user_principal, e.target.user_type.value);
 
-    await authenticatedCanister.updateUserType(patientById.user_principal, e.target.user_type.value);
-
-    dispatch(loadPatientById(params.patient_id));
+    dispatch(loadPatientById(params.patient_id,authCannister));
 
     setIsPopupOpen(false);
 
@@ -97,6 +91,26 @@ export default function PatientInfo() {
     });
   }
 
+  const pRef = useRef(null);
+
+  const handleCopyClick = () => {
+    const childNodes = pRef.current.childNodes;
+    const textNodes = Array.from(childNodes).filter(
+      (node) => node.nodeType === Node.TEXT_NODE
+    );
+    const id = textNodes
+      .map((node) => node.textContent)
+      .join("")
+      .trim();
+    console.log(id);
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: `ID: ${id} has been Copied!`,
+      showConfirmButton: false,
+      timer: 1500
+    });
+  };
   return (
     <div className="new">
       <Sidebar />
@@ -130,11 +144,15 @@ export default function PatientInfo() {
                 <p className="tag" id="tag6">
                   <strong>Address:</strong> {patientById.address}
                 </p>
-                <p className="tag" id="tag6">
-                  <strong>Id: </strong> {
+                <p className="tag" id="tag6" ref={pRef}>
+                  <strong>Internet Identity: </strong> {
                     (patientById.user_principal) ? patientById.user_principal.toText() : " "
                   }
                 </p>
+                <ContentCopyIcon
+        onClick={handleCopyClick}
+        style={{ cursor: "pointer" }}
+      />
               </div>
               <div className="cardButtons">
                 {

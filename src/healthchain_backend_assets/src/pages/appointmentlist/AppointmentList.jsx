@@ -18,7 +18,7 @@ function AppointmentList() {
 
   useEffect(() => {
     dispatch(loadAppointmentList(accountType, authCannister))
-  }, [dispatch,authCannister])
+  }, [authCannister, accountType])
 
   return (
     <div className="employee">

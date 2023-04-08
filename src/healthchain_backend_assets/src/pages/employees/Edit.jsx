@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import "./Edit.scss";
 import Salrt from "sweetalert2";
-import { healthchain_backend } from "../../../../declarations/healthchain_backend/index";
 import { useDispatch } from "react-redux";
 import { loadEmployeeList } from "../../redux/actions/employeeAction";
+import useAuthenticatedCannister from "../../useAuthenticatedCannister";
 
 function Edit({ selectedEmployee, setEditEmployee }) {
 
 
   const dispatch = useDispatch();
+
+  const authCannister = useAuthenticatedCannister();
 
 
   const [employeeId, setEmployeeId] = useState(selectedEmployee.employee_id);
@@ -37,7 +39,7 @@ function Edit({ selectedEmployee, setEditEmployee }) {
     //   }
     // }
 
-    await healthchain_backend.updateEmployee(
+    await authCannister.updateEmployee(
       employeeId,
       firstName,
       lastName,
@@ -47,7 +49,7 @@ function Edit({ selectedEmployee, setEditEmployee }) {
       date
     )
 
-    dispatch(loadEmployeeList());
+    dispatch(loadEmployeeList(authCannister));
 
     setEditEmployee(false);
 

@@ -1,12 +1,13 @@
 import { healthchain_backend } from "../../../../declarations/healthchain_backend";
 
-export const loadEmployeeList = () => async (dispatch) => {
+export const loadEmployeeList = (authCannister) => async (dispatch) => {
 
-  const employeeList = await healthchain_backend.readEmployees();
+  if (authCannister) {
+    const employeeList = await authCannister.readEmployees();
 
-
-  dispatch({
-    type:'get_employee',
-    payload: { employees: employeeList },
-  }) 
+    dispatch({
+      type: 'get_employee',
+      payload: { employees: employeeList },
+    })
+  }
 } 

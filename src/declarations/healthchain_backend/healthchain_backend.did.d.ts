@@ -70,6 +70,12 @@ export interface _SERVICE {
       arg_3: string,
       arg_4: string,
     ) => Promise<undefined>,
+  'createAppointmentPatientSide' : (
+      arg_0: string,
+      arg_1: string,
+      arg_2: string,
+      arg_3: string,
+    ) => Promise<undefined>,
   'createEmployee' : (
       arg_0: string,
       arg_1: string,
@@ -114,6 +120,7 @@ export interface _SERVICE {
   'readAllAppointments' : () => Promise<Array<Appointment>>,
   'readDepartments' : () => Promise<Array<string>>,
   'readDoctorAppointments' : () => Promise<Array<Appointment>>,
+  'readDoctorMetaData' : () => Promise<Array<DoctorMetaData>>,
   'readDoctors' : () => Promise<Array<ProfileData>>,
   'readEmployees' : () => Promise<Array<Employee>>,
   'readMedicalLogs' : (arg_0: string) => Promise<Array<MedicalLog>>,

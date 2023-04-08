@@ -18,12 +18,15 @@ import DIMainPage from "./pages/diseaseIndex/DIMainPage";
 import { useDispatch, useSelector } from "react-redux";
 import { setAccountTypeState } from "./redux/actions/accountTypeAction";
 import { updateProfileData } from "./redux/actions/profileDataAction";
+import useAuthenticatedCannister from "./useAuthenticatedCannister";
 
 function App() {
 
   const dispatch = useDispatch();
 
   const { profileData } = useSelector((state) => state.profileData);
+
+  const authCannister = useAuthenticatedCannister();
 
 
   useEffect(() => {
@@ -36,8 +39,8 @@ function App() {
   
 
   useEffect(() => {
-    dispatch(updateProfileData());
-  },[])
+    dispatch(updateProfileData(authCannister));
+  },[authCannister])
 
   return (
     <div className="App">

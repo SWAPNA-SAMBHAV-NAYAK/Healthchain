@@ -3,32 +3,26 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { healthchain_backend } from "../../../../declarations/healthchain_backend/index";
 import { useDispatch, useSelector } from "react-redux";
 import { loadDoctorList } from "../../redux/actions/doctorAction";
-import { Routes, Route } from "react-router-dom";
-import DoctorInfo from "./DoctorInfo/DoctorInfo";
-import { loadDoctorById } from "../../redux/actions/doctorByIdAction";
+import useAuthenticatedCannister from "../../useAuthenticatedCannister";
 
 const Doctor = () => {
-
-
-
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
   const { doctors } = useSelector(state => state.doctorList);
 
-
+  const authCannister = useAuthenticatedCannister();
 
   async function addDoctorForm() {
     navigate("/addDoctor");
   }
 
   useEffect(() => {
-    dispatch(loadDoctorList())
-  }, [dispatch])
+    dispatch(loadDoctorList(authCannister))
+  }, [dispatch, authCannister])
 
 
   function handleDoctorCardClick(e) {

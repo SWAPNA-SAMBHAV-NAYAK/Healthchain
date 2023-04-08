@@ -6,7 +6,7 @@ export const loadDoctorMetaDataList = (authCannister) => async (dispatch) => {
     
     dispatch({
       type: 'get_doctor_meta_data',
-      payload: { doctorMetaDataList: doctorMetaDataList },
+      payload: { doctorMetaData: doctorMetaDataList },
     })
   }
 } 

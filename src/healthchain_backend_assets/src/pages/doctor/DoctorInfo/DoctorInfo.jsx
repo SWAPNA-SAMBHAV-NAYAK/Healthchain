@@ -6,13 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import Navbar from '../../../components/navbar/Navbar';
 import Sidebar from '../../../components/sidebar/Sidebar';
 import "./DoctorInfo.scss";
-import { healthchain_backend } from '../../../../../declarations/healthchain_backend/index';
 import Salrt from "sweetalert2";
-import { loadDoctorList } from '../../../redux/actions/doctorAction';
 import { loadDoctorById } from '../../../redux/actions/doctorByIdAction';
 import { loadDepartmentList } from '../../../redux/actions/departmentAction';
 import DateSelector from './DateSelector';
-import { loadDoctorMetaDataById } from '../../../redux/actions/doctorMetaDataAction';
+import { loadDoctorMetaDataById } from '../../../redux/actions/doctorMetaDataByIdAction';
 import { Principal } from "@dfinity/principal";
 import useAuthenticatedCannister from '../../../useAuthenticatedCannister';
 
@@ -56,9 +54,12 @@ export default function DoctorInfo() {
 
 
   useEffect(() => {
-    dispatch(loadDoctorById(params.doctor_id));
-    dispatch(loadDoctorMetaDataById(params.doctor_id));
-  }, [params])
+    dispatch(loadDoctorById(params.doctor_id, authCannister));
+  }, [dispatch, params.doctor_id, authCannister])
+
+  useEffect(() => {
+    dispatch(loadDoctorMetaDataById(params.doctor_id, authCannister));
+  }, [dispatch, params.doctor_id, authCannister])
 
 
   // useEffect(() => {
@@ -79,8 +80,8 @@ export default function DoctorInfo() {
 
 
   useEffect(() => {
-    dispatch(loadDepartmentList());
-  }, [])
+    dispatch(loadDepartmentList(authCannister));
+  }, [dispatch,authCannister])
 
 
   const handleEditButton = () => {
@@ -120,17 +121,7 @@ export default function DoctorInfo() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
-    const authClient = await AuthClient.create();
-    const identity = await authClient.getIdentity();
-
-    const authenticatedCanister = createActor(canisterId, {
-      agentOptions: {
-        identity,
-      },
-    });
-
-    await authenticatedCanister.createOrUpdateDoctorMetaData(
+    await authCannister.createOrUpdateDoctorMetaData(
       Principal.fromText(params.doctor_id),
       designation,
       qualification,
@@ -139,7 +130,8 @@ export default function DoctorInfo() {
 
     setIsPopupOpen(false);
 
-    dispatch(loadDoctorList());
+    dispatch(loadDoctorById(params.doctor_id, authCannister));
+    dispatch(loadDoctorMetaDataById(params.doctor_id, authCannister));
 
     Salrt.fire({
       icon: "success",
@@ -236,11 +228,12 @@ export default function DoctorInfo() {
                   <select value={department} id="tag-5-input"
                     name="tag5" onChange={(e) => setDepartment(e.target.value)}>
                     <option value="">Select a department</option>
-                    {departments.map((dept, i) => (
-                      <option key={i} value={dept}>
+                    {departments.map((dept, i) => {
+                      return <option key={i} value={dept}>
                         {dept}
                       </option>
-                    ))}
+                    }
+                    )}
                   </select>
                   <br />
                   <button type="submit">Save Changes</button>
