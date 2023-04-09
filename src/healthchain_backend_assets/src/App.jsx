@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAccountTypeState } from "./redux/actions/accountTypeAction";
 import { updateProfileData } from "./redux/actions/profileDataAction";
 import useAuthenticatedCannister from "./useAuthenticatedCannister";
+import Notification from "./pages/notification/Notification";
 
 function App() {
 
@@ -71,6 +72,8 @@ function App() {
         <Route exact path="/appointmentList" element={<AppointmentList />} />
 
         <Route exact path="/employees" element={<Employees />} />
+        
+        <Route exact path="/notifications" element={<Notification />} />
       </Routes>
     </div >
   );

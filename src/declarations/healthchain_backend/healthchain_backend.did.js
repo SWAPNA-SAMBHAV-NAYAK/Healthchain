@@ -53,6 +53,11 @@ export const idlFactory = ({ IDL }) => {
     'from' : IDL.Text,
     'time_stamp' : Time,
   });
+  const Notification = IDL.Record({
+    'notification' : IDL.Text,
+    'time_stamp' : Time,
+    'for_id' : IDL.Principal,
+  });
   const DoctorOpenHours = IDL.Record({
     'openHoursTime' : IDL.Vec(IDL.Vec(IDL.Text)),
     'openHoursDates' : IDL.Vec(IDL.Text),
@@ -96,6 +101,7 @@ export const idlFactory = ({ IDL }) => {
         ['oneway'],
       ),
     'createNotice' : IDL.Func([IDL.Text, IDL.Text], [], ['oneway']),
+    'createNotification' : IDL.Func([IDL.Text, IDL.Text], [], ['oneway']),
     'createOrUpdateDoctorMetaData' : IDL.Func(
         [IDL.Principal, IDL.Text, IDL.Text, IDL.Text],
         [],
@@ -122,6 +128,7 @@ export const idlFactory = ({ IDL }) => {
         ['query'],
       ),
     'getPatientById' : IDL.Func([IDL.Text], [IDL.Opt(ProfileData)], ['query']),
+    'getTextTimeStampFromEpoch' : IDL.Func([Time], [IDL.Text], ['query']),
     'readAllAppointments' : IDL.Func([], [IDL.Vec(Appointment)], ['query']),
     'readDepartments' : IDL.Func([], [IDL.Vec(IDL.Text)], ['query']),
     'readDoctorAppointments' : IDL.Func([], [IDL.Vec(Appointment)], ['query']),
@@ -130,6 +137,7 @@ export const idlFactory = ({ IDL }) => {
     'readEmployees' : IDL.Func([], [IDL.Vec(Employee)], ['query']),
     'readMedicalLogs' : IDL.Func([IDL.Text], [IDL.Vec(MedicalLog)], ['query']),
     'readNotices' : IDL.Func([], [IDL.Vec(Notice)], ['query']),
+    'readNotifications' : IDL.Func([], [IDL.Vec(Notification)], ['query']),
     'readOpenHours' : IDL.Func([], [IDL.Vec(DoctorOpenHours)], ['query']),
     'readPatientAppointments' : IDL.Func([], [IDL.Vec(Appointment)], ['query']),
     'readPatients' : IDL.Func([], [IDL.Vec(ProfileData)], ['query']),

@@ -114,10 +114,10 @@ const Sidebar = () => {
 
 
 
-            <Link to="/appointmentList" style={{ textDecoration: 'none' }}>
-              <li><BookOnlineOutlinedIcon className="icon" /><span>Appointments List</span></li>
-            </Link>
-          
+          <Link to="/appointmentList" style={{ textDecoration: 'none' }}>
+            <li><BookOnlineOutlinedIcon className="icon" /><span>Appointments List</span></li>
+          </Link>
+
 
           <Link to="/diagnosis" style={{ textDecoration: 'none' }}>
             <li> <img src={"https://upload.wikimedia.org/wikipedia/commons/c/c2/Coronavirus_icon.svg"} width="50px" /> <span>Diagnosis.ai </span></li>
@@ -145,8 +145,9 @@ const Sidebar = () => {
               <li><ContentPasteOutlinedIcon className="icon" /><span>Notice Board</span></li>
             </>
           }
-          <li><NotificationsNoneIcon className="icon" /><span>Notifications</span></li>
-
+          <Link to="/notifications" style={{ textDecoration: 'none' }}>
+            <li><NotificationsNoneIcon className="icon" /><span>Notifications</span></li>
+          </Link>
 
           {accountType === "admin" &&
             <>

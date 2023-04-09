@@ -13,6 +13,7 @@ import accountTypeReducer from "./accountTypeReducer";
 import profileDataReducer from "./profileDataReducer";
 import doctorMetaDataByIdReducer from "./doctorMetaDataByIdReducer";
 import doctorMetaDataReducer from "./doctorMetaDataReducer";
+import notificationReducer from "./notificationReducer";
 
 const reducer = combineReducers({
     patientList: patientReducer,
@@ -34,6 +35,8 @@ const reducer = combineReducers({
 
     accountType: accountTypeReducer,
     profileData: profileDataReducer,
+
+    notificationList: notificationReducer
 });
 
 export default reducer;

@@ -12,6 +12,12 @@ type ProfileData =
    user_principal: principal;
    user_type: text;
  };
+type Notification = 
+ record {
+   for_id: principal;
+   notification: text;
+   time_stamp: Time;
+ };
 type Notice = 
  record {
    from: text;
@@ -72,6 +78,7 @@ service : {
   createMedicalLog: (text, float64, int, int, float64, text, text, text,
    float64, float64) -> () oneway;
   createNotice: (text, text) -> () oneway;
+  createNotification: (text, text) -> () oneway;
   createOrUpdateDoctorMetaData: (principal, text, text, text) -> () oneway;
   createProfile: (text, text, text, text, text, text, vec nat8) ->
    (ProfileData);
@@ -79,6 +86,7 @@ service : {
   getDoctorById: (text) -> (opt ProfileData) query;
   getDoctorMetaDataById: (text) -> (opt DoctorMetaData) query;
   getPatientById: (text) -> (opt ProfileData) query;
+  getTextTimeStampFromEpoch: (Time) -> (text) query;
   readAllAppointments: () -> (vec Appointment) query;
   readDepartments: () -> (vec text) query;
   readDoctorAppointments: () -> (vec Appointment) query;
@@ -87,6 +95,7 @@ service : {
   readEmployees: () -> (vec Employee) query;
   readMedicalLogs: (text) -> (vec MedicalLog) query;
   readNotices: () -> (vec Notice) query;
+  readNotifications: () -> (vec Notification) query;
   readOpenHours: () -> (vec DoctorOpenHours) query;
   readPatientAppointments: () -> (vec Appointment) query;
   readPatients: () -> (vec ProfileData) query;

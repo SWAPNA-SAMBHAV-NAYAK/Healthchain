@@ -35,6 +35,8 @@ function AppointmentListTable() {
                     <td>{appointment.doctor_id.toText()}</td>
                     <td>{appointment.time_slot}</td>
                     <td>{appointment.date}</td>
+
+                    //TODO Add Share Data and Revoke Access Buttons
                   </tr>
                 ))
               ) : (

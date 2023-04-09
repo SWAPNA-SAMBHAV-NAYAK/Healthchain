@@ -30,8 +30,15 @@ const AppointmentCard = ({ doctor_id, name, department, openHoursDates, openHour
   };
 
   const dateChangeKoHandle = (date) => {
+    console.log()
     setChosenDate(date);
-    setTimeSlots(openHoursTime[openHoursDates.indexOf(date.toLocaleDateString())])
+
+    const formattedDate = new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'numeric', day: 'numeric' }).format(date);
+    const indexTime = openHoursDates.indexOf(formattedDate)
+    console.log(openHoursDates)
+    console.log(formattedDate)
+    console.log(indexTime)
+    setTimeSlots(openHoursTime[indexTime])
   };
 
   const handleSubmit = async (e) => {
@@ -89,7 +96,7 @@ const AppointmentCard = ({ doctor_id, name, department, openHoursDates, openHour
           chosenDate.toLocaleDateString(),
         )
 
-  
+
         Swal.fire(
           'Booked!',
           'Your Appointment has been booked.',
@@ -150,11 +157,11 @@ const AppointmentCard = ({ doctor_id, name, department, openHoursDates, openHour
           >
             <option value="">Select a time slot</option>
             {
-              timeSlots.map((slot) => (
-                <option key={slot} value={slot}>
+              timeSlots.map((slot) => {
+                return <option key={slot} value={slot}>
                   {slot}
                 </option>
-              ))
+              })
             }
           </select>
         </div>

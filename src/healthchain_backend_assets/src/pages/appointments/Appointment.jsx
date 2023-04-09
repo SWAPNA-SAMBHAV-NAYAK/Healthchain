@@ -72,6 +72,8 @@ const Appointment = () => {
             if (doc_details.name !== undefined) {
                 oHList.push(doc_details);
             }
+
+            console.log(doc_details)
             
 
             // if (doc_details.name !== undefined) {
@@ -95,6 +97,9 @@ const Appointment = () => {
     const deptChangeKoHandle = (event) => {
         setChosenDepartment(event.target.value);
     };
+
+
+    
 
     const filteredDoctors =
         chosenDepartment === "All Departments"

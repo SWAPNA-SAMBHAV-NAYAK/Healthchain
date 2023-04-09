@@ -1,4 +1,5 @@
 import Text "mo:base/Text";
+import Iter "mo:base/Iter";
 import List "mo:base/List";
 import Debug "mo:base/Debug";
 import Float "mo:base/Float";
@@ -241,6 +242,51 @@ actor healthchain {
       date = date_data;
     };
     appointments := List.push(newAppointment, appointments);
+
+    var doc : ?ProfileData = await getDoctorById(doctor_id_data);
+
+    switch (doc) {
+      //For Patient Notification
+      case null {
+        Debug.print("Doctor Not Found while creating notification of Appointment");
+      };
+      case (?docData) {
+        var notification = Text.concat(
+          Text.concat("Your appointment has been set with Dr. ", docData.name),
+          Text.concat(
+            Text.concat(" on ", date_data),
+            Text.concat(" at ", time_slot_data),
+          ),
+        );
+        createNotification(
+          patient_id_data,
+          notification,
+        );
+      };
+    };
+
+    var pat : ?ProfileData = await getPatientById(patient_id_data);
+
+    switch (pat) {
+      //For Doctor Notification
+      case null {
+        Debug.print("Patient Not Found while creating notification of Appointment");
+      };
+      case (?patData) {
+        var notification = Text.concat(
+          Text.concat(patData.name, " has booked an appointment with you"),
+          Text.concat(
+            Text.concat(" on ", date_data),
+            Text.concat(" at ", time_slot_data),
+          ),
+        );
+        createNotification(
+          doctor_id_data,
+          notification,
+        );
+      };
+    };
+
     Debug.print(debug_show (appointments));
   };
 
@@ -262,6 +308,51 @@ actor healthchain {
     };
     appointments := List.push(newAppointment, appointments);
     Debug.print(debug_show (appointments));
+
+    var doc : ?ProfileData = await getDoctorById(doctor_id_data);
+
+    switch (doc) {
+      //For Patient Notification
+      case null {
+        Debug.print("Doctor Not Found while creating notification of Appointment");
+      };
+      case (?docData) {
+        var notification = Text.concat(
+          Text.concat("Your appointment has been set with Dr. ", docData.name),
+          Text.concat(
+            Text.concat(" on ", date_data),
+            Text.concat(" at ", time_slot_data),
+          ),
+        );
+        createNotification(
+          Principal.toText(msg.caller),
+          notification,
+        );
+      };
+    };
+
+    var pat : ?ProfileData = await getPatientById(Principal.toText(msg.caller));
+
+    switch (pat) {
+      //For Doctor Notification
+      case null {
+        Debug.print("Patient Not Found while creating notification of Appointment");
+      };
+      case (?patData) {
+        var notification = Text.concat(
+          Text.concat(patData.name, " has booked an appointment with you"),
+          Text.concat(
+            Text.concat(" on ", date_data),
+            Text.concat(" at ", time_slot_data),
+          ),
+        );
+        createNotification(
+          doctor_id_data,
+          notification,
+        );
+      };
+    };
+
   };
 
   // For Admin
@@ -424,7 +515,7 @@ actor healthchain {
     };
   };
 
-  ///////////////////////////////////////// Patient //////////////////////////////////////////////////
+  ///////////////////////////////////////// MedicalLog //////////////////////////////////////////////////
 
   public type MedicalLog = {
     patient_id : Principal;
@@ -688,7 +779,7 @@ actor healthchain {
     notice : Text;
   };
 
-  var notices : List.List<Notice> = List.nil<Notice>();
+  stable var notices : List.List<Notice> = List.nil<Notice>();
 
   // TODO add Authorisation Here
   public shared (msg) func createNotice(fromText : Text, noticeText : Text) {
@@ -710,6 +801,128 @@ actor healthchain {
   public shared query (msg) func readNotices() : async [Notice] {
     Debug.print(Text.concat("readNotices ", debug_show (msg.caller)));
     return List.toArray(notices);
+  };
+
+  ///////////////////////////////////////// Notification ///////////////////////////////////////////////////////
+
+  public type Notification = {
+    time_stamp : Time.Time;
+    for_id : Principal;
+    notification : Text;
+  };
+
+  stable var notifications : List.List<Notification> = List.nil<Notification>();
+
+  // TODO add Authorisation Here
+  public shared (msg) func createNotification(for_id_data : Text, notification_data : Text) {
+    let newNotification : Notification = {
+      time_stamp = Time.now();
+      for_id = Principal.fromText(for_id_data);
+      notification = notification_data;
+    };
+
+    Debug.print(Text.concat("createNotification ", debug_show (msg.caller)));
+
+    notifications := List.push(newNotification, notifications);
+
+    Debug.print(debug_show (notifications));
+
+  };
+
+  // TODO add Authorisation Here
+  public shared query (msg) func readNotifications() : async [Notification] {
+
+    Debug.print(Text.concat("readNotifications ", debug_show (msg.caller)));
+
+    var userSpecificNotifications = List.filter(
+      notifications,
+      func(notification : Notification) : Bool {
+        return notification.for_id == msg.caller;
+      },
+    );
+
+    Debug.print(debug_show (notifications));
+
+    Debug.print(debug_show (userSpecificNotifications));
+
+    return List.toArray(userSpecificNotifications);
+  };
+
+  public query func getTextTimeStampFromEpoch(nanos : Time.Time) : async Text {
+    // let nanos = Time.now();
+
+    let secondsSinceEpoch = (nanos / 1_000_000_000);
+
+    let days = secondsSinceEpoch / 86_400;
+    let hours = (secondsSinceEpoch % 86_400) / 3_600;
+    let minutes = (secondsSinceEpoch % 3_600) / 60;
+    let secondsRemaining = secondsSinceEpoch % 60;
+
+    let nanosRemaining = nanos % 1_000_000_000;
+
+    var year = 1970 : Nat;
+
+    var dayMutable = days;
+
+    while (dayMutable > 366) {
+      let is4thYear = (year % 4) == 0;
+      let isNot100thYear : Bool = (year % 100) != 0;
+      let is400thYear : Bool = (year % 400) == 0;
+
+      year += 1;
+      if ((is4thYear and isNot100thYear) or is400thYear) {
+        dayMutable := dayMutable - 366;
+      } else {
+        dayMutable := dayMutable - 365;
+      };
+    };
+
+    let days_per_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    var i = 0;
+    var month = 0;
+    label monthLoop for (i in Iter.range(0, 11)) {
+
+      if (dayMutable > days_per_month[i]) {
+        dayMutable := dayMutable - days_per_month[i];
+      } else {
+        month := i + 1;
+        break monthLoop;
+      };
+    };
+
+    var dayText = Int.toText(dayMutable + 1);
+    var monthText = Int.toText(month);
+    var yearText = Int.toText(dayMutable + 1);
+    var hoursText = Int.toText(hours);
+    var minutesText = Int.toText(minutes);
+    var secondsText = Int.toText(secondsRemaining);
+
+    var finalDateText = Text.concat(
+      Text.concat(
+        Text.concat(dayText, "-"),
+        Text.concat(monthText, "-"),
+      ),
+      yearText,
+    );
+
+    var finalTimeText = Text.concat(
+      Text.concat(
+        Text.concat(hoursText, ":"),
+        Text.concat(minutesText, ":"),
+      ),
+      secondsText,
+    );
+
+    var finalTimeStampText = Text.concat(
+      Text.concat(
+        finalDateText,
+        ",",
+      ),
+      finalTimeText,
+    );
+
+    return finalTimeStampText;
   };
 
 };

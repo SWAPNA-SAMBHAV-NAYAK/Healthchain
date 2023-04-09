@@ -45,6 +45,11 @@ export interface Notice {
   'from' : string,
   'time_stamp' : Time,
 }
+export interface Notification {
+  'notification' : string,
+  'time_stamp' : Time,
+  'for_id' : Principal,
+}
 export interface ProfileData {
   'age' : string,
   'user_principal' : Principal,
@@ -98,6 +103,7 @@ export interface _SERVICE {
       arg_9: number,
     ) => Promise<undefined>,
   'createNotice' : (arg_0: string, arg_1: string) => Promise<undefined>,
+  'createNotification' : (arg_0: string, arg_1: string) => Promise<undefined>,
   'createOrUpdateDoctorMetaData' : (
       arg_0: Principal,
       arg_1: string,
@@ -117,6 +123,7 @@ export interface _SERVICE {
   'getDoctorById' : (arg_0: string) => Promise<[] | [ProfileData]>,
   'getDoctorMetaDataById' : (arg_0: string) => Promise<[] | [DoctorMetaData]>,
   'getPatientById' : (arg_0: string) => Promise<[] | [ProfileData]>,
+  'getTextTimeStampFromEpoch' : (arg_0: Time) => Promise<string>,
   'readAllAppointments' : () => Promise<Array<Appointment>>,
   'readDepartments' : () => Promise<Array<string>>,
   'readDoctorAppointments' : () => Promise<Array<Appointment>>,
@@ -125,6 +132,7 @@ export interface _SERVICE {
   'readEmployees' : () => Promise<Array<Employee>>,
   'readMedicalLogs' : (arg_0: string) => Promise<Array<MedicalLog>>,
   'readNotices' : () => Promise<Array<Notice>>,
+  'readNotifications' : () => Promise<Array<Notification>>,
   'readOpenHours' : () => Promise<Array<DoctorOpenHours>>,
   'readPatientAppointments' : () => Promise<Array<Appointment>>,
   'readPatients' : () => Promise<Array<ProfileData>>,
