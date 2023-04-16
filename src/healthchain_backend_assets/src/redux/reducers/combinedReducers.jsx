@@ -14,6 +14,8 @@ import profileDataReducer from "./profileDataReducer";
 import doctorMetaDataByIdReducer from "./doctorMetaDataByIdReducer";
 import doctorMetaDataReducer from "./doctorMetaDataReducer";
 import notificationReducer from "./notificationReducer";
+import medicalLogReducer from "./medicalLogReducer";
+import doctorOpenHourByIdReducer from "./doctorOpenHourByIdReducer";
 
 const reducer = combineReducers({
     patientList: patientReducer,
@@ -22,10 +24,15 @@ const reducer = combineReducers({
     patientById: patientByIdReducer,
     doctorById: doctorByIdReducer,
 
+
+    medicalLogList: medicalLogReducer,
+
     doctorMetaDataById: doctorMetaDataByIdReducer,
     doctorMetaDataList: doctorMetaDataReducer,
 
     doctorOpenHoursList: doctorOpenHoursReducer,
+    doctorOpenHoursByIdList: doctorOpenHourByIdReducer,
+
     departmentList: departmentReducer,
 
     appointmentList: appointmentReducer,

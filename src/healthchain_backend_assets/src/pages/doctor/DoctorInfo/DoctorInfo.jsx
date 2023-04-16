@@ -13,6 +13,8 @@ import DateSelector from './DateSelector';
 import { loadDoctorMetaDataById } from '../../../redux/actions/doctorMetaDataByIdAction';
 import { Principal } from "@dfinity/principal";
 import useAuthenticatedCannister from '../../../useAuthenticatedCannister';
+import { loadDoctorOpenHoursById } from '../../../redux/actions/doctorOpenHourByIdAction';
+import { saveDoctorOpenHours } from '../../../redux/actions/doctorOpenHoursAction';
 
 export default function DoctorInfo() {
 
@@ -31,21 +33,14 @@ export default function DoctorInfo() {
 
   const { doctorOpenHoursList } = Redux.useSelector(state => state);
 
+  const { openHoursById } = Redux.useSelector(state => state.doctorOpenHoursByIdList);
+
   const params = useParams();
 
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isOpenHoursOpen, setIsOpenHoursOpen] = useState(false);
 
-
-  // const [name, setName] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [phoneNumber, setPhoneNumber] = useState("");
-  // const [gender, setGender] = useState("");
-  // const [registeredOn, setRegisteredOn] = useState("");
-
-  // const [age, setAge] = useState(0);
-  // const [address, setAddress] = useState("");
 
   const [designation, setDesignation] = useState("");
   const [qualification, setQualification] = useState("");
@@ -62,26 +57,18 @@ export default function DoctorInfo() {
   }, [dispatch, params.doctor_id, authCannister])
 
 
-  // useEffect(() => {
-  //   if (doctorById.name !== undefined) {
-  //     setName(doctorById.name)
-  //     setEmail(doctorById.email)
-  //     setGender(doctorById.gender)
-  //     setPhoneNumber(doctorById.phone_number)
-  //     setAge(doctorById.age)
-  //     setAddress(doctorById.address)
-  //     setQualification(doctorById.qualification)
-  //     setDepartment(doctorById.department)
-  //     setDesignation(doctorById.designation)
-  //     setRegisteredOn(new Date(Number(doctorById.registered_on) / 1000000).toLocaleString())
-  //   }
+  useEffect(() => {
+    dispatch(loadDepartmentList(authCannister));
+  }, [dispatch, authCannister])
 
-  // }, [doctorById])
+  useEffect(() => {
+    dispatch(loadDoctorOpenHoursById(authCannister, params.doctor_id));
+  }, [authCannister, params.doctor_id])
 
 
   useEffect(() => {
-    dispatch(loadDepartmentList(authCannister));
-  }, [dispatch,authCannister])
+    dispatch(saveDoctorOpenHours(openHoursById));
+  }, [openHoursById])
 
 
   const handleEditButton = () => {
@@ -95,17 +82,16 @@ export default function DoctorInfo() {
   async function handleOpenHourFormSubmit(e) {
     e.preventDefault()
 
-    const dates = doctorOpenHoursList.map(obj => obj.dateSelected);
-    const times = doctorOpenHoursList.map(obj => obj.timeSelected);
+    const dates = doctorOpenHoursList.openHoursDates;
+    const times = doctorOpenHoursList.openHoursTime;
 
 
-    dates.forEach((date, index, arr) => {
-      arr[index] = date.toLocaleDateString();
-    })
+    // dates.forEach((date, index, arr) => {
+    //   arr[index] = date.toLocaleDateString();
+    // })
 
 
-    await authCannister.addDoctorOpenHours(dates, times);
-
+    await authCannister.createOrUpdateDoctorOpenHours(dates, times);
 
     setIsOpenHoursOpen(false);
 

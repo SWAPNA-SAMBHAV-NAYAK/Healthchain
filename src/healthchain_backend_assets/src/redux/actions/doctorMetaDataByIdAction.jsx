@@ -1,7 +1,5 @@
 export const loadDoctorMetaDataById = (id, authCannister) => async (dispatch) => {
 
-    console.log("called")
-
     if (authCannister){
     const filtered_doctor = await authCannister.getDoctorMetaDataById(id);
 

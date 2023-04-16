@@ -4,8 +4,6 @@ import useAuthenticatedCannister from "../../useAuthenticatedCannister";
 export const loadAppointmentList = (user_type, authCannister) => async (dispatch) => {
 
   if (authCannister) {
-    console.log(authCannister);
-
     let appointmentList;
 
     switch (user_type) {

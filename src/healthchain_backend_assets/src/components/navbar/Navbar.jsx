@@ -1,5 +1,4 @@
 import "./Navbar.scss";
-
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import MenuIcon from '@mui/icons-material/Menu';
@@ -7,6 +6,7 @@ import { setBurgerNavState } from "../../redux/actions/openBurgerNavAction";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Link } from "react-router-dom";
+import { AuthClient } from "@dfinity/auth-client";
 
 const Navbar = () => {
 
@@ -39,6 +39,12 @@ const Navbar = () => {
     }
   }, [profileData])
 
+  async function handleLogOut() {
+    const authClient = await AuthClient.create();
+    await authClient.logout();
+    window.location.reload();
+  }
+
   return (
     <div className="navbar">
       {/* <div className="wrapper"> */}
@@ -53,7 +59,7 @@ const Navbar = () => {
 
         </div>
         <div className="item">
-          <LogoutIcon className="icon" />
+          <LogoutIcon className="icon" style={{ cursor: 'pointer' }} onClick={handleLogOut} />
         </div>
       </div>
 

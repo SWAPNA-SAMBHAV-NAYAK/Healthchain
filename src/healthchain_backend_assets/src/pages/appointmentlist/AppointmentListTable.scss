@@ -52,6 +52,22 @@
       &:hover {
         background-color: #444;
       }
+
+      &.share {
+        background-color: #024332;
+  
+        &:hover {
+          background-color: #218838;
+        }
+      }
+  
+      &.revoke {
+        background-color: #dc3545;
+  
+        &:hover {
+          background-color: #c82333;
+        }
+      }
     }
     .muted-button {
       background-color: #024332;

@@ -71,7 +71,6 @@ type Appointment =
    time_slot: text;
  };
 service : {
-  addDoctorOpenHours: (vec text, vec vec text) -> ();
   createAppointment: (text, text, text, text, text) -> () oneway;
   createAppointmentPatientSide: (text, text, text, text) -> () oneway;
   createEmployee: (text, text, text, text, text, int, text) -> () oneway;
@@ -80,6 +79,7 @@ service : {
   createNotice: (text, text) -> () oneway;
   createNotification: (text, text) -> () oneway;
   createOrUpdateDoctorMetaData: (principal, text, text, text) -> () oneway;
+  createOrUpdateDoctorOpenHours: (vec text, vec vec text) -> ();
   createProfile: (text, text, text, text, text, text, vec nat8) ->
    (ProfileData);
   deleteEmployee: (text) -> () oneway;
@@ -87,6 +87,8 @@ service : {
   getDoctorMetaDataById: (text) -> (opt DoctorMetaData) query;
   getPatientById: (text) -> (opt ProfileData) query;
   getTextTimeStampFromEpoch: (Time) -> (text) query;
+  giveMedicalLogAccess: (principal) -> () oneway;
+  hasAccessToPatientMedicalLogs: (principal) -> (bool) query;
   readAllAppointments: () -> (vec Appointment) query;
   readDepartments: () -> (vec text) query;
   readDoctorAppointments: () -> (vec Appointment) query;
@@ -97,6 +99,7 @@ service : {
   readNotices: () -> (vec Notice) query;
   readNotifications: () -> (vec Notification) query;
   readOpenHours: () -> (vec DoctorOpenHours) query;
+  readOpenHoursById: (text) -> (opt DoctorOpenHours) query;
   readPatientAppointments: () -> (vec Appointment) query;
   readPatients: () -> (vec ProfileData) query;
   readProfileData: () -> (opt ProfileData) query;

@@ -64,10 +64,6 @@ export interface ProfileData {
 }
 export type Time = bigint;
 export interface _SERVICE {
-  'addDoctorOpenHours' : (
-      arg_0: Array<string>,
-      arg_1: Array<Array<string>>,
-    ) => Promise<undefined>,
   'createAppointment' : (
       arg_0: string,
       arg_1: string,
@@ -110,6 +106,10 @@ export interface _SERVICE {
       arg_2: string,
       arg_3: string,
     ) => Promise<undefined>,
+  'createOrUpdateDoctorOpenHours' : (
+      arg_0: Array<string>,
+      arg_1: Array<Array<string>>,
+    ) => Promise<undefined>,
   'createProfile' : (
       arg_0: string,
       arg_1: string,
@@ -124,6 +124,8 @@ export interface _SERVICE {
   'getDoctorMetaDataById' : (arg_0: string) => Promise<[] | [DoctorMetaData]>,
   'getPatientById' : (arg_0: string) => Promise<[] | [ProfileData]>,
   'getTextTimeStampFromEpoch' : (arg_0: Time) => Promise<string>,
+  'giveMedicalLogAccess' : (arg_0: Principal) => Promise<undefined>,
+  'hasAccessToPatientMedicalLogs' : (arg_0: Principal) => Promise<boolean>,
   'readAllAppointments' : () => Promise<Array<Appointment>>,
   'readDepartments' : () => Promise<Array<string>>,
   'readDoctorAppointments' : () => Promise<Array<Appointment>>,
@@ -134,6 +136,7 @@ export interface _SERVICE {
   'readNotices' : () => Promise<Array<Notice>>,
   'readNotifications' : () => Promise<Array<Notification>>,
   'readOpenHours' : () => Promise<Array<DoctorOpenHours>>,
+  'readOpenHoursById' : (arg_0: string) => Promise<[] | [DoctorOpenHours]>,
   'readPatientAppointments' : () => Promise<Array<Appointment>>,
   'readPatients' : () => Promise<Array<ProfileData>>,
   'readProfileData' : () => Promise<[] | [ProfileData]>,

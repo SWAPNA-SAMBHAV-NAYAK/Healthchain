@@ -59,32 +59,35 @@ export default function TimeSelector({ i }) {
 
   const { doctorOpenHoursList } = Redux.useSelector(state => state);
 
-
   const handleTimeChange = (event) => {
     const value = event.target.value;
-    setTime(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
+
+    const newTime = typeof value === "string" ? value.split(",") : value;
+
+
+    setTime(newTime);
+
+    const updatedOpenHourList = doctorOpenHoursList;
+
+    updatedOpenHourList.openHoursTime[i] = newTime;
+
+    dispatch(saveDoctorOpenHours(updatedOpenHourList));
 
   };
 
 
 
   React.useEffect(() => {
-    const updatedOpenHourList = doctorOpenHoursList;
+    if (doctorOpenHoursList && doctorOpenHoursList.openHoursTime && doctorOpenHoursList.openHoursTime[i]) {
 
-    if (i >= 0) {
-      updatedOpenHourList[i].timeSelected = time;
+      setTime(doctorOpenHoursList.openHoursTime[i]);
     }
 
-    // if (i >= 0) {
-    //   updatedOpenHourList.timeSelected[i] = time;
-    // }
+  }, [doctorOpenHoursList])
 
 
-    dispatch(saveDoctorOpenHours(updatedOpenHourList));
-
+  React.useEffect(() => {
+    console.log(time)
   }, [time])
 
 
@@ -119,7 +122,7 @@ export default function TimeSelector({ i }) {
             <MenuItem
               key={t}
               value={t}
-              style={getStyles(t, time, theme)}
+            // style={getStyles(t, doctorOpenHoursList.openHoursTime[i], theme)}
             >
               {t}
             </MenuItem>

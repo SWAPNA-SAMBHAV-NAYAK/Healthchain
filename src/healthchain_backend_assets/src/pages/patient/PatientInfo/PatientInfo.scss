@@ -242,8 +242,10 @@
                             background-color: #024332;
 
                             .timestamp {
+                                text-align: center;
+                                width: 100%;
                                 margin: 0;
-                                font-size: 1rem;
+                                font-size: 1.2rem;
                                 color: #fff;
 
                             }
@@ -258,7 +260,7 @@
                             p {
                                 margin: 0;
                                 padding: 6px;
-                                font-size: 0.9rem;
+                                font-size: 1.4rem;
                                 line-height: 1.2;
                                 border: 1px solid black;
                                 border-radius: 5px;

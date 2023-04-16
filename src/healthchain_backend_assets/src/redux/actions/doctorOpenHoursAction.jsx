@@ -1,8 +1,18 @@
 
 export const saveDoctorOpenHours = (updatedList) => async (dispatch) => {
 
-    dispatch({
-        type: "save_doctor_open_hours",
-        payload: updatedList,
-    });
+    if (!updatedList) {
+        dispatch({
+            type: "save_doctor_open_hours",
+            payload: {
+                openHoursDates: [],
+                openHoursTime: [],
+            },
+        });
+    } else {
+        dispatch({
+            type: "save_doctor_open_hours",
+            payload: updatedList,
+        });
+    }
 }

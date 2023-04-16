@@ -1,13 +1,19 @@
-const initialState = [
-]
+const initialState = {
+    openHoursDates: [],
+    openHoursTime: [],
+}
 
 const doctorOpenHoursReducer = (state = initialState, action) => {
 
     switch (action.type) {
         case 'save_doctor_open_hours':
-            return action.payload;
+            return {
+                ...state,
+                openHoursDates: action.payload.openHoursDates,
+                openHoursTime: action.payload.openHoursTime
+            };
         default:
-            return [ ...state ]
+            return { ...state }
     }
 }
 

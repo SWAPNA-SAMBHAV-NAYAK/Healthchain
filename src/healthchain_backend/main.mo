@@ -1,4 +1,5 @@
 import Text "mo:base/Text";
+import Array "mo:base/Array";
 import Iter "mo:base/Iter";
 import List "mo:base/List";
 import Debug "mo:base/Debug";
@@ -7,6 +8,7 @@ import Int "mo:base/Int";
 import Time "mo:base/Time";
 import HashMap "mo:base/HashMap";
 import Principal "mo:base/Principal";
+import Buffer "mo:base/Buffer";
 
 actor healthchain {
 
@@ -27,7 +29,7 @@ actor healthchain {
     user_type : Text;
   };
 
-  stable var userProfileDataList : List.List<ProfileData> = List.nil<ProfileData>();
+  private stable var userProfileDataList : List.List<ProfileData> = List.nil<ProfileData>();
 
   public shared (msg) func createProfile(
     name_data : Text,
@@ -222,7 +224,7 @@ actor healthchain {
     date : Text;
   };
 
-  stable var appointments : List.List<Appointment> = List.nil<Appointment>();
+  private stable var appointments : List.List<Appointment> = List.nil<Appointment>();
 
   public shared (msg) func createAppointment(
     appointment_id_data : Text,
@@ -406,7 +408,7 @@ actor healthchain {
     date_of_joining : Text;
   };
 
-  stable var employees : List.List<Employee> = List.nil<Employee>();
+  private stable var employees : List.List<Employee> = List.nil<Employee>();
 
   public shared (msg) func createEmployee(
     employee_id_data : Text,
@@ -532,7 +534,7 @@ actor healthchain {
     height : Float;
   };
 
-  stable var medicalLogs : List.List<MedicalLog> = List.nil<MedicalLog>();
+  private stable var medicalLogs : List.List<MedicalLog> = List.nil<MedicalLog>();
 
   public shared (msg) func createMedicalLog(
     patient_id_data : Text,
@@ -572,46 +574,105 @@ actor healthchain {
 
   };
 
-  // public func updatePatient(
-  //   patient_id_data : Text,
-  //   registered_on_data : Time.Time,
-  //   name_data : Text,
-  //   email_data : Text,
-  //   phone_number_data : Text,
-  //   age_data : Int,
-  //   address_data : Text,
-  //   blood_group_data : Text,
-  //   weight_data : Float,
-  //   height_data : Float,
-  //   gender_data : Text,
-  // ) {
+  private stable var mapOfMedicalLogAccessEntries : [(Principal, [Principal])] = [];
 
-  //   let updatedPatient : Patient = {
-  //     patient_id = patient_id_data;
-  //     registered_on = registered_on_data;
-  //     name = name_data;
-  //     email = email_data;
-  //     phone_number = phone_number_data;
-  //     age = age_data;
-  //     address = address_data;
-  //     blood_group = blood_group_data;
-  //     weight = weight_data;
-  //     height = height_data;
-  //     gender = gender_data;
-  //   };
+  private var mapOfMedicalLogAccessHashMap = HashMap.HashMap<Principal, List.List<Principal>>(1, Principal.equal, Principal.hash);
 
-  //   var updatedPatientList = List.map(
-  //     patients,
-  //     func(patient : Patient) : Patient {
-  //       if (patient.patient_id == patient_id_data) {
-  //         return updatedPatient;
-  //       } else {
-  //         return patient;
-  //       };
-  //     },
-  //   );
-  //   patients := updatedPatientList;
-  // };
+  public shared (msg) func giveMedicalLogAccess(doctor_id : Principal) {
+
+    Debug.print(Text.concat("giveMedicalLogAccess ", debug_show (msg.caller)));
+
+    var medLogAccess : ?List.List<Principal> = mapOfMedicalLogAccessHashMap.get(msg.caller);
+
+    switch (medLogAccess) {
+      case null {
+
+        var d_id_list : List.List<Principal> = List.nil<Principal>();
+
+        d_id_list := List.push(doctor_id, d_id_list);
+
+        mapOfMedicalLogAccessHashMap.put(msg.caller, d_id_list);
+      };
+      case (?result) {
+
+        var d_id_list : List.List<Principal> = result;
+
+        var hasDoctorId : ?Principal = List.find(
+          d_id_list,
+          func(d_id : Principal) : Bool {
+            return d_id == doctor_id;
+          },
+        );
+
+        switch (hasDoctorId) {
+          case null {
+            d_id_list := List.push(doctor_id, d_id_list);
+          };
+          case (?result) {
+
+          };
+        };
+
+        mapOfMedicalLogAccessHashMap.put(msg.caller, d_id_list);
+
+      };
+    };
+  };
+
+  public shared query (msg) func hasAccessToPatientMedicalLogs(patient_id : Principal) : async Bool {
+
+    Debug.print(Text.concat("hasAccessToPatientMedicalLogs ", debug_show (msg.caller)));
+
+    var medLogAccess : ?List.List<Principal> = mapOfMedicalLogAccessHashMap.get(patient_id);
+
+    switch (medLogAccess) {
+      case null {
+        return false;
+      };
+      case (?result) {
+        var d_id_list : List.List<Principal> = result;
+        var hasDoctorId : ?Principal = List.find(
+          d_id_list,
+          func(d_id : Principal) : Bool {
+            return d_id == msg.caller;
+          },
+        );
+
+        switch (hasDoctorId) {
+          case null {
+            return false;
+          };
+          case (?result) {
+            return true;
+          };
+        };
+      };
+    };
+
+  };
+
+  system func preupgrade() {
+
+    var buffer : List.List<(Principal, [Principal])> = List.nil<(Principal, [Principal])>();
+
+    for ((patient_id, doctor_id_list) in mapOfMedicalLogAccessHashMap.entries()) {
+      var doc_id_list : [Principal] = List.toArray(doctor_id_list);
+
+      buffer := List.push((patient_id, doc_id_list), buffer);
+
+    };
+
+    mapOfMedicalLogAccessEntries := List.toArray(buffer);
+  };
+
+  system func postupgrade() {
+
+    for ((patient_id, doctor_id_list) in mapOfMedicalLogAccessEntries.vals()) {
+      mapOfMedicalLogAccessHashMap.put(patient_id, List.fromArray(doctor_id_list));
+    };
+
+    // mapOfMedicalLogAccess := HashMap.fromIter<Principal, List.List<Principal>>(mapOfMedicalLogAccessEntries.vals(), 1, Principal.equal, Principal.hash);
+  };
 
   // TODO add Authorisation Here
   public shared query (msg) func readMedicalLogs(patient_id : Text) : async [MedicalLog] {
@@ -629,7 +690,7 @@ actor healthchain {
 
   ///////////////////////////////////////// Department //////////////////////////////////////////////////
 
-  stable var departments : [Text] = [
+  private stable var departments : [Text] = [
     "Cardiology",
     "Dermitology",
     "General Surgery",
@@ -666,7 +727,7 @@ actor healthchain {
     department : Text;
   };
 
-  stable var doctorMetaDataList : List.List<DoctorMetaData> = List.nil<DoctorMetaData>();
+  private stable var doctorMetaDataList : List.List<DoctorMetaData> = List.nil<DoctorMetaData>();
 
   //TODO add Authorisation here
   public shared query (msg) func getDoctorMetaDataById(doctor_id_data : Text) : async ?DoctorMetaData {
@@ -742,7 +803,50 @@ actor healthchain {
 
   };
 
-  stable var doctor_open_hours_list : List.List<DoctorOpenHours> = List.nil<DoctorOpenHours>();
+  private stable var doctor_open_hours_list : List.List<DoctorOpenHours> = List.nil<DoctorOpenHours>();
+
+  // TODO add Authorisation Here
+  public shared (msg) func createOrUpdateDoctorOpenHours(
+    openHoursDates_data : [Text],
+    openHoursTime_data : [[Text]],
+  ) : async () {
+
+    Debug.print(Text.concat("createOrUpdateDoctorMetaData ", debug_show (msg.caller)));
+
+    let doctorOpenHour : ?DoctorOpenHours = List.find(
+      doctor_open_hours_list,
+      func(docOpenHour : DoctorOpenHours) : Bool {
+        return docOpenHour.doctor_id == msg.caller;
+      },
+    );
+
+    let newOpenHour : DoctorOpenHours = {
+      doctor_id = msg.caller;
+      openHoursDates = openHoursDates_data;
+      openHoursTime = openHoursTime_data;
+    };
+
+    switch (doctorOpenHour) {
+      case null {
+        doctor_open_hours_list := List.push(newOpenHour, doctor_open_hours_list);
+      };
+      case (?result) {
+
+        var updatedDoctorOpenHourList = List.map(
+          doctor_open_hours_list,
+          func(docOpenHour : DoctorOpenHours) : DoctorOpenHours {
+            if (docOpenHour.doctor_id == msg.caller) {
+              return newOpenHour;
+            } else {
+              return docOpenHour;
+            };
+          },
+        );
+        doctor_open_hours_list := updatedDoctorOpenHourList;
+      };
+    };
+
+  };
 
   // TODO add Authorisation Here
   public shared query (msg) func readOpenHours() : async [DoctorOpenHours] {
@@ -753,22 +857,16 @@ actor healthchain {
   };
 
   // TODO add Authorisation Here
-  public shared (msg) func addDoctorOpenHours(
-    openHoursDates_data : [Text],
-    openHoursTime_data : [[Text]],
-  ) : async () {
+  public shared query (msg) func readOpenHoursById(doctor_id : Text) : async ?DoctorOpenHours {
 
-    Debug.print(Text.concat("addDoctorOpenHours ", debug_show (msg.caller)));
+    Debug.print(Text.concat("readOpenHoursById ", debug_show (msg.caller)));
 
-    let newOpenHour : DoctorOpenHours = {
-      doctor_id = msg.caller;
-      openHoursDates = openHoursDates_data;
-      openHoursTime = openHoursTime_data;
-    };
-
-    doctor_open_hours_list := List.push(newOpenHour, doctor_open_hours_list);
-
-    Debug.print(debug_show (doctor_open_hours_list));
+    return List.find(
+      doctor_open_hours_list,
+      func(doctorOpenHours : DoctorOpenHours) : Bool {
+        return Principal.toText(doctorOpenHours.doctor_id) == doctor_id;
+      },
+    );
   };
 
   ///////////////////////////////////////// Notice ///////////////////////////////////////////////////////
@@ -779,7 +877,7 @@ actor healthchain {
     notice : Text;
   };
 
-  stable var notices : List.List<Notice> = List.nil<Notice>();
+  private stable var notices : List.List<Notice> = List.nil<Notice>();
 
   // TODO add Authorisation Here
   public shared (msg) func createNotice(fromText : Text, noticeText : Text) {
@@ -811,7 +909,7 @@ actor healthchain {
     notification : Text;
   };
 
-  stable var notifications : List.List<Notification> = List.nil<Notification>();
+  private stable var notifications : List.List<Notification> = List.nil<Notification>();
 
   // TODO add Authorisation Here
   public shared (msg) func createNotification(for_id_data : Text, notification_data : Text) {
