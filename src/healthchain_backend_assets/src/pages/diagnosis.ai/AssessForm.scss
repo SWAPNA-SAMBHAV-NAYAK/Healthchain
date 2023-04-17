@@ -1,0 +1,30 @@
+form{
+  display: flex;
+  flex-direction: column;
+  padding: 2%;
+
+  .input-boxyy{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 1%;
+
+    label{
+      justify-self: left;
+    }
+  }
+
+  .buttonyy{
+    width:40%;
+    align-self: center;
+    margin-top: 4%;
+    padding:7px 15px;
+    border:none;
+    background-color: #D8ECD8;
+    color:#024332;
+    border-radius:5px;
+
+    &:hover{
+      cursor:pointer;
+    }
+  }
+}

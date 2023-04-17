@@ -4,7 +4,9 @@ type Appointment =
     appointment_id : Text;
     date : Text;
     doctor_id : Principal;
+    doctor_name : Text;
     patient_id : Principal;
+    patient_name : Text;
     time_slot : Text
   };
 type DoctorMetaData =
@@ -66,7 +68,6 @@ actor {
   stable var doctor_open_hours_list :
     ?(DoctorOpenHours, List<DoctorOpenHours>);
   stable var employees : ?(Employee, List<Employee>);
-  stable var mapOfMedicalLogAccessEntries : [(Principal, [Principal])];
   stable var medicalLogs : ?(MedicalLog, List<MedicalLog>);
   stable var notices : ?(Notice, List<Notice>);
   stable var notifications : ?(Notification, List<Notification>);

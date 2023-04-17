@@ -9,11 +9,13 @@ import { loadPatientById } from '../../../redux/actions/patientByIdAction';
 import useAuthenticatedCannister from '../../../useAuthenticatedCannister';
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { loadMedicalLogList } from '../../../redux/actions/medicalLogAction';
+import { getStatusOfAccessToMedicalLogs } from '../../../redux/actions/accessToLogsAction';
 
 export default function PatientInfo() {
 
-  const dispatch = useDispatch();
+  const params = useParams();
 
+  const dispatch = useDispatch();
 
   const authCannister = useAuthenticatedCannister();
 
@@ -23,8 +25,17 @@ export default function PatientInfo() {
 
   const { accountType } = useSelector(state => state);
 
-  const params = useParams();
+  const { hasAccessToLogs } = useSelector(state => state.hasAccessToLogs);
 
+
+  useEffect(() => {
+    dispatch(loadMedicalLogList(authCannister, params.patient_id))
+  }, [authCannister, params.patient_id])
+
+
+  useEffect(() => {
+    dispatch(getStatusOfAccessToMedicalLogs(authCannister, params.patient_id))
+  }, [authCannister, params.patient_id])
 
   useEffect(() => {
     dispatch(loadPatientById(params.patient_id, authCannister));
@@ -33,47 +44,12 @@ export default function PatientInfo() {
 
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  // const [bloodGroup, setBloodGroup] = useState(patientById[0].blood_group);
-  // const [age, setAge] = useState(parseInt(patientById[0].age));
-  // const [weight, setWeight] = useState(patientById[0].weight);
-  // const [height, setHeight] = useState(patientById[0].height);
-  // const [address, setAddress] = useState(patientById[0].address);
 
   const [userType, setUserType] = useState("");
 
   const handleEditButton = () => {
     setIsPopupOpen(true);
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   // await healthchain_backend.updatePatient(
-  //   //   patientById[0].patient_id,
-  //   //   patientById[0].registered_on,
-  //   //   patientById[0].name,
-  //   //   patientById[0].email,
-  //   //   patientById[0].phone_number,
-  //   //   parseInt(age),
-  //   //   address,
-  //   //   bloodGroup,
-  //   //   parseFloat(weight),
-  //   //   parseFloat(height),
-  //   //   patientById[0].gender,
-  //   // )
-
-  //   setIsPopupOpen(false);
-
-  //   dispatch(loadPatientById(params.patient_id, patients));
-
-  //   Salrt.fire({
-  //     icon: "success",
-  //     title: "Data Saved!",
-  //     text: `${patientById[0].name}'s data has been saved.`,
-  //     showConfirmButton: false,
-  //     timer: 2000
-  //   });
-  // };
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -94,28 +70,17 @@ export default function PatientInfo() {
     });
   }
 
-  const pRef = useRef(null);
-
   const handleCopyClick = () => {
-    const childNodes = pRef.current.childNodes;
-    const textNodes = Array.from(childNodes).filter(
-      (node) => node.nodeType === Node.TEXT_NODE
-    );
-    const id = textNodes
-      .map((node) => node.textContent)
-      .join("")
-      .trim();
-    console.log(id);
+    navigator.clipboard.writeText(params.patient_id);
     Salrt.fire({
-      position: "top-end",
+      position: "bottom-end",
       icon: "success",
-      title: `ID: ${id} has been Copied!`,
+      title: `ID: ${params.patient_id} has been Copied!`,
       showConfirmButton: false,
       timer: 1500
     });
   };
 
-  // code for add logs
   const [showLogForm, setShowLogForm] = useState(false);
   const [formVals, setFormVals] = useState({
     pulse_rate: "",
@@ -128,7 +93,7 @@ export default function PatientInfo() {
     weight: "",
     height: ""
   });
-  const [logs, setLogs] = useState([]);
+
 
   const changeKoHandle = (event) => {
     const { name, value } = event.target;
@@ -136,15 +101,8 @@ export default function PatientInfo() {
   };
 
 
-  useEffect(() => {
-    dispatch(loadMedicalLogList(authCannister, params.patient_id))
-  }, [authCannister, params.patient_id])
-
-
-
   const submitKoHandle = async (event) => {
     event.preventDefault();
-    // form submit ko handle karne ka backend code idhar aayega
 
     await authCannister.createMedicalLog(
       params.patient_id,
@@ -163,35 +121,6 @@ export default function PatientInfo() {
     dispatch(loadMedicalLogList(authCannister, params.patient_id))
 
     setShowLogForm(!showLogForm);
-
-
-    // const log = {
-    //   timestamp: new Date(),
-    //   pulse_rate: formVals.pulse_rate,
-    //   blood_pressure: formVals.blood_pressure,
-    //   spo2: formVals.spo2,
-    //   temperature: formVals.temperature,
-    //   blood_group: formVals.blood_group,
-    //   weight: formVals.weight,
-    //   height: formVals.height,
-    //   medications: formVals.medications,
-    //   additional_notes: formVals.additional_notes
-    // };
-
-
-    // setLogs([log, ...logs]);
-    // setFormVals({
-    //   pulse_rate: "",
-    //   blood_pressure: "",
-    //   spo2: "",
-    //   temperature: "",
-    //   blood_group: "",
-    //   weight: "",
-    //   height: "",
-    //   medications: "",
-    //   additional_notes: ""
-    // });
-
 
     Salrt.fire({
       position: "top-end",
@@ -233,15 +162,18 @@ export default function PatientInfo() {
                 <p className="tag" id="tag6">
                   <strong>Address:</strong> {patientById.address}
                 </p>
-                <p className="tag" id="tag6" ref={pRef}>
-                  <strong>Internet Identity: </strong> {
+                <p className="tag" id="tag6">
+                  <strong>Internet Identity: </strong>
+                  <ContentCopyIcon
+                    onClick={handleCopyClick}
+                    style={{ cursor: "pointer", margin: "0px 5px" }}
+                  />
+                  {
                     (patientById.user_principal) ? patientById.user_principal.toText() : " "
                   }
+
                 </p>
-                <ContentCopyIcon
-                  onClick={handleCopyClick}
-                  style={{ cursor: "pointer" }}
-                />
+
               </div>
               <div className="cardButtons">
                 {
@@ -368,7 +300,7 @@ export default function PatientInfo() {
               </form>
             </div>
           )}
-          {medicalLogs.length > 0 && (
+          {hasAccessToLogs && medicalLogs.length > 0 && (
             <div className="logsCard">
               <h2>Logs</h2>
               <div className="cardContainer">

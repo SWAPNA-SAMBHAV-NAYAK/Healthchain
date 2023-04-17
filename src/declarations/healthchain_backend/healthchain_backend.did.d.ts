@@ -1,9 +1,11 @@
 import type { Principal } from '@dfinity/principal';
 export interface Appointment {
+  'patient_name' : string,
   'patient_id' : Principal,
   'appointment_id' : string,
   'time_slot' : string,
   'date' : string,
+  'doctor_name' : string,
   'doctor_id' : Principal,
 }
 export interface DoctorMetaData {
@@ -36,6 +38,7 @@ export interface MedicalLog {
   'medications' : string,
   'blood_group' : string,
   'pulse_rate' : number,
+  'doctor_name' : string,
   'additional_notes' : string,
   'doctor_id' : Principal,
   'time_stamp' : Time,
@@ -123,9 +126,10 @@ export interface _SERVICE {
   'getDoctorById' : (arg_0: string) => Promise<[] | [ProfileData]>,
   'getDoctorMetaDataById' : (arg_0: string) => Promise<[] | [DoctorMetaData]>,
   'getPatientById' : (arg_0: string) => Promise<[] | [ProfileData]>,
+  'getPatientMedicalLogsAccessList' : () => Promise<Array<Principal>>,
   'getTextTimeStampFromEpoch' : (arg_0: Time) => Promise<string>,
   'giveMedicalLogAccess' : (arg_0: Principal) => Promise<undefined>,
-  'hasAccessToPatientMedicalLogs' : (arg_0: Principal) => Promise<boolean>,
+  'hasAccessToPatientMedicalLogs' : (arg_0: string) => Promise<boolean>,
   'readAllAppointments' : () => Promise<Array<Appointment>>,
   'readDepartments' : () => Promise<Array<string>>,
   'readDoctorAppointments' : () => Promise<Array<Appointment>>,
@@ -140,6 +144,7 @@ export interface _SERVICE {
   'readPatientAppointments' : () => Promise<Array<Appointment>>,
   'readPatients' : () => Promise<Array<ProfileData>>,
   'readProfileData' : () => Promise<[] | [ProfileData]>,
+  'revokeMedicalLogAccess' : (arg_0: Principal) => Promise<undefined>,
   'updateEmployee' : (
       arg_0: string,
       arg_1: string,

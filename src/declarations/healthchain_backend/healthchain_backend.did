@@ -30,6 +30,7 @@ type MedicalLog =
    blood_group: text;
    blood_pressure: int;
    doctor_id: principal;
+   doctor_name: text;
    height: float64;
    medications: text;
    patient_id: principal;
@@ -67,7 +68,9 @@ type Appointment =
    appointment_id: text;
    date: text;
    doctor_id: principal;
+   doctor_name: text;
    patient_id: principal;
+   patient_name: text;
    time_slot: text;
  };
 service : {
@@ -86,9 +89,10 @@ service : {
   getDoctorById: (text) -> (opt ProfileData) query;
   getDoctorMetaDataById: (text) -> (opt DoctorMetaData) query;
   getPatientById: (text) -> (opt ProfileData) query;
+  getPatientMedicalLogsAccessList: () -> (vec principal) query;
   getTextTimeStampFromEpoch: (Time) -> (text) query;
   giveMedicalLogAccess: (principal) -> () oneway;
-  hasAccessToPatientMedicalLogs: (principal) -> (bool) query;
+  hasAccessToPatientMedicalLogs: (text) -> (bool) query;
   readAllAppointments: () -> (vec Appointment) query;
   readDepartments: () -> (vec text) query;
   readDoctorAppointments: () -> (vec Appointment) query;
@@ -103,6 +107,7 @@ service : {
   readPatientAppointments: () -> (vec Appointment) query;
   readPatients: () -> (vec ProfileData) query;
   readProfileData: () -> (opt ProfileData) query;
+  revokeMedicalLogAccess: (principal) -> () oneway;
   updateEmployee: (text, text, text, text, text, int, text) -> () oneway;
   updateUserType: (principal, text) -> () oneway;
 }

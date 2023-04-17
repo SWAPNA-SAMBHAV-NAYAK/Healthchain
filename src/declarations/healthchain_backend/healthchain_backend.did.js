@@ -19,10 +19,12 @@ export const idlFactory = ({ IDL }) => {
     'qualification' : IDL.Text,
   });
   const Appointment = IDL.Record({
+    'patient_name' : IDL.Text,
     'patient_id' : IDL.Principal,
     'appointment_id' : IDL.Text,
     'time_slot' : IDL.Text,
     'date' : IDL.Text,
+    'doctor_name' : IDL.Text,
     'doctor_id' : IDL.Principal,
   });
   const Employee = IDL.Record({
@@ -44,6 +46,7 @@ export const idlFactory = ({ IDL }) => {
     'medications' : IDL.Text,
     'blood_group' : IDL.Text,
     'pulse_rate' : IDL.Float64,
+    'doctor_name' : IDL.Text,
     'additional_notes' : IDL.Text,
     'doctor_id' : IDL.Principal,
     'time_stamp' : Time,
@@ -128,10 +131,15 @@ export const idlFactory = ({ IDL }) => {
         ['query'],
       ),
     'getPatientById' : IDL.Func([IDL.Text], [IDL.Opt(ProfileData)], ['query']),
+    'getPatientMedicalLogsAccessList' : IDL.Func(
+        [],
+        [IDL.Vec(IDL.Principal)],
+        ['query'],
+      ),
     'getTextTimeStampFromEpoch' : IDL.Func([Time], [IDL.Text], ['query']),
     'giveMedicalLogAccess' : IDL.Func([IDL.Principal], [], ['oneway']),
     'hasAccessToPatientMedicalLogs' : IDL.Func(
-        [IDL.Principal],
+        [IDL.Text],
         [IDL.Bool],
         ['query'],
       ),
@@ -153,6 +161,7 @@ export const idlFactory = ({ IDL }) => {
     'readPatientAppointments' : IDL.Func([], [IDL.Vec(Appointment)], ['query']),
     'readPatients' : IDL.Func([], [IDL.Vec(ProfileData)], ['query']),
     'readProfileData' : IDL.Func([], [IDL.Opt(ProfileData)], ['query']),
+    'revokeMedicalLogAccess' : IDL.Func([IDL.Principal], [], ['oneway']),
     'updateEmployee' : IDL.Func(
         [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Int, IDL.Text],
         [],

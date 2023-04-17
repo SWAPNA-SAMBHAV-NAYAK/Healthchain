@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import useAuthenticatedCannister from "../../useAuthenticatedCannister";
+import { loadLogsAccessList } from "../../redux/actions/logsAccessListAction";
 
 function AppointmentListTable() {
 
@@ -11,13 +12,17 @@ function AppointmentListTable() {
 
   const { accountType } = useSelector(state => state);
 
+  const { logsAccessList } = useSelector(state => state.logsAccessList);
+
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
 
   const authCannister = useAuthenticatedCannister();
 
-  // share/revoke access functionality
-  const [sharedIds, setSharedIds] = useState([]);
+  useEffect(() => {
+    dispatch(loadLogsAccessList(authCannister))
+  }, [authCannister])
 
   const handleShare = (doctor_id) => {
     Swal.fire({
@@ -28,9 +33,9 @@ function AppointmentListTable() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         await authCannister.giveMedicalLogAccess(doctor_id);
-        setSharedIds([...sharedIds, doctor_id]);
-
         Swal.fire("Shared!", "", "success");
+
+        dispatch(loadLogsAccessList(authCannister))
       }
     });
   };
@@ -41,10 +46,13 @@ function AppointmentListTable() {
       showDenyButton: true,
       confirmButtonText: "Revoke",
       denyButtonText: `Cancel`
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
+        await authCannister.revokeMedicalLogAccess(doctor_id);
+
         Swal.fire("Revoked!", "", "success");
-        setSharedIds(sharedIds.filter((sharedId) => sharedId !== doctor_id));
+
+        dispatch(loadLogsAccessList(authCannister))
       }
     });
   };
@@ -56,7 +64,7 @@ function AppointmentListTable() {
             <thead>
               <tr>
                 <th>No.</th>
-                <th>Doctor ID</th>
+                <th>Doctor Name</th>
                 <th>Time Slot</th>
                 <th>Date</th>
                 <th>Share Data?</th>
@@ -67,24 +75,14 @@ function AppointmentListTable() {
                 appointments.map((appointment, i) => (
                   <tr key={appointment.appointment_id}>
                     <td>{i + 1}</td>
-                    <td>{appointment.doctor_id.toText()}</td>
+                    <td>{appointment.doctor_name}</td>
                     <td>{appointment.time_slot}</td>
                     <td>{appointment.date}</td>
-
-                    <td>
-                      {/* <button type="button">Share</button> */}
-                      <button
-                        className={`button ${sharedIds.includes(appointment.doctor_id) ? "revoke" : "share"
-                          }`}
-                        onClick={() =>
-                          sharedIds.includes(appointment.doctor_id) ? handleRevoke(appointment.doctor_id) : handleShare(appointment.doctor_id)
-                        }
-                      >
-                        {sharedIds.includes(appointment.doctor_id) ? "Revoke Access" : "Share"}
-                      </button>
-                    </td>
-
-                    {/* TODO Add Share Data and Revoke Access Buttons */}
+                    <td>{
+                      logsAccessList.includes(appointment.doctor_id.toString())
+                        ? <button className={"button revoke"} onClick={() => handleRevoke(appointment.doctor_id)}>Revoke</button>
+                        : <button className={"button share"} onClick={() => handleShare(appointment.doctor_id)}>Share</button>
+                    }</td>
                   </tr>
                 ))
               ) : (
@@ -104,7 +102,7 @@ function AppointmentListTable() {
             <thead>
               <tr>
                 <th>No.</th>
-                <th>Patient ID</th>
+                <th>Patient Name</th>
                 <th>Time Slot</th>
                 <th>Date</th>
               </tr>
@@ -118,7 +116,7 @@ function AppointmentListTable() {
                       navigate(`/patients/${appointment.patient_id.toText()}`)
                     }}>
                     <td>{i + 1}</td>
-                    <td>{appointment.patient_id.toText()}</td>
+                    <td>{appointment.patient_name}</td>
                     <td>{appointment.time_slot}</td>
                     <td>{appointment.date}</td>
                   </tr>
@@ -140,8 +138,8 @@ function AppointmentListTable() {
             <thead>
               <tr>
                 <th>No.</th>
-                <th>Doctor ID</th>
-                <th>Patient ID</th>
+                <th>Doctor Name</th>
+                <th>Patient Name</th>
                 <th>Time Slot</th>
                 <th>Date</th>
               </tr>
@@ -151,8 +149,8 @@ function AppointmentListTable() {
                 appointments.map((appointment, i) => (
                   <tr key={appointment.appointment_id}>
                     <td>{i + 1}</td>
-                    <td>{appointment.doctor_id.toText()}</td>
-                    <td>{appointment.patient_id.toText()}</td>
+                    <td>{appointment.doctor_name}</td>
+                    <td>{appointment.patient_name}</td>
                     <td>{appointment.time_slot}</td>
                     <td>{appointment.date}</td>
                   </tr>

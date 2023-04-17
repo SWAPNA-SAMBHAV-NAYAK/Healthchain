@@ -1,0 +1,46 @@
+.notecard {
+  position: relative;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin-bottom: 16px;
+  width:400px;
+  
+  .delete {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 2px 7px;
+    border-radius: 7px;
+  }
+
+  .content {
+    h3 {
+      margin-top: 0;
+    }
+
+    p {
+      margin-bottom: 0;
+    }
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+
+    .name, .timestamp {
+      border: 1px solid  #024332;
+      background-color: lightgrey;
+      color: #024332;
+      padding: 2px 7px;
+      border-radius: 7px;
+    }
+  }
+}

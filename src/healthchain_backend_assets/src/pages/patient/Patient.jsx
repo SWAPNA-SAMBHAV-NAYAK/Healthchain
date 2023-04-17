@@ -20,6 +20,9 @@ const Patient = () => {
   const authCannister = useAuthenticatedCannister();
 
 
+
+
+
   async function addPatientForm() {
     navigate("/addPatient");
   }

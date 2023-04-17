@@ -16,6 +16,8 @@ import doctorMetaDataReducer from "./doctorMetaDataReducer";
 import notificationReducer from "./notificationReducer";
 import medicalLogReducer from "./medicalLogReducer";
 import doctorOpenHourByIdReducer from "./doctorOpenHourByIdReducer";
+import accessToLogsReducer from "./accessToLogsReducer";
+import logsAccessListReducer from "./logsAccessListReducer";
 
 const reducer = combineReducers({
     patientList: patientReducer,
@@ -26,6 +28,9 @@ const reducer = combineReducers({
 
 
     medicalLogList: medicalLogReducer,
+
+    hasAccessToLogs: accessToLogsReducer,
+    logsAccessList: logsAccessListReducer,
 
     doctorMetaDataById: doctorMetaDataByIdReducer,
     doctorMetaDataList: doctorMetaDataReducer,

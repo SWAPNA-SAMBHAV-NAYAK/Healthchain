@@ -20,19 +20,21 @@ const Home = () => {
 
   const authCannister = useAuthenticatedCannister();
 
+  const { accountType } = Redux.useSelector(state => state);
+
 
   useEffect(() => {
     dispatch(loadPatientList(authCannister))
   }, [dispatch, authCannister])
-  
+
   useEffect(() => {
     dispatch(loadEmployeeList(authCannister))
-  }, [dispatch,authCannister])
+  }, [dispatch, authCannister])
 
 
   useEffect(() => {
-    dispatch(loadAppointmentList(authCannister))
-  }, [dispatch,authCannister])
+    dispatch(loadAppointmentList(accountType, authCannister))
+  }, [dispatch, authCannister])
 
   useEffect(() => {
     dispatch(loadDoctorList(authCannister))

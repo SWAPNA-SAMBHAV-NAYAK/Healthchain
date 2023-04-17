@@ -14,7 +14,7 @@ actor healthchain {
 
   ///////////////////////////////////////// ProfileData //////////////////////////////////////////////////
 
-  let admin : Principal = Principal.fromText("uka3j-hvpxr-gk6vg-7c7jj-2ysk7-raykr-dqzu6-piqf4-vfsea-hmxo2-6qe");
+  let admin : Principal = Principal.fromText("ac2di-x5z7e-hcljz-xwyz2-suidp-vtnqm-ltex2-zznlz-6iopb-n2yoq-5ae");
 
   public type ProfileData = {
     user_principal : Principal;
@@ -220,6 +220,8 @@ actor healthchain {
     appointment_id : Text;
     patient_id : Principal;
     doctor_id : Principal;
+    patient_name : Text;
+    doctor_name : Text;
     time_slot : Text;
     date : Text;
   };
@@ -236,15 +238,6 @@ actor healthchain {
 
     Debug.print(Text.concat("createAppointment ", debug_show (msg.caller)));
 
-    let newAppointment : Appointment = {
-      appointment_id = appointment_id_data;
-      patient_id = Principal.fromText(patient_id_data);
-      doctor_id = Principal.fromText(doctor_id_data);
-      time_slot = time_slot_data;
-      date = date_data;
-    };
-    appointments := List.push(newAppointment, appointments);
-
     var doc : ?ProfileData = await getDoctorById(doctor_id_data);
 
     switch (doc) {
@@ -253,43 +246,56 @@ actor healthchain {
         Debug.print("Doctor Not Found while creating notification of Appointment");
       };
       case (?docData) {
-        var notification = Text.concat(
-          Text.concat("Your appointment has been set with Dr. ", docData.name),
-          Text.concat(
-            Text.concat(" on ", date_data),
-            Text.concat(" at ", time_slot_data),
-          ),
-        );
-        createNotification(
-          patient_id_data,
-          notification,
-        );
+
+        var pat : ?ProfileData = await getPatientById(patient_id_data);
+
+        switch (pat) {
+          //For Doctor Notification
+          case null {
+            Debug.print("Patient Not Found while creating notification of Appointment");
+          };
+          case (?patData) {
+
+            let newAppointment : Appointment = {
+              appointment_id = appointment_id_data;
+              patient_id = Principal.fromText(patient_id_data);
+              doctor_id = Principal.fromText(doctor_id_data);
+              patient_name = patData.name;
+              doctor_name = docData.name;
+              time_slot = time_slot_data;
+              date = date_data;
+            };
+            appointments := List.push(newAppointment, appointments);
+
+            var patientNotification = Text.concat(
+              Text.concat("Your appointment has been set with Dr. ", docData.name),
+              Text.concat(
+                Text.concat(" on ", date_data),
+                Text.concat(" at ", time_slot_data),
+              ),
+            );
+
+            createNotification(
+              patient_id_data,
+              patientNotification,
+            );
+
+            var docNotification = Text.concat(
+              Text.concat(patData.name, " has booked an appointment with you"),
+              Text.concat(
+                Text.concat(" on ", date_data),
+                Text.concat(" at ", time_slot_data),
+              ),
+            );
+            createNotification(
+              doctor_id_data,
+              docNotification,
+            );
+          };
+        };
       };
     };
 
-    var pat : ?ProfileData = await getPatientById(patient_id_data);
-
-    switch (pat) {
-      //For Doctor Notification
-      case null {
-        Debug.print("Patient Not Found while creating notification of Appointment");
-      };
-      case (?patData) {
-        var notification = Text.concat(
-          Text.concat(patData.name, " has booked an appointment with you"),
-          Text.concat(
-            Text.concat(" on ", date_data),
-            Text.concat(" at ", time_slot_data),
-          ),
-        );
-        createNotification(
-          doctor_id_data,
-          notification,
-        );
-      };
-    };
-
-    Debug.print(debug_show (appointments));
   };
 
   public shared (msg) func createAppointmentPatientSide(
@@ -301,16 +307,6 @@ actor healthchain {
 
     Debug.print(Text.concat("createAppointmentPatientSide ", debug_show (msg.caller)));
 
-    let newAppointment : Appointment = {
-      appointment_id = appointment_id_data;
-      patient_id = msg.caller;
-      doctor_id = Principal.fromText(doctor_id_data);
-      time_slot = time_slot_data;
-      date = date_data;
-    };
-    appointments := List.push(newAppointment, appointments);
-    Debug.print(debug_show (appointments));
-
     var doc : ?ProfileData = await getDoctorById(doctor_id_data);
 
     switch (doc) {
@@ -319,39 +315,52 @@ actor healthchain {
         Debug.print("Doctor Not Found while creating notification of Appointment");
       };
       case (?docData) {
-        var notification = Text.concat(
-          Text.concat("Your appointment has been set with Dr. ", docData.name),
-          Text.concat(
-            Text.concat(" on ", date_data),
-            Text.concat(" at ", time_slot_data),
-          ),
-        );
-        createNotification(
-          Principal.toText(msg.caller),
-          notification,
-        );
-      };
-    };
 
-    var pat : ?ProfileData = await getPatientById(Principal.toText(msg.caller));
+        var pat : ?ProfileData = await getPatientById(Principal.toText(msg.caller));
 
-    switch (pat) {
-      //For Doctor Notification
-      case null {
-        Debug.print("Patient Not Found while creating notification of Appointment");
-      };
-      case (?patData) {
-        var notification = Text.concat(
-          Text.concat(patData.name, " has booked an appointment with you"),
-          Text.concat(
-            Text.concat(" on ", date_data),
-            Text.concat(" at ", time_slot_data),
-          ),
-        );
-        createNotification(
-          doctor_id_data,
-          notification,
-        );
+        switch (pat) {
+          //For Doctor Notification
+          case null {
+            Debug.print("Patient Not Found while creating notification of Appointment");
+          };
+          case (?patData) {
+
+            let newAppointment : Appointment = {
+              appointment_id = appointment_id_data;
+              patient_id = msg.caller;
+              doctor_id = Principal.fromText(doctor_id_data);
+              doctor_name = docData.name;
+              patient_name = patData.name;
+              time_slot = time_slot_data;
+              date = date_data;
+            };
+            appointments := List.push(newAppointment, appointments);
+
+            var docNotification = Text.concat(
+              Text.concat(patData.name, " has booked an appointment with you"),
+              Text.concat(
+                Text.concat(" on ", date_data),
+                Text.concat(" at ", time_slot_data),
+              ),
+            );
+            createNotification(
+              doctor_id_data,
+              docNotification,
+            );
+
+            var patNotification = Text.concat(
+              Text.concat("Your appointment has been set with Dr. ", docData.name),
+              Text.concat(
+                Text.concat(" on ", date_data),
+                Text.concat(" at ", time_slot_data),
+              ),
+            );
+            createNotification(
+              Principal.toText(msg.caller),
+              patNotification,
+            );
+          };
+        };
       };
     };
 
@@ -522,6 +531,7 @@ actor healthchain {
   public type MedicalLog = {
     patient_id : Principal;
     doctor_id : Principal;
+    doctor_name : Text;
     time_stamp : Time.Time;
     pulse_rate : Float;
     blood_pressure : Int;
@@ -553,22 +563,42 @@ actor healthchain {
 
     Debug.print(Text.concat("createMedicalLog ", debug_show (msg.caller)));
 
-    let newMedicalLog : MedicalLog = {
-      patient_id = Principal.fromText(patient_id_data);
-      doctor_id = msg.caller;
-      time_stamp = Time.now();
-      pulse_rate = pulse_rate_data;
-      blood_pressure = blood_pressure_data;
-      spo2 = spo2_data;
-      temperature = temperature_data;
-      additional_notes = additional_notes_data;
-      medications = medications_data;
-      blood_group = blood_group_data;
-      weight = weight_data;
-      height = height_data;
-    };
+    var doc : ?ProfileData = await getDoctorById(Principal.toText(msg.caller));
 
-    medicalLogs := List.push(newMedicalLog, medicalLogs);
+    switch (doc) {
+      //For Patient Notification
+      case null {};
+      case (?docData) {
+
+        let newMedicalLog : MedicalLog = {
+          patient_id = Principal.fromText(patient_id_data);
+          doctor_id = msg.caller;
+          doctor_name = docData.name;
+          time_stamp = Time.now();
+          pulse_rate = pulse_rate_data;
+          blood_pressure = blood_pressure_data;
+          spo2 = spo2_data;
+          temperature = temperature_data;
+          additional_notes = additional_notes_data;
+          medications = medications_data;
+          blood_group = blood_group_data;
+          weight = weight_data;
+          height = height_data;
+        };
+
+        medicalLogs := List.push(newMedicalLog, medicalLogs);
+
+        var patientNotification = Text.concat(
+          Text.concat("Dr. ", docData.name),
+          " added a Medical Log for your recent appointment",
+        );
+
+        createNotification(
+          patient_id_data,
+          patientNotification,
+        );
+      };
+    };
 
     Debug.print(debug_show (medicalLogs));
 
@@ -588,6 +618,8 @@ actor healthchain {
       case null {
 
         var d_id_list : List.List<Principal> = List.nil<Principal>();
+
+        d_id_list := List.push(msg.caller, d_id_list);
 
         d_id_list := List.push(doctor_id, d_id_list);
 
@@ -619,11 +651,54 @@ actor healthchain {
     };
   };
 
-  public shared query (msg) func hasAccessToPatientMedicalLogs(patient_id : Principal) : async Bool {
+  public shared (msg) func revokeMedicalLogAccess(doctor_id : Principal) {
+
+    Debug.print(Text.concat("revokeMedicalLogAccess ", debug_show (msg.caller)));
+
+    var medLogAccess : ?List.List<Principal> = mapOfMedicalLogAccessHashMap.get(msg.caller);
+
+    switch (medLogAccess) {
+      case null {};
+      case (?result) {
+
+        var d_id_list : List.List<Principal> = result;
+
+        Debug.print(debug_show (d_id_list));
+
+        var index : Nat = 0;
+        var deleteIndex : Nat = 0;
+
+        var updatedAccessList = List.map(
+          d_id_list,
+          func(doc_id : Principal) : Principal {
+            index := index +1;
+            if (doc_id == doctor_id) {
+              deleteIndex := index - 1;
+              return doc_id;
+            } else {
+              return doc_id;
+            };
+          },
+        );
+
+        let listFront = List.take(d_id_list, deleteIndex);
+        let listBack = List.drop(d_id_list, deleteIndex + 1);
+
+        d_id_list := List.append(listFront, listBack);
+
+        Debug.print(debug_show (d_id_list));
+
+        mapOfMedicalLogAccessHashMap.put(msg.caller, d_id_list);
+
+      };
+    };
+  };
+
+  public shared query (msg) func hasAccessToPatientMedicalLogs(patient_id : Text) : async Bool {
 
     Debug.print(Text.concat("hasAccessToPatientMedicalLogs ", debug_show (msg.caller)));
 
-    var medLogAccess : ?List.List<Principal> = mapOfMedicalLogAccessHashMap.get(patient_id);
+    var medLogAccess : ?List.List<Principal> = mapOfMedicalLogAccessHashMap.get(Principal.fromText(patient_id));
 
     switch (medLogAccess) {
       case null {
@@ -651,8 +726,24 @@ actor healthchain {
 
   };
 
-  system func preupgrade() {
+  public shared query (msg) func getPatientMedicalLogsAccessList() : async [Principal] {
 
+    Debug.print(Text.concat("getPatientMedicalLogsAccessList ", debug_show (msg.caller)));
+
+    var medLogAccess : ?List.List<Principal> = mapOfMedicalLogAccessHashMap.get(msg.caller);
+
+    switch (medLogAccess) {
+      case null {
+        return [];
+      };
+      case (?result) {
+        return List.toArray(result);
+      };
+    };
+
+  };
+
+  system func preupgrade() {
     var buffer : List.List<(Principal, [Principal])> = List.nil<(Principal, [Principal])>();
 
     for ((patient_id, doctor_id_list) in mapOfMedicalLogAccessHashMap.entries()) {
@@ -661,17 +752,13 @@ actor healthchain {
       buffer := List.push((patient_id, doc_id_list), buffer);
 
     };
-
     mapOfMedicalLogAccessEntries := List.toArray(buffer);
   };
 
   system func postupgrade() {
-
     for ((patient_id, doctor_id_list) in mapOfMedicalLogAccessEntries.vals()) {
       mapOfMedicalLogAccessHashMap.put(patient_id, List.fromArray(doctor_id_list));
     };
-
-    // mapOfMedicalLogAccess := HashMap.fromIter<Principal, List.List<Principal>>(mapOfMedicalLogAccessEntries.vals(), 1, Principal.equal, Principal.hash);
   };
 
   // TODO add Authorisation Here
@@ -679,13 +766,37 @@ actor healthchain {
 
     Debug.print(Text.concat("readMedicalLogs ", debug_show (msg.caller)));
 
-    var patMedicalLogList = List.filter(
-      medicalLogs,
-      func(log : MedicalLog) : Bool {
-        return Principal.toText(log.patient_id) == patient_id;
-      },
-    );
-    return List.toArray(patMedicalLogList);
+    var medLogAccess : ?List.List<Principal> = mapOfMedicalLogAccessHashMap.get(Principal.fromText(patient_id));
+
+    switch (medLogAccess) {
+      case null {
+        return [];
+      };
+      case (?result) {
+        var d_id_list : List.List<Principal> = result;
+        var hasDoctorId : ?Principal = List.find(
+          d_id_list,
+          func(d_id : Principal) : Bool {
+            return d_id == msg.caller;
+          },
+        );
+
+        switch (hasDoctorId) {
+          case null {
+            return [];
+          };
+          case (?result) {
+            var patMedicalLogList = List.filter(
+              medicalLogs,
+              func(log : MedicalLog) : Bool {
+                return Principal.toText(log.patient_id) == patient_id;
+              },
+            );
+            return List.toArray(patMedicalLogList);
+          };
+        };
+      };
+    };
   };
 
   ///////////////////////////////////////// Department //////////////////////////////////////////////////
@@ -922,9 +1033,6 @@ actor healthchain {
     Debug.print(Text.concat("createNotification ", debug_show (msg.caller)));
 
     notifications := List.push(newNotification, notifications);
-
-    Debug.print(debug_show (notifications));
-
   };
 
   // TODO add Authorisation Here
@@ -939,15 +1047,12 @@ actor healthchain {
       },
     );
 
-    Debug.print(debug_show (notifications));
-
-    Debug.print(debug_show (userSpecificNotifications));
-
     return List.toArray(userSpecificNotifications);
   };
 
-  public query func getTextTimeStampFromEpoch(nanos : Time.Time) : async Text {
-    // let nanos = Time.now();
+  public shared query (msg) func getTextTimeStampFromEpoch(nanos : Time.Time) : async Text {
+
+    Debug.print(Text.concat("getTextTimeStampFromEpoch ", debug_show (msg.caller)));
 
     let secondsSinceEpoch = (nanos / 1_000_000_000);
 

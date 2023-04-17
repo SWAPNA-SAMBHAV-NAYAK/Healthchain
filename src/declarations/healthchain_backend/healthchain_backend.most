@@ -4,7 +4,9 @@ type Appointment =
     appointment_id : Text;
     date : Text;
     doctor_id : Principal;
+    doctor_name : Text;
     patient_id : Principal;
+    patient_name : Text;
     time_slot : Text
   };
 type DoctorMetaData =
@@ -33,6 +35,7 @@ type MedicalLog =
     blood_group : Text;
     blood_pressure : Int;
     doctor_id : Principal;
+    doctor_name : Text;
     height : Float;
     medications : Text;
     patient_id : Principal;

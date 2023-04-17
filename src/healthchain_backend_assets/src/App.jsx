@@ -14,12 +14,13 @@ import Appointment from "./pages/appointments/Appointment";
 import AppointmentList from "./pages/appointmentlist/AppointmentList";
 import Profile from "./pages/profile/Profile";
 import DIMainPage from "./pages/diseaseIndex/DIMainPage";
-
+import FormDisplay from "./pages/diagnosis.ai/FormDisplay";
 import { useDispatch, useSelector } from "react-redux";
 import { setAccountTypeState } from "./redux/actions/accountTypeAction";
 import { updateProfileData } from "./redux/actions/profileDataAction";
 import useAuthenticatedCannister from "./useAuthenticatedCannister";
 import Notification from "./pages/notification/Notification";
+import Noticeboard from "./pages/noticeBoard/Noticeboard";
 
 function App() {
 
@@ -65,7 +66,7 @@ function App() {
         <Route exact path="/doctors/:doctor_id" element={<DoctorInfo />} />
         <Route exact path={"/addDoctor"} element={<AddDoctor />} />
 
-
+        <Route exact path={"/diagnosis"} element={<FormDisplay />} />
         <Route exact path={"/diseaseindex"} element={<DIMainPage />} />
 
         <Route exact path="/appointments" element={<Appointment />} />
@@ -74,6 +75,8 @@ function App() {
         <Route exact path="/employees" element={<Employees />} />
         
         <Route exact path="/notifications" element={<Notification />} />
+
+        <Route exact path="/notice-board" element={<Noticeboard />}/>
       </Routes>
     </div >
   );

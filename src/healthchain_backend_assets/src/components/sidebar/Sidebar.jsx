@@ -22,10 +22,6 @@ const Sidebar = () => {
   const { accountType } = useSelector(state => state);
   const { profileData } = useSelector(state => state.profileData);
 
-
-
-
-
   useEffect(() => {
     const nav = document.querySelector(".sidebar");
     // const navLinks = document.querySelectorAll(".admin-console-side-nav a");
@@ -97,10 +93,18 @@ const Sidebar = () => {
             </>
           }
 
-          {accountType === "doctor" &&
+          {accountType === "doctor" && profileData.user_principal &&
             <>
               <Link to={`/doctors/${profileData.user_principal.toText()}`} style={{ textDecoration: 'none' }}>
                 <li><PersonOutlinedIcon className="icon" /><span> Workspace </span></li>
+              </Link>
+            </>
+          }
+
+          {accountType === "patient" && profileData.user_principal &&
+            <>
+              <Link to={`/patients/${profileData.user_principal.toText()}`} style={{ textDecoration: 'none' }}>
+                <li><PersonOutlinedIcon className="icon" /><span> My Data </span></li>
               </Link>
             </>
           }
@@ -142,7 +146,9 @@ const Sidebar = () => {
           <p className="title">MESSAGE</p>
           {accountType === "admin" &&
             <>
-              <li><ContentPasteOutlinedIcon className="icon" /><span>Notice Board</span></li>
+              <Link to="/notice-board" style={{textDecoration:'none'}}>
+                <li><ContentPasteOutlinedIcon className="icon" /><span>Notice Board</span></li>
+              </Link>
             </>
           }
           <Link to="/notifications" style={{ textDecoration: 'none' }}>

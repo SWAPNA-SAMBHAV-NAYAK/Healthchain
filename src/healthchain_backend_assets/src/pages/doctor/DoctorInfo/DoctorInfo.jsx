@@ -15,6 +15,7 @@ import { Principal } from "@dfinity/principal";
 import useAuthenticatedCannister from '../../../useAuthenticatedCannister';
 import { loadDoctorOpenHoursById } from '../../../redux/actions/doctorOpenHourByIdAction';
 import { saveDoctorOpenHours } from '../../../redux/actions/doctorOpenHoursAction';
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 export default function DoctorInfo() {
 
@@ -128,6 +129,18 @@ export default function DoctorInfo() {
     });
   };
 
+  const handleCopyClick = () => {
+    navigator.clipboard.writeText(params.doctor_id);
+    Salrt.fire({
+      position: "bottom-end",
+      icon: "success",
+      title: `ID: ${params.doctor_id} has been Copied!`,
+      showConfirmButton: false,
+      timer: 1500
+    });
+  };
+
+
   return (
     <div className="new">
       <Sidebar />
@@ -162,6 +175,17 @@ export default function DoctorInfo() {
                 </div>
                 <p className="tag" id="tag7">
                   <strong>Address: </strong>  {doctorById.address}
+                </p>
+                <p className="tag" id="tag7">
+                  <strong>Internet Identity: </strong>
+                  <ContentCopyIcon
+                    onClick={handleCopyClick}
+                    style={{ cursor: "pointer", margin: "0px 5px" }}
+                  />
+                  {
+                    (doctorById.user_principal) ? doctorById.user_principal.toText() : " "
+                  }
+
                 </p>
               </div>
               <div className="cardButtons">
