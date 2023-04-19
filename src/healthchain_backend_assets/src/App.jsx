@@ -5,10 +5,8 @@ import Login from "./pages/login/Login";
 import Employees from "./pages/employees/Employees";
 
 import Patient from "./pages/patient/Patient";
-import AddPatient from "./pages/patient/AddPatient/AddPatient";
 import PatientInfo from "./pages/patient/PatientInfo/PatientInfo";
 import Doctor from "./pages/doctor/Doctor";
-import AddDoctor from "./pages/doctor/AddDoctor/AddDoctor";
 import DoctorInfo from "./pages/doctor/DoctorInfo/DoctorInfo";
 import Appointment from "./pages/appointments/Appointment";
 import AppointmentList from "./pages/appointmentlist/AppointmentList";
@@ -21,6 +19,7 @@ import { updateProfileData } from "./redux/actions/profileDataAction";
 import useAuthenticatedCannister from "./useAuthenticatedCannister";
 import Notification from "./pages/notification/Notification";
 import Noticeboard from "./pages/noticeBoard/Noticeboard";
+import DiagnosisHistory from "./pages/diagnosis.ai/DiagnosisHistory";
 
 function App() {
 
@@ -50,21 +49,15 @@ function App() {
 
         <Route exact path="/" element={<Profile />} />
 
-
         <Route exact path={"/dashboard"} element={<Home />} />
 
         <Route exact path={"/login"} element={<Login />} />
 
-
-
-
         <Route exact path="/patients" element={<Patient />} />
         <Route exact path="/patients/:patient_id" element={<PatientInfo />} />
-        <Route exact path={"/addPatient"} element={<AddPatient />} />
 
         <Route exact path="/doctors" element={<Doctor />} />
         <Route exact path="/doctors/:doctor_id" element={<DoctorInfo />} />
-        <Route exact path={"/addDoctor"} element={<AddDoctor />} />
 
         <Route exact path={"/diagnosis"} element={<FormDisplay />} />
         <Route exact path={"/diseaseindex"} element={<DIMainPage />} />
@@ -77,6 +70,9 @@ function App() {
         <Route exact path="/notifications" element={<Notification />} />
 
         <Route exact path="/notice-board" element={<Noticeboard />}/>
+
+        <Route exact path="/diagnosis-history" element={<DiagnosisHistory />}/>
+
       </Routes>
     </div >
   );

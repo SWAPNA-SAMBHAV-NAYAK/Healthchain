@@ -144,35 +144,43 @@ export default function PatientInfo() {
           <div className="patientDetailsCard">
             <div className="patientDetailsCardContent">
               <div className="cardTextContainer">
-                <h2 className="cardHeader">{patientById.name}</h2>
+                <h2 className="cardHeader">
+                  {
+                    patientById.image && <div className="profileContainer" style={{ height: "120px", width: "120px", borderRadius: "50%", overflow: "hidden" }}>
+                      <img src={URL.createObjectURL(new Blob([(new Uint8Array(patientById.image)).buffer], { type: "image/png" }))} width="120px" style={{ height: "100%", width: "100%", objectFit: "cover", borderRadius: "50%" }} />
+                    </div>
+                  } &nbsp; {patientById.name}
+                </h2>
                 <div className="cardTags">
-                  <span className="tag" id="tag2">
+                  <span className="tag" id="tag1">
                     <strong>Age:</strong> {parseInt(patientById.age)}
                   </span>
-                  <span className="tag" id="tag3">
+                  <span className="tag" id="tag2">
                     <strong>User Type:</strong> {patientById.user_type}
                   </span>
-                  <span className="tag" id="tag5">
+                  <span className="tag" id="tag3">
                     <strong>Gender:</strong> {patientById.gender}
                   </span>
-                  <span className="tag" id="tag7">
+                  <span className="tag" id="tag4">
                     <strong>Registered On:</strong> {new Date(Number(patientById.registered_on) / 1000000).toLocaleString()}
                   </span>
                 </div>
                 <p className="tag" id="tag6">
                   <strong>Address:</strong> {patientById.address}
                 </p>
-                <p className="tag" id="tag6">
+                <p className="tag" id="tag7">
                   <strong>Internet Identity: </strong>
                   <ContentCopyIcon
-                    onClick={handleCopyClick}
-                    style={{ cursor: "pointer", margin: "0px 5px" }}
-                  />
+                      onClick={handleCopyClick}
+                      style={{ cursor: "pointer", margin: "0px 5px" }}
+                    />
                   {
                     (patientById.user_principal) ? patientById.user_principal.toText() : " "
                   }
-
                 </p>
+
+
+
 
               </div>
               <div className="cardButtons">

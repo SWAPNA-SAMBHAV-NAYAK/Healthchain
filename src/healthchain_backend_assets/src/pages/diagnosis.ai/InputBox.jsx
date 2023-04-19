@@ -1,13 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const InputBox = ({ input, inputChangeKoHandle }) => {
+const InputBox = ({ input, inputChangeKoHandle, register }) => {
   const { label, name, type, step, min, max } = input;
   if (name === "gender") {
     return (
       <div className="input-boxyy">
         <label htmlFor={name}>{label}</label>
         <select
+          {...register(name, { required: true })}
           name={name}
           id={name}
           onChange={inputChangeKoHandle}
@@ -23,9 +24,10 @@ const InputBox = ({ input, inputChangeKoHandle }) => {
   }
   if (name === "sex") {
     return (
-      <div>
+      <div className="input-boxyy">
         <label htmlFor={name}>{label}</label>
         <select
+          {...register(name, { required: true })}
           name={name}
           id={name}
           onChange={inputChangeKoHandle}
@@ -40,27 +42,29 @@ const InputBox = ({ input, inputChangeKoHandle }) => {
   }
   if (name === "chestpaintype") {
     return (
-      <div>
+      <div className="input-boxyy">
         <label htmlFor={name}>{label}</label>
         <select
+          {...register(name, { required: true })}
           name={name}
           id={name}
           onChange={inputChangeKoHandle}
-          selected="ASY"
+          selected="ATA"
           required
         >
-          <option value="ASY">ASY</option>
+          <option value="ATA">ATA</option>
           <option value="NAP">NAP</option>
-          <option value="Other">Other</option>
+          <option value="TA">TA</option>
         </select>
       </div>
     );
   }
   if (name === "restingecg") {
     return (
-      <div>
+      <div className="input-boxyy">
         <label htmlFor={name}>{label}</label>
         <select
+        {...register(name, { required: true })}
           name={name}
           id={name}
           onChange={inputChangeKoHandle}
@@ -68,17 +72,17 @@ const InputBox = ({ input, inputChangeKoHandle }) => {
           required
         >
           <option value="Normal">Normal</option>
-          <option value="LVH">LVH</option>
-          <option value="Other">Other</option>
+          <option value="st">st</option>
         </select>
       </div>
     );
   }
-  if (name === "eia") {
+  if (name === "exerciseangina") {
     return (
-      <div>
+      <div className="input-boxyy">
         <label htmlFor={name}>{label}</label>
         <select
+          {...register(name, { required: true })}
           name={name}
           id={name}
           onChange={inputChangeKoHandle}
@@ -91,11 +95,12 @@ const InputBox = ({ input, inputChangeKoHandle }) => {
       </div>
     );
   }
-  if (name === "pes") {
+  if (name === "stslope") {
     return (
-      <div>
+      <div className="input-boxyy">
         <label htmlFor={name}>{label}</label>
         <select
+          {...register(name, { required: true })}
           name={name}
           id={name}
           onChange={inputChangeKoHandle}
@@ -104,15 +109,15 @@ const InputBox = ({ input, inputChangeKoHandle }) => {
         >
           <option value="Flat">Flat</option>
           <option value="Up">Up</option>
-          <option value="Other">Other</option>
         </select>
       </div>
     );
   }
   return (
-    <div>
+    <div className="input-boxyy">
       <label htmlFor={name}>{label}:</label>
       <input
+        {...register(name, { required: true })}
         id={name}
         name={name}
         type={type}

@@ -7,12 +7,12 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import ContentPasteOutlinedIcon from '@mui/icons-material/ContentPasteOutlined';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import BadgeIcon from '@mui/icons-material/Badge';
+import DvrIcon from '@mui/icons-material/Dvr';
 import BookOnlineOutlinedIcon from '@mui/icons-material/BookOnlineOutlined';
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import diseaseIcon from "../images/coronavirus.png";
 const Sidebar = () => {
 
 
@@ -24,26 +24,10 @@ const Sidebar = () => {
 
   useEffect(() => {
     const nav = document.querySelector(".sidebar");
-    // const navLinks = document.querySelectorAll(".admin-console-side-nav a");
-
     if (isBurgerNavOpen) {
-      // if (windowSize.width < 700) {
-      //     nav.style.position = "absolute";
-      // } else {
-      //     nav.style.position = "sticky";
-      // }
-
       nav.classList.add("nav-bar-active");
 
-      // navLinks.forEach((link) => {
-      //     if (link.style.animation) {
-      //         link.style.animation = '';
-      //     } else {
-      //         link.style.animation = `navLinkFade 0.5s ease forwards 0.5s`;
-      //     }
-      // })
     } else {
-      // nav.style.position = "absolute";
       nav.classList.remove("nav-bar-active");
     }
   }, [isBurgerNavOpen])
@@ -127,6 +111,12 @@ const Sidebar = () => {
             <li> <img src={"https://upload.wikimedia.org/wikipedia/commons/c/c2/Coronavirus_icon.svg"} width="50px" /> <span>Diagnosis.ai </span></li>
           </Link>
 
+          {accountType == "patient" &&
+            <Link to="/diagnosis-history" style={{ textDecoration: 'none' }}>
+              <li><DvrIcon className="icon" /><span>Diagnosis History</span></li>
+            </Link>
+          }
+
           <Link to="/diseaseindex" style={{ textDecoration: 'none' }}>
             <li> <img src={"https://upload.wikimedia.org/wikipedia/commons/2/2e/Community_Health_Advocate_-_The_Noun_Project.svg"} width="30px" /> <span>Disease Index</span></li>
           </Link>
@@ -144,7 +134,7 @@ const Sidebar = () => {
 
 
           <p className="title">MESSAGE</p>
-          {accountType === "admin" &&
+          {accountType !== "patient" &&
             <>
               <Link to="/notice-board" style={{textDecoration:'none'}}>
                 <li><ContentPasteOutlinedIcon className="icon" /><span>Notice Board</span></li>

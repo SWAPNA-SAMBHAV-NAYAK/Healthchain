@@ -28,13 +28,47 @@ type Employee =
     last_name : Text;
     salary : Int
   };
+type HeartReport =
+  {
+    age : Int;
+    chest_pain_type : Text;
+    cholesterol : Int;
+    done_by : Principal;
+    exercise_induced_angina : Text;
+    fasting_blood_sugar : Int;
+    max_heart_rate : Int;
+    old_peak : Float;
+    outcome : Text;
+    patient_id : Principal;
+    peak_exercise_slope : Text;
+    report_id : Text;
+    resting_bp : Int;
+    resting_ecg : Text;
+    sex : Text;
+    time_stamp : Time
+  };
 type List<T> = ?(T, List<T>);
+type LiverReport =
+  {
+    age : Int;
+    alamine_amino_transferase : Int;
+    albumin_globulin_ratio : Float;
+    alkaline_phosphatase : Int;
+    done_by : Principal;
+    gender : Text;
+    outcome : Text;
+    patient_id : Principal;
+    report_id : Text;
+    time_stamp : Time;
+    total_bilirubin : Float
+  };
 type MedicalLog =
   {
     additional_notes : Text;
     blood_group : Text;
     blood_pressure : Int;
     doctor_id : Principal;
+    doctor_name : Text;
     height : Float;
     medications : Text;
     patient_id : Principal;
@@ -44,7 +78,14 @@ type MedicalLog =
     time_stamp : Time;
     weight : Float
   };
-type Notice = {from : Text; notice : Text; time_stamp : Time};
+type Notice =
+  {
+    from_id : Principal;
+    from_name : Text;
+    notice_content : Text;
+    notice_title : Text;
+    time_stamp : Time
+  };
 type Notification =
   {for_id : Principal; notification : Text; time_stamp : Time};
 type ProfileData =
@@ -68,6 +109,9 @@ actor {
   stable var doctor_open_hours_list :
     ?(DoctorOpenHours, List<DoctorOpenHours>);
   stable var employees : ?(Employee, List<Employee>);
+  stable var heartReports : ?(HeartReport, List<HeartReport>);
+  stable var liverReports : ?(LiverReport, List<LiverReport>);
+  stable var mapOfMedicalLogAccessEntries : [(Principal, [Principal])];
   stable var medicalLogs : ?(MedicalLog, List<MedicalLog>);
   stable var notices : ?(Notice, List<Notice>);
   stable var notifications : ?(Notification, List<Notification>);

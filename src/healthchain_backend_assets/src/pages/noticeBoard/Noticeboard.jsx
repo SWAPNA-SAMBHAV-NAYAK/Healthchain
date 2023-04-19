@@ -21,7 +21,7 @@ const Noticeboard = () => {
       <div className="ekAurClass">
         <Navbar/>
         <div className="notice-board">
-          <Notetaker onAdd={handleAddNote} />
+          <Notetaker/>
           <Notelist notes={notes} onDelete={handleDeleteNote} />
         </div>
       </div>

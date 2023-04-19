@@ -9,8 +9,6 @@ import useAuthenticatedCannister from "../../useAuthenticatedCannister";
 
 const Patient = () => {
 
-
-
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -19,17 +17,9 @@ const Patient = () => {
 
   const authCannister = useAuthenticatedCannister();
 
-
-
-
-
-  async function addPatientForm() {
-    navigate("/addPatient");
-  }
-
   useEffect(() => {
     dispatch(loadPatientList(authCannister))
-  }, [dispatch,authCannister])
+  }, [dispatch, authCannister])
 
 
   function handlePatientCardClick(e) {
@@ -45,8 +35,6 @@ const Patient = () => {
         <div className="patientContainer">
           <div className="header">
             <h3>Patients</h3>
-            <button onClick={addPatientForm}>Add Patient</button>
-
           </div>
 
           <div className="patientCard-container">
@@ -56,6 +44,12 @@ const Patient = () => {
                   <div className="patientCard"
                     key={patientData.user_principal.toText()}
                   >
+
+                    {
+                      patientData.image && <div className="profileContainer" style={{ height: "90px", width: "90px", borderRadius: "50%", overflow: "hidden" }}>
+                        <img src={URL.createObjectURL(new Blob([(new Uint8Array(patientData.image)).buffer], { type: "image/png" }))} width="90px" style={{ height: "100%", width: "100%", objectFit: "cover", borderRadius: "50%" }} />
+                      </div>
+                    }
                     <h2>{patientData.name}</h2>
                     <span className="timestamp">{new Date(Number(patientData.registered_on) / 1000000).toLocaleString()}</span>
 

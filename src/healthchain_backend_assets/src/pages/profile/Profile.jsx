@@ -14,9 +14,6 @@ import useAuthenticatedCannister from "../../useAuthenticatedCannister";
 
 function Profile() {
 
-
-
-
     const { profileData } = useSelector((state) => state.profileData);
 
     const [sjBtn, setSJBtn] = useState();
@@ -24,10 +21,7 @@ function Profile() {
 
     const authCannister = useAuthenticatedCannister();
 
-
     const dispatch = useDispatch();
-
-
 
     const { register, handleSubmit, reset } = useForm(
         {
@@ -164,9 +158,9 @@ function Profile() {
                 <div className="profileContainer">
                     <div className="profileImg">
                         {imageTag}
-                        <div className="editIcon" onClick={handleEdit}>
+                        {/* <div className="editIcon" onClick={handleEdit}>
                             <i className="fa fa-pencil"></i>
-                        </div>
+                        </div> */}
                     </div>
                     <form onSubmit={handleSubmit(handleSave)}>
                         <div className="col">

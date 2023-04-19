@@ -984,32 +984,71 @@ actor healthchain {
 
   public type Notice = {
     time_stamp : Time.Time;
-    from : Text;
-    notice : Text;
+    from_name : Text;
+    from_id : Principal;
+    notice_title : Text;
+    notice_content : Text;
   };
 
   private stable var notices : List.List<Notice> = List.nil<Notice>();
 
-  // TODO add Authorisation Here
-  public shared (msg) func createNotice(fromText : Text, noticeText : Text) {
-    let newNotice : Notice = {
-      time_stamp = Time.now();
-      from = fromText;
-      notice = noticeText;
-    };
+  public shared (msg) func createNotice(noticeTitle : Text, noticeContent : Text) {
 
     Debug.print(Text.concat("createNotice ", debug_show (msg.caller)));
 
-    notices := List.push(newNotice, notices);
+    let profileData : ?ProfileData = List.find(
+      userProfileDataList,
+      func(profData : ProfileData) : Bool {
+        return profData.user_principal == msg.caller;
+      },
+    );
 
-    Debug.print(debug_show (notices));
+    switch (profileData) {
+      case null {
+
+      };
+      case (?result) {
+
+        if (result.user_type != "patient") {
+
+          let newNotice : Notice = {
+            time_stamp = Time.now();
+            from_name = result.name;
+            from_id = msg.caller;
+            notice_title = noticeTitle;
+            notice_content = noticeContent;
+          };
+
+          notices := List.push(newNotice, notices);
+        };
+
+      };
+    };
 
   };
 
-  // TODO add Authorisation Here
   public shared query (msg) func readNotices() : async [Notice] {
     Debug.print(Text.concat("readNotices ", debug_show (msg.caller)));
-    return List.toArray(notices);
+
+    let profileData : ?ProfileData = List.find(
+      userProfileDataList,
+      func(profData : ProfileData) : Bool {
+        return profData.user_principal == msg.caller;
+      },
+    );
+
+    switch (profileData) {
+      case null {
+        return [];
+      };
+      case (?result) {
+        if (result.user_type != "patient") {
+          return List.toArray(notices);
+        } else {
+          return [];
+        };
+      };
+    };
   };
 
   ///////////////////////////////////////// Notification ///////////////////////////////////////////////////////
@@ -1022,20 +1061,19 @@ actor healthchain {
 
   private stable var notifications : List.List<Notification> = List.nil<Notification>();
 
-  // TODO add Authorisation Here
-  public shared (msg) func createNotification(for_id_data : Text, notification_data : Text) {
+  private func createNotification(for_id_data : Text, notification_data : Text) {
+
+    // Debug.print(Text.concat("createNotification ", debug_show (msg.caller)));
+
     let newNotification : Notification = {
       time_stamp = Time.now();
       for_id = Principal.fromText(for_id_data);
       notification = notification_data;
     };
 
-    Debug.print(Text.concat("createNotification ", debug_show (msg.caller)));
-
     notifications := List.push(newNotification, notifications);
   };
 
-  // TODO add Authorisation Here
   public shared query (msg) func readNotifications() : async [Notification] {
 
     Debug.print(Text.concat("readNotifications ", debug_show (msg.caller)));
@@ -1126,6 +1164,169 @@ actor healthchain {
     );
 
     return finalTimeStampText;
+  };
+
+  ///////////////////////////////////////// Liver Analysis ///////////////////////////////////////////////////////
+
+  public type LiverReport = {
+    report_id : Text;
+    time_stamp : Time.Time;
+    patient_id : Principal;
+    done_by : Principal;
+    age : Int;
+    gender : Text;
+    total_bilirubin : Float;
+    alkaline_phosphatase : Int;
+    alamine_amino_transferase : Int;
+    albumin_globulin_ratio : Float;
+    outcome : Text;
+  };
+
+  private stable var liverReports : List.List<LiverReport> = List.nil<LiverReport>();
+
+  public shared (msg) func createLiverReport(
+    report_id_data : Text,
+    age_data : Int,
+    gender_data : Text,
+    total_bilirubin_data : Float,
+    alkaline_phosphatase_data : Int,
+    alamine_amino_transferase_data : Int,
+    albumin_globulin_ratio_data : Float,
+    outcome_data : Text,
+  ) {
+    //TODO add Authorisation here
+
+    Debug.print(Text.concat("createLiverReport ", debug_show (msg.caller)));
+
+    let newLiverReport : LiverReport = {
+      report_id = report_id_data;
+      patient_id = msg.caller;
+      done_by = msg.caller;
+      age = age_data;
+      gender = gender_data;
+      total_bilirubin = total_bilirubin_data;
+      alkaline_phosphatase = alkaline_phosphatase_data;
+      alamine_amino_transferase = alamine_amino_transferase_data;
+      albumin_globulin_ratio = albumin_globulin_ratio_data;
+      outcome = outcome_data;
+      time_stamp = Time.now();
+    };
+
+    liverReports := List.push(newLiverReport, liverReports);
+
+    var patientNotification = Text.concat(
+      "Liver Data Analysis conducted successfullly and it resulted with ",
+      Text.concat(outcome_data, " of Liver Disease."),
+    );
+    createNotification(
+      Principal.toText(msg.caller),
+      patientNotification,
+    );
+
+  };
+
+  // TODO add Authorization here
+  public shared query (msg) func readLiverReportByPatientId() : async [LiverReport] {
+
+    Debug.print(Text.concat("readLiverReportByPatientId ", debug_show (msg.caller)));
+
+    var liverReportList : List.List<LiverReport> = List.filter(
+      liverReports,
+      func(liverReport : LiverReport) : Bool {
+        return liverReport.patient_id == msg.caller;
+      },
+    );
+
+    return List.toArray(liverReportList);
+  };
+
+  ///////////////////////////////////////// Heart Analysis ///////////////////////////////////////////////////////
+
+  public type HeartReport = {
+    report_id : Text;
+    time_stamp : Time.Time;
+    patient_id : Principal;
+    done_by : Principal;
+    age : Int;
+    sex : Text;
+    chest_pain_type : Text;
+    resting_bp : Int;
+    cholesterol : Int;
+    fasting_blood_sugar : Int;
+    resting_ecg : Text;
+    max_heart_rate : Int;
+    exercise_induced_angina : Text;
+    old_peak : Float;
+    peak_exercise_slope : Text;
+    outcome : Text;
+  };
+
+  private stable var heartReports : List.List<HeartReport> = List.nil<HeartReport>();
+
+  public shared (msg) func createHeartReport(
+    report_id_data : Text,
+    age_data : Int,
+    sex_data : Text,
+    chest_pain_type_data : Text,
+    resting_bp_data : Int,
+    cholesterol_data : Int,
+    fasting_blood_sugar_data : Int,
+    resting_ecg_data : Text,
+    max_heart_rate_data : Int,
+    exercise_induced_angina_data : Text,
+    old_peak_data : Float,
+    peak_exercise_slope_data : Text,
+    outcome_data : Text,
+  ) {
+    // TODO add Authorization here
+
+    Debug.print(Text.concat("createHeartReport ", debug_show (msg.caller)));
+
+    let newHeartReport : HeartReport = {
+      report_id = report_id_data;
+      patient_id = msg.caller;
+      done_by = msg.caller;
+      age = age_data;
+      sex = sex_data;
+      chest_pain_type = chest_pain_type_data;
+      resting_bp = resting_bp_data;
+      cholesterol = cholesterol_data;
+      fasting_blood_sugar = fasting_blood_sugar_data;
+      resting_ecg = resting_ecg_data;
+      max_heart_rate = max_heart_rate_data;
+      exercise_induced_angina = exercise_induced_angina_data;
+      old_peak = old_peak_data;
+      peak_exercise_slope = peak_exercise_slope_data;
+      outcome = outcome_data;
+      time_stamp = Time.now();
+    };
+
+    heartReports := List.push(newHeartReport, heartReports);
+
+    var patientNotification = Text.concat(
+      "Heart Data Analysis conducted successfully and it resulted with ",
+      Text.concat(outcome_data, " of Heart Disease."),
+    );
+    createNotification(
+      Principal.toText(msg.caller),
+      patientNotification,
+    );
+
+  };
+
+  // TODO add Authorization here
+  public shared query (msg) func readHeartReportByPatientId() : async [HeartReport] {
+
+    Debug.print(Text.concat("readHeartReportByPatientId ", debug_show (msg.caller)));
+
+    var heartReportList : List.List<HeartReport> = List.filter(
+      heartReports,
+      func(heartReport : HeartReport) : Bool {
+        return heartReport.patient_id == msg.caller;
+      },
+    );
+
+    return List.toArray(heartReportList);
   };
 
 };

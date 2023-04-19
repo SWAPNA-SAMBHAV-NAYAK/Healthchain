@@ -8,27 +8,27 @@ import Navbar from "../../components/navbar/Navbar";
 const DIMainPage = () => {
   return (
     <div className="mainContainer">
-      <Sidebar/>
+      <Sidebar />
       <div className="ekAurClass">
-        <Navbar/>
+        <Navbar />
         <div className="container" style={{ maxWidth: "800px", margin: "0 auto" }}>
-        <DiabetesIndex />
-      <hr
-        style={{
-          margin: "20px 0"
-        }}
-      />
-      <LiverIndex />
-      <hr
-        style={{
-          margin: "20px 0"
-        }}
-      />
-      <HeartIndex />
+          {/* <DiabetesIndex />
+          <hr
+            style={{
+              margin: "20px 0"
+            }}
+          /> */}
+          <LiverIndex />
+          <hr
+            style={{
+              margin: "20px 0"
+            }}
+          />
+          <HeartIndex />
         </div>
       </div>
     </div>
-    
+
   );
 };
 

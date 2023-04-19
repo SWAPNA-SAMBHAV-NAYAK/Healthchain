@@ -25,7 +25,7 @@ export const data = [
         label: "Chest Pain Type",
         name: "chestpaintype",
         type: "select",
-        options: ["ASY", "NAP", "Other"]
+        options: ["ATA", "NAP", "TA"]
       },
       {
         label: "Resting BP",
@@ -43,7 +43,7 @@ export const data = [
       },
       {
         label: "Fasting Blood Sugar",
-        name: "fastingbloodsugar",
+        name: "fastingbs",
         type: "number",
         min: 0,
         max: 1
@@ -52,7 +52,7 @@ export const data = [
         label: "Resting ECG",
         name: "restingecg",
         type: "select",
-        options: ["Normal", "LVH", "Other"]
+        options: ["Normal", "st"]
       },
       {
         label: "Maximum Heart-Rate",
@@ -63,7 +63,7 @@ export const data = [
       },
       {
         label: "Exercise Induced Angina",
-        name: "eia",
+        name: "exerciseangina",
         type: "select",
         options: ["Y", "N"]
       },
@@ -76,50 +76,50 @@ export const data = [
       },
       {
         label: "Peak Exercise Slope",
-        name: "pes",
+        name: "stslope",
         type: "select",
-        options: ["Flat", "Up", "Other"]
+        options: ["Flat", "Up"]
       }
     ]
   },
-  {
-    label: "Diabetes Prediction",
-    value: "diabetes",
-    inputs: [
-      {
-        label: "Pregnancies",
-        name: "pregnancies",
-        type: "number",
-        min: 0,
-        max: 17
-      },
-      { label: "Glucose", name: "glucose", type: "number", min: 0, max: 199 },
-      {
-        label: "Diastolic BloodPressure",
-        name: "diastolicbloodpressure",
-        type: "number",
-        min: 0,
-        max: 122
-      },
-      {
-        label: "SkinThickness",
-        name: "skinthickness",
-        type: "number",
-        min: 0,
-        max: 99
-      },
-      { label: "Insulin", name: "insulin", type: "number", min: 0, max: 846 },
-      { label: "BMI", name: "bmi", type: "number", min: 0, max: 67.1 },
-      {
-        label: "DiabetesPedigree",
-        name: "diabetespedigree",
-        type: "number",
-        step: "0.01",
-        min: 0.08,
-        max: 2.42
-      }
-    ]
-  },
+  // {
+  //   label: "Diabetes Prediction",
+  //   value: "diabetes",
+  //   inputs: [
+  //     {
+  //       label: "Pregnancies",
+  //       name: "pregnancies",
+  //       type: "number",
+  //       min: 0,
+  //       max: 17
+  //     },
+  //     { label: "Glucose", name: "glucose", type: "number", min: 0, max: 199 },
+  //     {
+  //       label: "Diastolic BloodPressure",
+  //       name: "diastolicbloodpressure",
+  //       type: "number",
+  //       min: 0,
+  //       max: 122
+  //     },
+  //     {
+  //       label: "SkinThickness",
+  //       name: "skinthickness",
+  //       type: "number",
+  //       min: 0,
+  //       max: 99
+  //     },
+  //     { label: "Insulin", name: "insulin", type: "number", min: 0, max: 846 },
+  //     { label: "BMI", name: "bmi", type: "number", min: 0, max: 67.1 },
+  //     {
+  //       label: "DiabetesPedigree",
+  //       name: "diabetespedigree",
+  //       type: "number",
+  //       step: "0.01",
+  //       min: 0.08,
+  //       max: 2.42
+  //     }
+  //   ]
+  // },
   {
     label: "Liver Disease Prediction",
     value: "liver",
@@ -138,48 +138,30 @@ export const data = [
         options: ["Male", "Female"]
       },
       {
-        label: "Total Billirubin",
-        name: "totalbillirubin",
+        label: "Total Bilirubin",
+        name: "totalbilirubin",
         type: "number",
+        step: "0.01",
         min: 0,
         max: 75
       },
       {
-        label: "Conjugated Billirubin",
-        name: "conjugatedbillirubin",
+        label: "Alkaline Phosphotase",
+        name: "alkalinephosphatase",
         type: "number",
-        step: "0.01",
-        min: 0.1,
-        max: 19.7
+        min: 63,
+        max: 2110
       },
-      { label: "ALP", name: "alp", type: "number", min: 63, max: 2110 },
-      { label: "ALT", name: "alt", type: "number", min: 10, max: 2000 },
       {
-        label: "AST",
-        name: "ast",
+        label: "Alamine Amino Transferase",
+        name: "alamineamino",
         type: "number",
         min: 10,
-        max: 4929
+        max: 2000
       },
       {
-        label: "Total Proteins",
-        name: "totalproteins",
-        type: "number",
-        step: "0.01",
-        min: 2.7,
-        max: 9.6
-      },
-      {
-        label: "Albumin",
-        name: "albumin",
-        type: "number",
-        step: "0.01",
-        min: 0.9,
-        max: 5.5
-      },
-      {
-        label: "A/G Ratio",
-        name: "agratio",
+        label: "Albumin/Globulin Ratio",
+        name: "albuminandglobulin",
         type: "number",
         step: "0.01",
         min: 0.3,

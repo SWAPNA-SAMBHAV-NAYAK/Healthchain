@@ -6,7 +6,7 @@ const HeartIndex = () => {
   return (
     <div className="diseasecontainer">
       <h2>Heart Disease</h2>
-      <img src={"https://lh3.googleusercontent.com/drive-viewer/AAOQEOSzaPwx78ac43CpnphGWr0jt76TaCSmxL-efnxrpXiXCeA5hnmlHkHks7LcryiJenaFMlDsuDi73LE28V67WcRYrB-V0A=s2560"} alt="heart disease image" />
+      <img src={"https://lh3.googleusercontent.com/u/0/drive-viewer/AAOQEOTJHHvpSCaeFCvBr0FehAPYmvs1rWR_ataP7W6DCI-gZGFQzBWN5vwwC2V1yE3caMaMGD61LkCR8yIaM_f61I9Z9g3aTw=w1360-h617"} alt="heart disease image" />
       <p>
         Heart disease is a group of conditions that affect the structure and
         function of the heart. It is often caused by a build-up of plaque in the

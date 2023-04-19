@@ -20,8 +20,10 @@ type Notification =
  };
 type Notice = 
  record {
-   from: text;
-   notice: text;
+   from_id: principal;
+   from_name: text;
+   notice_content: text;
+   notice_title: text;
    time_stamp: Time;
  };
 type MedicalLog = 
@@ -30,6 +32,7 @@ type MedicalLog =
    blood_group: text;
    blood_pressure: int;
    doctor_id: principal;
+   doctor_name: text;
    height: float64;
    medications: text;
    patient_id: principal;
@@ -38,6 +41,39 @@ type MedicalLog =
    temperature: float64;
    time_stamp: Time;
    weight: float64;
+ };
+type LiverReport = 
+ record {
+   age: int;
+   alamine_amino_transferase: int;
+   albumin_globulin_ratio: float64;
+   alkaline_phosphatase: int;
+   done_by: principal;
+   gender: text;
+   outcome: text;
+   patient_id: principal;
+   report_id: text;
+   time_stamp: Time;
+   total_bilirubin: float64;
+ };
+type HeartReport = 
+ record {
+   age: int;
+   chest_pain_type: text;
+   cholesterol: int;
+   done_by: principal;
+   exercise_induced_angina: text;
+   fasting_blood_sugar: int;
+   max_heart_rate: int;
+   old_peak: float64;
+   outcome: text;
+   patient_id: principal;
+   peak_exercise_slope: text;
+   report_id: text;
+   resting_bp: int;
+   resting_ecg: text;
+   sex: text;
+   time_stamp: Time;
  };
 type Employee = 
  record {
@@ -76,10 +112,13 @@ service : {
   createAppointment: (text, text, text, text, text) -> () oneway;
   createAppointmentPatientSide: (text, text, text, text) -> () oneway;
   createEmployee: (text, text, text, text, text, int, text) -> () oneway;
+  createHeartReport: (text, text, int, text, text, int, int, int, text, 
+   int, text, float64, text, text) -> () oneway;
+  createLiverReport: (text, text, int, text, float64, int, int, float64,
+   text) -> () oneway;
   createMedicalLog: (text, float64, int, int, float64, text, text, text,
    float64, float64) -> () oneway;
   createNotice: (text, text) -> () oneway;
-  createNotification: (text, text) -> () oneway;
   createOrUpdateDoctorMetaData: (principal, text, text, text) -> () oneway;
   createOrUpdateDoctorOpenHours: (vec text, vec vec text) -> ();
   createProfile: (text, text, text, text, text, text, vec nat8) ->
@@ -98,6 +137,8 @@ service : {
   readDoctorMetaData: () -> (vec DoctorMetaData) query;
   readDoctors: () -> (vec ProfileData) query;
   readEmployees: () -> (vec Employee) query;
+  readHeartReportByPatientId: (text) -> (vec HeartReport) query;
+  readLiverReportByPatientId: (text) -> (vec LiverReport) query;
   readMedicalLogs: (text) -> (vec MedicalLog) query;
   readNotices: () -> (vec Notice) query;
   readNotifications: () -> (vec Notification) query;

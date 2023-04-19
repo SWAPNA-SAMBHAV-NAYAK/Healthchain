@@ -1,36 +1,29 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "./AssessForm.scss";
-import { predictRisk } from "./predictRisk";
+import Swal from 'sweetalert2';
 import InputBox from "./InputBox";
 
-const AssessForm = ({ disease }) => {
-  const [inputs, setInputs] = useState({});
+const AssessForm = ({ inputs, setInputs, disease, handleSubmit, submitKoHandle, register }) => {
 
   const inputChangeKoHandle = (e) => {
     const { name, value } = e.target;
     setInputs({ ...inputs, [name]: value });
   };
 
-  const submitKoHandle = (e) => {
-    e.preventDefault();
-    const riskResult = predictRisk(disease, inputs);
-    console.log("Risk Result: ", riskResult);
-  };
-
+  
   return (
-    // <Preview id={"jsx-template"}>
-    <form onSubmit={submitKoHandle}>
+    <form onSubmit={handleSubmit(submitKoHandle)} className="diagnosis-ai">
       {disease.inputs.map((input, index) => (
         <InputBox
           key={index}
           input={input}
           inputChangeKoHandle={inputChangeKoHandle}
+          register={register}
         />
       ))}
       <button className="buttonyy" type="submit">Submit</button>
     </form>
-    // </Preview>
   );
 };
 
@@ -43,8 +36,6 @@ AssessForm.propTypes = {
         label: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired
-        // min: PropTypes.number.isRequired,
-        // max: PropTypes.number.isRequired
       })
     ).isRequired
   }).isRequired

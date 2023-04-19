@@ -6,11 +6,8 @@ import uuid from 'react-uuid';
 import { useSelector } from "react-redux";
 
 import useAuthenticatedCannister from "../../useAuthenticatedCannister";
-import { AuthClient } from "@dfinity/auth-client";
 
 const AppointmentCard = ({ doctor_id, name, department, openHoursDates, openHoursTime }) => {
-
-
 
   const { accountType } = useSelector(state => state);
 

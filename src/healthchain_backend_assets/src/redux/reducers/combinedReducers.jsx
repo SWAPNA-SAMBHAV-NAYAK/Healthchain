@@ -18,13 +18,24 @@ import medicalLogReducer from "./medicalLogReducer";
 import doctorOpenHourByIdReducer from "./doctorOpenHourByIdReducer";
 import accessToLogsReducer from "./accessToLogsReducer";
 import logsAccessListReducer from "./logsAccessListReducer";
+import noticeReducer from "./noticeReducer";
+import heartReportReducer from "./heartReportReducer";
+import liverReportReducer from "./liverReportReducer";
 
 const reducer = combineReducers({
     patientList: patientReducer,
     doctorList: doctorReducer,
+
+
+    heartReportList: heartReportReducer,
+    liverReportList: liverReportReducer,
+
+
     employeeList: employeeReducer,
     patientById: patientByIdReducer,
     doctorById: doctorByIdReducer,
+
+    noticeList: noticeReducer,
 
 
     medicalLogList: medicalLogReducer,

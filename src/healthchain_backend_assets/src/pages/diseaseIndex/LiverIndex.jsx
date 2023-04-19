@@ -5,7 +5,7 @@ const LiverIndex = () => {
   return (
     <div className="diseasecontainer">
       <h2>Liver Disease</h2>
-      <img src={"https://lh3.googleusercontent.com/u/0/drive-viewer/AAOQEOQz74JT8YJ1M-bkeN3sewx1aa29QlPc-FJCkeL6-T_1Zqsy2tGLxI2BfoYA9bkkI78L4BVI7R1mJYAooxUINdvKrjEj=w1360-h617"} alt="liver image" />
+      <img src={"https://lh3.googleusercontent.com/u/0/drive-viewer/AAOQEOTpRzg6_HEUmCks0BuAa2L6wx1UcNZuLoBbFDrMKU7QYqrRNpCXZ6dYEasabeSYG_ISmr5zP9T9GaMFEFtC4yb8iV8g=w1360-h617"} alt="liver image" />
       <p>
         Liver disease can be inherited (genetic) or caused by a variety of
         factors that damage the liver, such as viruses and alcohol use. Obesity

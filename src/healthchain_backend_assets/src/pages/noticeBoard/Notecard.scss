@@ -1,24 +1,13 @@
 .notecard {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 16px;
   margin-bottom: 16px;
-  width:400px;
-  
-  .delete {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 15px;
-    cursor: pointer;
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 2px 7px;
-    border-radius: 7px;
-  }
+  width:500px;
 
   .content {
     h3 {
@@ -33,14 +22,15 @@
   .footer {
     display: flex;
     justify-content: space-between;
-    margin-top: 16px;
+    margin-top: 5rem;
 
     .name, .timestamp {
       border: 1px solid  #024332;
-      background-color: lightgrey;
-      color: #024332;
+      background-color: #024332;
+      color: #fff;
       padding: 2px 7px;
       border-radius: 7px;
+      font-size: 1.1rem;
     }
   }
 }

@@ -1,17 +1,17 @@
 .sidebar {
   background-color: #024332;
-  // flex: 1.2;
 
   border-right: 0.5px solid rgb(230, 227, 227);
   height: 100vh;
-  top: 0;
   left: 0;
+  bottom: 0;
   z-index: 1;
   width: 15%;
-  // min-width: 300px;
-
   transition: 0.3s ease-in-out;
   -webkit-transition: 0.3s ease-in-out;
+  margin:0;
+
+  overflow-y: hidden;
 
 
   transform: translateX(-100%);
@@ -89,4 +89,5 @@
   transform: translateX(0%);
   opacity: 1;
   position: sticky;
+  position: -webkit-sticky;
 }

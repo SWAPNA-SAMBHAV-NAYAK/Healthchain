@@ -1,29 +1,33 @@
 import React, { useState } from "react";
 import "./Notetaker.scss";
+import useAuthenticatedCannister from "../../useAuthenticatedCannister";
+import Swal from "sweetalert2";
 
-const Notetaker = ({ onAdd }) => {
-  const [name, setName] = useState("");
+const Notetaker = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const handleAddNote = () => {
-    const timestamp = new Date().getTime();
-    onAdd({ name, title, content, timestamp });
-    setName("");
-    setTitle("");
-    setContent("");
+  const authCannister = useAuthenticatedCannister();
+
+  const handleAddNotice = async (e) => {
+    e.preventDefault();
+
+    await authCannister.createNotice(title, content);
+
+    dispatch(loadNoticeList(authCannister));
+
+    Swal.fire({
+      icon: "success",
+      title: "Notice created successfully",
+      showConfirmButton: false,
+      timer: 1500
+  });
   };
 
   return (
     <div className="notetaker">
       <h2>Notice Board</h2>
-      <div className="inputs">
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+      <form className="inputs">
         <input
           type="text"
           placeholder="Title"
@@ -31,21 +35,12 @@ const Notetaker = ({ onAdd }) => {
           onChange={(e) => setTitle(e.target.value)}
         />
         <textarea
-          placeholder="Content"
+          placeholder="Notice"
           value={content}
           onChange={(e) => setContent(e.target.value)}
         />
-        <button onClick={handleAddNote}>Add</button>
-      </div>
-      {/* <div className="notecards">
-        {notes.map((note, index) => (
-          <Notecard
-            key={index}
-            note={note}
-            onDelete={() => deleteNote(index)}
-          />
-        ))}
-      </div> */}
+        <button type="submit" onClick={handleAddNotice}>Add Notice</button>
+      </form>
     </div>
   );
 };

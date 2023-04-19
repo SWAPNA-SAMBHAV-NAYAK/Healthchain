@@ -16,10 +16,6 @@ const Doctor = () => {
 
   const authCannister = useAuthenticatedCannister();
 
-  async function addDoctorForm() {
-    navigate("/addDoctor");
-  }
-
   useEffect(() => {
     dispatch(loadDoctorList(authCannister))
   }, [dispatch, authCannister])
@@ -39,8 +35,6 @@ const Doctor = () => {
         <div className="doctorContainer">
           <div className="header">
             <h3>Doctors</h3>
-            <button onClick={addDoctorForm}>Add Doctor</button>
-
           </div>
 
           <div className="doctorCard-container">
@@ -48,6 +42,11 @@ const Doctor = () => {
               doctors.map((doctorData) => {
                 return (
                   <div className="doctorCard" key={doctorData.user_principal.toText()}>
+                    {
+                      doctorData.image && <div className="profileContainer" style={{ height: "90px", width: "90px", borderRadius: "50%", overflow: "hidden" }}>
+                        <img src={URL.createObjectURL(new Blob([(new Uint8Array(doctorData.image)).buffer], { type: "image/png" }))} width="90px" style={{ height: "100%", width: "100%", objectFit: "cover", borderRadius: "50%" }} />
+                      </div>
+                    }
                     <h2>{doctorData.name}</h2>
                     <span className="timestamp">{new Date(Number(doctorData.registered_on) / 1000000).toLocaleString()}</span>
                     <p><strong>{doctorData.department}</strong></p>

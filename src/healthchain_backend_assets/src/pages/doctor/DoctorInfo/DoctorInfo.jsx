@@ -150,7 +150,13 @@ export default function DoctorInfo() {
           <div className="doctorDetailsCard">
             <div className="doctorDetailsCardContent">
               <div className="cardTextContainer">
-                <h2 className="cardHeader">{doctorById.name}</h2>
+                <h2 className="cardHeader">
+                  {
+                    doctorById.image && <div className="profileContainer" style={{ height: "120px", width: "120px", borderRadius: "50%", overflow: "hidden" }}>
+                      <img src={URL.createObjectURL(new Blob([(new Uint8Array(doctorById.image)).buffer], { type: "image/png" }))} width="120px" style={{ height: "100%", width: "100%", objectFit: "cover", borderRadius: "50%" }} />
+                    </div>
+                  } &nbsp; {doctorById.name}
+                </h2>
                 <div className="cardTags">
                   <span className="tag" id="tag1">
                     <strong>Age:</strong> {parseInt(doctorById.age)}

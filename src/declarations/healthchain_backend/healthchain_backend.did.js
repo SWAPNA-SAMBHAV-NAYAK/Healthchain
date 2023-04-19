@@ -36,6 +36,37 @@ export const idlFactory = ({ IDL }) => {
     'last_name' : IDL.Text,
     'employee_id' : IDL.Text,
   });
+  const HeartReport = IDL.Record({
+    'age' : IDL.Int,
+    'sex' : IDL.Text,
+    'report_id' : IDL.Text,
+    'patient_id' : IDL.Principal,
+    'exercise_induced_angina' : IDL.Text,
+    'done_by' : IDL.Principal,
+    'old_peak' : IDL.Float64,
+    'chest_pain_type' : IDL.Text,
+    'resting_ecg' : IDL.Text,
+    'fasting_blood_sugar' : IDL.Int,
+    'outcome' : IDL.Text,
+    'max_heart_rate' : IDL.Int,
+    'time_stamp' : Time,
+    'peak_exercise_slope' : IDL.Text,
+    'resting_bp' : IDL.Int,
+    'cholesterol' : IDL.Int,
+  });
+  const LiverReport = IDL.Record({
+    'age' : IDL.Int,
+    'report_id' : IDL.Text,
+    'patient_id' : IDL.Principal,
+    'alamine_amino_transferase' : IDL.Int,
+    'done_by' : IDL.Principal,
+    'albumin_globulin_ratio' : IDL.Float64,
+    'alkaline_phosphatase' : IDL.Int,
+    'gender' : IDL.Text,
+    'total_bilirubin' : IDL.Float64,
+    'outcome' : IDL.Text,
+    'time_stamp' : Time,
+  });
   const MedicalLog = IDL.Record({
     'weight' : IDL.Float64,
     'height' : IDL.Float64,
@@ -52,8 +83,10 @@ export const idlFactory = ({ IDL }) => {
     'time_stamp' : Time,
   });
   const Notice = IDL.Record({
-    'notice' : IDL.Text,
-    'from' : IDL.Text,
+    'from_name' : IDL.Text,
+    'from_id' : IDL.Principal,
+    'notice_title' : IDL.Text,
+    'notice_content' : IDL.Text,
     'time_stamp' : Time,
   });
   const Notification = IDL.Record({
@@ -82,6 +115,39 @@ export const idlFactory = ({ IDL }) => {
         [],
         ['oneway'],
       ),
+    'createHeartReport' : IDL.Func(
+        [
+          IDL.Text,
+          IDL.Int,
+          IDL.Text,
+          IDL.Text,
+          IDL.Int,
+          IDL.Int,
+          IDL.Int,
+          IDL.Text,
+          IDL.Int,
+          IDL.Text,
+          IDL.Float64,
+          IDL.Text,
+          IDL.Text,
+        ],
+        [],
+        ['oneway'],
+      ),
+    'createLiverReport' : IDL.Func(
+        [
+          IDL.Text,
+          IDL.Int,
+          IDL.Text,
+          IDL.Float64,
+          IDL.Int,
+          IDL.Int,
+          IDL.Float64,
+          IDL.Text,
+        ],
+        [],
+        ['oneway'],
+      ),
     'createMedicalLog' : IDL.Func(
         [
           IDL.Text,
@@ -99,7 +165,6 @@ export const idlFactory = ({ IDL }) => {
         ['oneway'],
       ),
     'createNotice' : IDL.Func([IDL.Text, IDL.Text], [], ['oneway']),
-    'createNotification' : IDL.Func([IDL.Text, IDL.Text], [], ['oneway']),
     'createOrUpdateDoctorMetaData' : IDL.Func(
         [IDL.Principal, IDL.Text, IDL.Text, IDL.Text],
         [],
@@ -149,6 +214,16 @@ export const idlFactory = ({ IDL }) => {
     'readDoctorMetaData' : IDL.Func([], [IDL.Vec(DoctorMetaData)], ['query']),
     'readDoctors' : IDL.Func([], [IDL.Vec(ProfileData)], ['query']),
     'readEmployees' : IDL.Func([], [IDL.Vec(Employee)], ['query']),
+    'readHeartReportByPatientId' : IDL.Func(
+        [],
+        [IDL.Vec(HeartReport)],
+        ['query'],
+      ),
+    'readLiverReportByPatientId' : IDL.Func(
+        [],
+        [IDL.Vec(LiverReport)],
+        ['query'],
+      ),
     'readMedicalLogs' : IDL.Func([IDL.Text], [IDL.Vec(MedicalLog)], ['query']),
     'readNotices' : IDL.Func([], [IDL.Vec(Notice)], ['query']),
     'readNotifications' : IDL.Func([], [IDL.Vec(Notification)], ['query']),
