@@ -215,15 +215,17 @@ export const idlFactory = ({ IDL }) => {
     'readDoctors' : IDL.Func([], [IDL.Vec(ProfileData)], ['query']),
     'readEmployees' : IDL.Func([], [IDL.Vec(Employee)], ['query']),
     'readHeartReportByPatientId' : IDL.Func(
-        [],
+        [IDL.Text],
         [IDL.Vec(HeartReport)],
         ['query'],
       ),
+    'readHeartReportDataTimeStamps' : IDL.Func([], [IDL.Vec(Time)], ['query']),
     'readLiverReportByPatientId' : IDL.Func(
-        [],
+        [IDL.Text],
         [IDL.Vec(LiverReport)],
         ['query'],
       ),
+    'readLiverReportDataTimeStamps' : IDL.Func([], [IDL.Vec(Time)], ['query']),
     'readMedicalLogs' : IDL.Func([IDL.Text], [IDL.Vec(MedicalLog)], ['query']),
     'readNotices' : IDL.Func([], [IDL.Vec(Notice)], ['query']),
     'readNotifications' : IDL.Func([], [IDL.Vec(Notification)], ['query']),
@@ -236,6 +238,7 @@ export const idlFactory = ({ IDL }) => {
     'readPatientAppointments' : IDL.Func([], [IDL.Vec(Appointment)], ['query']),
     'readPatients' : IDL.Func([], [IDL.Vec(ProfileData)], ['query']),
     'readProfileData' : IDL.Func([], [IDL.Opt(ProfileData)], ['query']),
+    'readProfileDataTimeStamps' : IDL.Func([], [IDL.Vec(Time)], ['query']),
     'revokeMedicalLogAccess' : IDL.Func([IDL.Principal], [], ['oneway']),
     'updateEmployee' : IDL.Func(
         [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Int, IDL.Text],

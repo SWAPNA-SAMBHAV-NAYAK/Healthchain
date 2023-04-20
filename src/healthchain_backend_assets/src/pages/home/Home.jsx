@@ -13,6 +13,8 @@ import { loadPatientList } from "../../redux/actions/patientAction"
 import { loadAppointmentList } from "../../redux/actions/appointmentAction"
 import { loadEmployeeList } from "../../redux/actions/employeeAction"
 import useAuthenticatedCannister from "../../useAuthenticatedCannister"
+import { loadGraphTimeStampList } from "../../redux/actions/graphTimeStampAction"
+import { loadAIGraphTimeStampList } from "../../redux/actions/aiGraphTimeStampAction"
 
 const Home = () => {
 
@@ -21,6 +23,14 @@ const Home = () => {
   const authCannister = useAuthenticatedCannister();
 
   const { accountType } = Redux.useSelector(state => state);
+
+  useEffect(() => {
+    dispatch(loadGraphTimeStampList(authCannister))
+  }, [dispatch, authCannister])
+
+  useEffect(() => {
+    dispatch(loadAIGraphTimeStampList(authCannister))
+  }, [dispatch, authCannister])
 
 
   useEffect(() => {
@@ -54,12 +64,12 @@ const Home = () => {
         </div>
         <div className="charts">
           <Chart2 />
-          <Chart title="Registered Users Over Last 6 Months" aspect={2 / 1} />
+          <Chart title="Registered Users Over Last 6 Weeks" aspect={2 / 1} />
         </div>
-        <div className="tableContainer">
+        {/* <div className="tableContainer">
           <div className="tableTitle">Patient Discharge History</div>
           <Table />
-        </div>
+        </div> */}
       </div>
     </div>
   )

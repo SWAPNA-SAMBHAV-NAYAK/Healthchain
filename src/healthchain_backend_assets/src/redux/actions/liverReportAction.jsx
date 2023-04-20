@@ -1,8 +1,8 @@
-export const loadLiverReportList = (authCannister) => async (dispatch) => {
+export const loadLiverReportList = (authCannister,patient_id) => async (dispatch) => {
 
   if (authCannister) {
 
-    const liverReportList = await authCannister.readLiverReportByPatientId();
+    const liverReportList = await authCannister.readLiverReportByPatientId(patient_id);
     
     dispatch({
       type: 'get_liver_report',

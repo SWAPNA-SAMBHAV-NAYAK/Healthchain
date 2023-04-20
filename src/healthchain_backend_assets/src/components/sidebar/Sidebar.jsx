@@ -1,9 +1,9 @@
 import "./Sidebar.scss";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
-import WebAssetIcon from '@mui/icons-material/WebAsset';
+// import WebAssetIcon from '@mui/icons-material/WebAsset';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+// import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import ContentPasteOutlinedIcon from '@mui/icons-material/ContentPasteOutlined';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import BadgeIcon from '@mui/icons-material/Badge';
@@ -25,9 +25,11 @@ const Sidebar = () => {
   useEffect(() => {
     const nav = document.querySelector(".sidebar");
     if (isBurgerNavOpen) {
+      nav.style.position = "sticky";
       nav.classList.add("nav-bar-active");
 
     } else {
+      nav.style.position = "absolute";
       nav.classList.remove("nav-bar-active");
     }
   }, [isBurgerNavOpen])
@@ -107,22 +109,26 @@ const Sidebar = () => {
           </Link>
 
 
-          <Link to="/diagnosis" style={{ textDecoration: 'none' }}>
-            <li> <img src={"https://upload.wikimedia.org/wikipedia/commons/c/c2/Coronavirus_icon.svg"} width="50px" /> <span>Diagnosis.ai </span></li>
-          </Link>
-
           {accountType == "patient" &&
-            <Link to="/diagnosis-history" style={{ textDecoration: 'none' }}>
-              <li><DvrIcon className="icon" /><span>Diagnosis History</span></li>
+            <Link to="/diagnosis" style={{ textDecoration: 'none' }}>
+              <li> <img src={"https://upload.wikimedia.org/wikipedia/commons/c/c2/Coronavirus_icon.svg"} width="50px" /> <span>Diagnosis.ai </span></li>
             </Link>
           }
 
-          <Link to="/diseaseindex" style={{ textDecoration: 'none' }}>
-            <li> <img src={"https://upload.wikimedia.org/wikipedia/commons/2/2e/Community_Health_Advocate_-_The_Noun_Project.svg"} width="30px" /> <span>Disease Index</span></li>
-          </Link>
+          {/* {accountType == "patient" &&
+            <Link to="/diagnosis-history" style={{ textDecoration: 'none' }}>
+              <li><DvrIcon className="icon" /><span>Diagnosis History</span></li>
+            </Link>
+          } */}
+
+          {accountType == "patient" &&
+            <Link to="/diseaseindex" style={{ textDecoration: 'none' }}>
+              <li> <img src={"https://upload.wikimedia.org/wikipedia/commons/2/2e/Community_Health_Advocate_-_The_Noun_Project.svg"} width="30px" /> <span>Disease Index</span></li>
+            </Link>
+          }
 
 
-          {accountType === "admin" &&
+          {/* {accountType === "admin" &&
             <>
               <li><LocalShippingIcon className="icon" /><span>Shifting</span></li>
 
@@ -130,13 +136,13 @@ const Sidebar = () => {
                 <li><WebAssetIcon className="icon" /><span>Assets</span></li>
               </Link>
             </>
-          }
+          } */}
 
 
           <p className="title">MESSAGE</p>
           {accountType !== "patient" &&
             <>
-              <Link to="/notice-board" style={{textDecoration:'none'}}>
+              <Link to="/notice-board" style={{ textDecoration: 'none' }}>
                 <li><ContentPasteOutlinedIcon className="icon" /><span>Notice Board</span></li>
               </Link>
             </>

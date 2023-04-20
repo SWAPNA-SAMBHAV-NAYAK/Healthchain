@@ -1,6 +1,3 @@
-import { healthchain_backend } from "../../../../declarations/healthchain_backend";
-import useAuthenticatedCannister from "../../useAuthenticatedCannister";
-
 export const loadAppointmentList = (user_type, authCannister) => async (dispatch) => {
 
   if (authCannister) {

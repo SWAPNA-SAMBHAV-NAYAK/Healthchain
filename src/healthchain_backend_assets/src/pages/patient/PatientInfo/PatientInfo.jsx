@@ -10,6 +10,7 @@ import useAuthenticatedCannister from '../../../useAuthenticatedCannister';
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { loadMedicalLogList } from '../../../redux/actions/medicalLogAction';
 import { getStatusOfAccessToMedicalLogs } from '../../../redux/actions/accessToLogsAction';
+import DiagnosisHistory from '../../diagnosis.ai/DiagnosisHistory';
 
 export default function PatientInfo() {
 
@@ -357,6 +358,7 @@ export default function PatientInfo() {
               </div>
             </div>
           )}
+          <DiagnosisHistory/>
 
           {
             isPopupOpen && (

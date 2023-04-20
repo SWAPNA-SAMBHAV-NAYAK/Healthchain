@@ -137,8 +137,10 @@ service : {
   readDoctorMetaData: () -> (vec DoctorMetaData) query;
   readDoctors: () -> (vec ProfileData) query;
   readEmployees: () -> (vec Employee) query;
-  readHeartReportByPatientId: () -> (vec HeartReport) query;
-  readLiverReportByPatientId: () -> (vec LiverReport) query;
+  readHeartReportByPatientId: (text) -> (vec HeartReport) query;
+  readHeartReportDataTimeStamps: () -> (vec Time) query;
+  readLiverReportByPatientId: (text) -> (vec LiverReport) query;
+  readLiverReportDataTimeStamps: () -> (vec Time) query;
   readMedicalLogs: (text) -> (vec MedicalLog) query;
   readNotices: () -> (vec Notice) query;
   readNotifications: () -> (vec Notification) query;
@@ -147,6 +149,7 @@ service : {
   readPatientAppointments: () -> (vec Appointment) query;
   readPatients: () -> (vec ProfileData) query;
   readProfileData: () -> (opt ProfileData) query;
+  readProfileDataTimeStamps: () -> (vec Time) query;
   revokeMedicalLogAccess: (principal) -> () oneway;
   updateEmployee: (text, text, text, text, text, int, text) -> () oneway;
   updateUserType: (principal, text) -> () oneway;

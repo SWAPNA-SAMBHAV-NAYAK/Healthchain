@@ -21,6 +21,8 @@ import logsAccessListReducer from "./logsAccessListReducer";
 import noticeReducer from "./noticeReducer";
 import heartReportReducer from "./heartReportReducer";
 import liverReportReducer from "./liverReportReducer";
+import graphTimeStampReducer from "./graphTimeStampReducer";
+import aiGraphTimeStampReducer from "./aiGraphTimeStampReducer";
 
 const reducer = combineReducers({
     patientList: patientReducer,
@@ -36,6 +38,10 @@ const reducer = combineReducers({
     doctorById: doctorByIdReducer,
 
     noticeList: noticeReducer,
+
+    graphTimeStampList: graphTimeStampReducer,
+
+    aiGraphTimeStampList: aiGraphTimeStampReducer,
 
 
     medicalLogList: medicalLogReducer,

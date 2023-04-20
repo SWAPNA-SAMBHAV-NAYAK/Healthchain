@@ -3,20 +3,24 @@
 
   border-right: 0.5px solid rgb(230, 227, 227);
   height: 100vh;
+  top: 0;
   left: 0;
-  bottom: 0;
   z-index: 1;
   width: 15%;
   transition: 0.3s ease-in-out;
   -webkit-transition: 0.3s ease-in-out;
-  margin:0;
+  margin: 0;
 
   overflow-y: hidden;
 
 
+  position: sticky;
+  z-index: 1;
+
   transform: translateX(-100%);
   opacity: 0;
-  position: absolute;
+
+  transition: all .5s ease;
 
   .top {
     height: 50px;
@@ -54,7 +58,8 @@
         margin-bottom: 10px;
       }
 
-      .icon, img {
+      .icon,
+      img {
         color: #E9E8E8;
         padding-left: 10px;
         padding-right: 15px;
@@ -88,6 +93,4 @@
 .nav-bar-active {
   transform: translateX(0%);
   opacity: 1;
-  position: sticky;
-  position: -webkit-sticky;
 }

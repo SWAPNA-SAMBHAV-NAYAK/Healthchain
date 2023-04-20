@@ -18,6 +18,11 @@
   z-index: 1;
   background-color: #024332;
 
+  .burger-logo {
+    &:hover {
+        cursor:pointer;
+    }
+}
   .items {
     display: flex;
     align-items: center;

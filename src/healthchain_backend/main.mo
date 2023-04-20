@@ -119,6 +119,21 @@ actor healthchain {
     );
   };
 
+  public shared query (msg) func readProfileDataTimeStamps() : async [Time.Time] {
+
+    Debug.print(Text.concat("readProfileDataTimeStamps ", debug_show (msg.caller)));
+
+    var timeStamps : List.List<Time.Time> = List.nil();
+
+    for (profData in List.toArray(userProfileDataList).vals()) {
+
+      timeStamps := List.push(profData.registered_on, timeStamps);
+
+    };
+
+    return List.toArray(timeStamps);
+  };
+
   public shared query (msg) func readPatients() : async [ProfileData] {
 
     Debug.print(Text.concat("readPatients ", debug_show (msg.caller)));
@@ -1226,18 +1241,31 @@ actor healthchain {
   };
 
   // TODO add Authorization here
-  public shared query (msg) func readLiverReportByPatientId() : async [LiverReport] {
+  public shared query (msg) func readLiverReportByPatientId(patient_id : Text) : async [LiverReport] {
 
     Debug.print(Text.concat("readLiverReportByPatientId ", debug_show (msg.caller)));
 
     var liverReportList : List.List<LiverReport> = List.filter(
       liverReports,
       func(liverReport : LiverReport) : Bool {
-        return liverReport.patient_id == msg.caller;
+        return liverReport.patient_id == Principal.fromText(patient_id);
       },
     );
 
     return List.toArray(liverReportList);
+  };
+
+  // TODO add Authorisation Here
+  public shared query (msg) func readLiverReportDataTimeStamps() : async [Time.Time] {
+
+    Debug.print(Text.concat("readLiverReportDataTimeStamps ", debug_show (msg.caller)));
+
+    var timeStamps : List.List<Time.Time> = List.nil();
+
+    for (profData in List.toArray(liverReports).vals()) {
+      timeStamps := List.push(profData.time_stamp, timeStamps);
+    };
+    return List.toArray(timeStamps);
   };
 
   ///////////////////////////////////////// Heart Analysis ///////////////////////////////////////////////////////
@@ -1315,18 +1343,32 @@ actor healthchain {
   };
 
   // TODO add Authorization here
-  public shared query (msg) func readHeartReportByPatientId() : async [HeartReport] {
+  public shared query (msg) func readHeartReportByPatientId(patient_id : Text) : async [HeartReport] {
 
     Debug.print(Text.concat("readHeartReportByPatientId ", debug_show (msg.caller)));
 
     var heartReportList : List.List<HeartReport> = List.filter(
       heartReports,
       func(heartReport : HeartReport) : Bool {
-        return heartReport.patient_id == msg.caller;
+        return heartReport.patient_id == Principal.fromText(patient_id);
       },
     );
 
     return List.toArray(heartReportList);
+  };
+
+  // TODO add Authorisation Here
+  public shared query (msg) func readHeartReportDataTimeStamps() : async [Time.Time] {
+
+    Debug.print(Text.concat("readHeartReportDataTimeStamps ", debug_show (msg.caller)));
+
+    var timeStamps : List.List<Time.Time> = List.nil();
+
+    for (profData in List.toArray(heartReports).vals()) {
+      timeStamps := List.push(profData.time_stamp, timeStamps);
+    };
+
+    return List.toArray(timeStamps);
   };
 
 };

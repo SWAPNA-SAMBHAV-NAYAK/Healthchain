@@ -71,6 +71,7 @@ export const data = [
         label: "Old Peak",
         name: "oldpeak",
         type: "number",
+        step:0.1,
         min: -2.6,
         max: 6.2
       },
