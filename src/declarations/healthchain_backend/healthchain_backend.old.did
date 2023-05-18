@@ -147,6 +147,7 @@ service : {
   readPatientAppointments: () -> (vec Appointment) query;
   readPatients: () -> (vec ProfileData) query;
   readProfileData: () -> (opt ProfileData) query;
+  readProfileDataTimeStamps: () -> (vec Time) query;
   revokeMedicalLogAccess: (principal) -> () oneway;
   updateEmployee: (text, text, text, text, text, int, text) -> () oneway;
   updateUserType: (principal, text) -> () oneway;

@@ -43,9 +43,9 @@ export default function DoctorInfo() {
   const [isOpenHoursOpen, setIsOpenHoursOpen] = useState(false);
 
 
-  const [designation, setDesignation] = useState("");
-  const [qualification, setQualification] = useState("");
-  const [department, setDepartment] = useState("");
+  const [designation, setDesignation] = useState(doctorMetaDataById.designation);
+  const [qualification, setQualification] = useState(doctorMetaDataById.qualification);
+  const [department, setDepartment] = useState(doctorMetaDataById.department);
 
 
 

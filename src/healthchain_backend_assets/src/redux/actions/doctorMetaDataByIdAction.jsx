@@ -6,7 +6,12 @@ export const loadDoctorMetaDataById = (id, authCannister) => async (dispatch) =>
     if (filtered_doctor.length < 1) {
         dispatch({
             type: "get_doctor_meta_data_by_id",
-            payload: {},
+            payload: {
+                doctor_id: "",
+                designation: "",
+                department: "",
+                qualification: "",
+            },
         });
     } else {
         dispatch({

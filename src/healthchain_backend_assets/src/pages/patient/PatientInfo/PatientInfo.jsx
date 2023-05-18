@@ -126,7 +126,7 @@ export default function PatientInfo() {
     Salrt.fire({
       position: "top-end",
       icon: "success",
-      title: "Your work has been saved",
+      title: "Patient Medical Log has been saved",
       showConfirmButton: false,
       timer: 1500
     });
@@ -172,9 +172,9 @@ export default function PatientInfo() {
                 <p className="tag" id="tag7">
                   <strong>Internet Identity: </strong>
                   <ContentCopyIcon
-                      onClick={handleCopyClick}
-                      style={{ cursor: "pointer", margin: "0px 5px" }}
-                    />
+                    onClick={handleCopyClick}
+                    style={{ cursor: "pointer", margin: "0px 5px" }}
+                  />
                   {
                     (patientById.user_principal) ? patientById.user_principal.toText() : " "
                   }
@@ -358,7 +358,7 @@ export default function PatientInfo() {
               </div>
             </div>
           )}
-          <DiagnosisHistory/>
+          {hasAccessToLogs && <DiagnosisHistory />}
 
           {
             isPopupOpen && (

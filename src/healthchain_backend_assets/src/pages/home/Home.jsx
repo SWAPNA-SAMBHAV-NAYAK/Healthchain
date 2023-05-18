@@ -1,10 +1,8 @@
-
 import Chart from "../../components/chart/Chart"
 import Navbar from "../../components/navbar/Navbar"
 import Sidebar from "../../components/sidebar/Sidebar"
 import Widget from "../../components/widget/Widget"
 import "./Home.scss"
-import Table from "../../components/table/Table"
 import Chart2 from "../../components/chart2/Chart2"
 import React, { useState, useEffect } from "react";
 import * as Redux from "react-redux";

@@ -24,7 +24,8 @@ const FormDisplay = () => {
   const submitKoHandle = (data) => {
     setIsLoading(true)
 
-    const ngrokUrl = 'https://f411-103-171-5-14.ngrok-free.app/';
+    const ngrokUrl = 'https://baf8-103-165-169-6.ngrok-free.app/';
+
     const baseUrl = `${ngrokUrl}/diagnosis.ai`;
 
     let config = {
